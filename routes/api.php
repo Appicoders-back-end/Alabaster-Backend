@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\GeneralController;
 use App\Http\Controllers\Api\Contractor\CustomerController as ContractorCustomerController;
 use App\Http\Controllers\Api\Contractor\CleanerController as ContractorCleanerController;
 use App\Http\Controllers\Api\WorkRequestController;
-use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\JobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +45,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('workRequestsCreate', [WorkRequestController::class, 'store']);
     Route::get('workRequests', [WorkRequestController::class, 'index']);
     Route::get('workRequests/{task}', [WorkRequestController::class, 'show']);
-    Route::get('jobs', [TaskController::class, 'index']);
-    Route::post('jobsCreate', [TaskController::class, 'store']);
+    Route::get('jobs', [JobController::class, 'index']);
+    Route::post('jobsCreate', [JobController::class, 'store']);
 });

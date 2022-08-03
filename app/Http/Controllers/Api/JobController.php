@@ -11,7 +11,7 @@ use App\Models\Task;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 
-class TaskController extends Controller
+class JobController extends Controller
 {
     /**
      * @param Request $request
