@@ -15,9 +15,9 @@ class CreateCategorySeeder extends Seeder
      */
     public function run()
     {
-        Category::create(['name' => 'Custodial Engineer']);
-        Category::create(['name' => 'Flooring Technician']);
-        Category::create(['name' => 'Maintenance Technician']);
-        Category::create(['name' => 'Self-Contractor Custodial Enginner']);
+        Category::create(['name' => 'Custodial Engineer', 'image' => 'Custodial.png']);
+        Category::create(['name' => 'Flooring Technician', 'image' => 'FloorTechnician.png']);
+        Category::create(['name' => 'Maintenance Technician', 'image' => 'MaintenanceTechnician.png']);
+        Category::create(['name' => 'Self-Contractor Custodial Enginner', 'name' => 'SelfContractor.png']);
     }
 }

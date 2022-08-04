@@ -100,7 +100,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        $code = rand(0000, 9999);
+        $code = rand(1111, 9999);
         $user->remember_token = $code;
         $user->save();
         Mail::to($request->email)->send(new ForgotPassword($user->name, $code));
@@ -135,7 +135,7 @@ class AuthController extends Controller
 
         $user->remember_token = null;
         $user->save();
-        $user->markEmailAsVerified(true);
+//        $user->markEmailAsVerified(true);
 
         return apiResponse(true, 'Code matched successfully', $user);
     }
@@ -159,12 +159,13 @@ class AuthController extends Controller
         try {
             $user = User::where('email', $request->email)->first();
             $user->password = Hash::make($request->password);
-            $user->save();
+            $user->remember_token = null;
+//            $user->save();
+//            $user->markEmailAsVerified(true);
 
             return apiResponse(true, __('Password has been changed successfully'));
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
     }
-
 }

@@ -65,11 +65,6 @@ class Task extends Model
         return $this->belongsTo(UserAddress::class, 'address_id', 'id');
     }
 
-    public function urgency()
-    {
-        return $this->belongsTo(Urgency::class, 'urgency_id', 'id');
-    }
-
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id', 'id');

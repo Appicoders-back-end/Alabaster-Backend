@@ -17,9 +17,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->enum('role', [User::Admin, User::Contractor, User::Cleaner, User::Customer])->after('name');
             $table->string('contact_no', 25)->nullable()->after('password');
-            $table->string('street', 100)->nullable()->after('contact_no');
-            $table->string('state', 50)->nullable()->after('street');
-            $table->string('zipcode', 50)->nullable()->after('state');
             $table->enum('status', [User::Active, User::InActive])->default(User::Active)->after('remember_token');
             $table->string('profile_image', 255)->nullable()->after('contact_no');
         });
