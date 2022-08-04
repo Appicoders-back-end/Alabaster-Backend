@@ -9,28 +9,46 @@ use App\Http\Resources\StoreResource;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Store;
-use App\Models\Urgency;
 use Illuminate\Http\Request;
 
 class GeneralController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getCategories(Request $request)
     {
         $baseCategories = Category::query();
+        if (isset($request->name) && $request->name != null) {
+            $baseCategories = $baseCategories->where('name', 'like', '%' . $request->name . '%');
+        }
         $categories = $baseCategories->get();
         $categories = CategoriesListResource::collection($categories);
 
         return apiResponse(true, 'Data loaded succesfully', $categories);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getStores(Request $request)
     {
-        $stores = Store::orderBy('id', 'desc')->get();
+        $baseStores = Store::query();
+        if (isset($request->name) && $request->name != null) {
+            $baseStores = $baseStores->where('name', 'like', '%' . $request->name . '%');
+        }
+        $stores = $baseStores->orderBy('id', 'desc')->get();
         $stores = StoreResource::collection($stores);
 
-        return apiResponse(true, 'Data loaded succesfully', $stores);
+        return apiResponse(true, 'Data loaded successfully', $stores);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getInventories(Request $request)
     {
         $baseInventory = Inventory::query();
@@ -38,12 +56,5 @@ class GeneralController extends Controller
         $inventories = InventoryResource::collection($inventories);
 
         return apiResponse(true, 'Data loaded succesfully', $inventories);
-    }
-
-    public function getUrgencies(Request $request)
-    {
-        $urgencies = Urgency::select('id', 'name')->get();
-
-        return apiResponse(true, 'Data loaded succesfully', $urgencies);
     }
 }

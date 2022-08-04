@@ -54,7 +54,7 @@ class CleanerController extends Controller
         }
 
         try {
-            $code = rand(000000, 999999);
+            $code = rand(1111, 9999);
 
             $user = new User();
             $user->name = $request->name;
@@ -88,15 +88,16 @@ class CleanerController extends Controller
     }
 
     /**
-     * @param $id
+     * getting the list of idle cleaners
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function getActiveCleaners(Request $request)
     {
-        $cleaner = User::find($id);
-        if(!$cleaner){
-            return apiResponse(false, __("User not found"));
-        }
-        return apiResponse(true, __('Data loaded successfully'), new CleanersDetail($cleaner));
+        $baseCleaners = User::where('role', User::Cleaner)->where('created_by', auth()->user()->id);
+        $cleaners = $baseCleaners->paginate(10);
+        $cleaners = CleanersListResource::collection($cleaners)->response()->getData(true);
+
+        return apiResponse(true, __('Data loaded successfully'), $cleaners);
     }
 }

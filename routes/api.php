@@ -30,21 +30,19 @@ Route::post('forgot_password', [AuthController::class, 'forgotPassword']);
 Route::post('verify_forgot_code', [AuthController::class, 'verifyForgotCode']);
 Route::post('change_password', [AuthController::class, 'changePassword']);
 Route::get('categories', [GeneralController::class, 'getCategories']);
-Route::get('stores', [GeneralController::class, 'getStores']);
+Route::post('stores', [GeneralController::class, 'getStores']);
 Route::get('inventories', [GeneralController::class, 'getInventories']);
-Route::get('urgencies', [GeneralController::class, 'getUrgencies']);
 Route::get('customerLocations/{id}', [ContractorCustomerController::class, 'getLocations']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('customers', [ContractorCustomerController::class, 'index']);
     Route::post('customersCreate', [ContractorCustomerController::class, 'store']);
-    Route::get('customers/{id}', [ContractorCustomerController::class, 'show']);
     Route::post('cleaners', [ContractorCleanerController::class, 'index']);
     Route::post('cleanersCreate', [ContractorCleanerController::class, 'store']);
-    Route::get('cleanerDetail/{id}', [ContractorCleanerController::class, 'show']);
+    Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
     Route::post('workRequestsCreate', [WorkRequestController::class, 'store']);
     Route::get('workRequests', [WorkRequestController::class, 'index']);
-    Route::get('workRequests/{task}', [WorkRequestController::class, 'show']);
     Route::get('jobs', [JobController::class, 'index']);
     Route::post('jobsCreate', [JobController::class, 'store']);
+    Route::get('jobDetail/{id}', [JobController::class, 'show']);
 });

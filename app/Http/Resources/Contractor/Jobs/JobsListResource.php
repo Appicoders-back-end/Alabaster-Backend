@@ -20,11 +20,13 @@ class JobsListResource extends JsonResource
             'customer_id' => $this->customer ? $this->customer->id : null,
             'customer_name' => $this->customer ? $this->customer->name : null,
             'customer_image' => $this->customer ? $this->customer->profile_image : null,
-            'category' => $this->category ? $this->category->name : null,
+            'service_type' => $this->category ? $this->category->name : null,
             'location' => $this->location ? new AddressesResource($this->location) : null,
             'date' => $this->date,
             'time' => $this->time,
             'date_time' => $this->date_time,
+            'urgency' => $this->urgency,
+            'details' => $this->details,
         ];
     }
 }

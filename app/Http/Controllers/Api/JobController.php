@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Contractor\Jobs\JobsDetailResource;
 use App\Http\Resources\Contractor\Jobs\JobsListResource;
+use App\Http\Resources\WorkOrder\WorkOrderDetail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,6 +26,10 @@ class JobController extends Controller
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -31,7 +37,7 @@ class JobController extends Controller
             'date' => 'required',
             'time' => 'required',
             'store_id' => 'required',
-            'urgency_id' => 'required',
+            'urgency' => 'required',
             'location_id' => 'required',
             'customer_id' => 'required'
         ]);
@@ -63,7 +69,7 @@ class JobController extends Controller
             $job->address_id = $request->location_id;
             $job->status = Task::STATUS_CONFIRMED;
             $job->details = $request->details;
-            $job->urgency_id = $request->urgency_id;
+            $job->urgency = $request->urgency;
             $job->details = $request->details;
             $job->save();
         } catch (Exception $e) {
@@ -71,5 +77,19 @@ class JobController extends Controller
         }
 
         return apiResponse(true, 'Job has been created successfully');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+        $job = Task::where('id', $id)->where('status', '!=', Task::STATUS_REQUESTED)->first();
+        if (!$job) {
+            return apiResponse(false, __('Record not found'));
+        }
+        $job = new JobsDetailResource($job);
+        return apiResponse(true, __('Data loaded successfully'), $job);
     }
 }

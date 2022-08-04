@@ -40,7 +40,7 @@ class CustomerController extends Controller
         }
 
         try {
-            $code = rand(000000, 999999);
+            $code = rand(1111, 9999);
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -67,16 +67,6 @@ class CustomerController extends Controller
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
-    }
-
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $customer = User::findOrFail($id);
-        return apiResponse(true, __('Data loaded successfully'), new CustomersDetail($customer));
     }
 
     /**

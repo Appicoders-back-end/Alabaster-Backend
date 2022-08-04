@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\WorkOrder\WorkOrderDetail;
 use App\Http\Resources\WorkOrder\WorkOrderList;
 use App\Models\Task;
 use App\Models\User;
@@ -41,7 +40,7 @@ class WorkRequestController extends Controller
             'date' => 'required',
             'time' => 'required',
             'store_id' => 'required',
-            'urgency_id' => 'required',
+            'urgency' => 'required',
             'location_id' => 'required',
         ]);
 
@@ -64,7 +63,7 @@ class WorkRequestController extends Controller
             $task->address_id = $request->location_id;
             $task->status = Task::STATUS_REQUESTED;
             $task->details = $request->details;
-            $task->urgency_id = $request->urgency_id;
+            $task->urgency = $request->urgency;
             $task->details = $request->details;
             $task->save();
         } catch (Exception $e) {
@@ -72,19 +71,5 @@ class WorkRequestController extends Controller
         }
 
         return apiResponse(true, 'Request has been created successfully');
-    }
-
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $task = Task::find($id);
-        if (!$task) {
-            return apiResponse(false, 'Work order request not found');
-        }
-        $task = new WorkOrderDetail($task);
-        return apiResponse(true, 'Data loaded successfully', $task);
     }
 }

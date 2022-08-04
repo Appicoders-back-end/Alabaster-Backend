@@ -18,7 +18,8 @@ class AddressesResource extends JsonResource
             'id' => $this->id,
             'street' => $this->street,
             'state' => $this->state,
-            'zipcode' => $this->zipcode
+            'zipcode' => $this->zipcode,
+            'formated_address' => sprintf("%s, %s, %s", $this->street, $this->state, $this->zipcode),
         ];
     }
 }

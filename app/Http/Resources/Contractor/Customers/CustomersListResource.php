@@ -15,9 +15,12 @@ class CustomersListResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'    => $this->id,
-            'email'    => $this->email,
-            'name'    => $this->name,
+            'id' => $this->id,
+            'email' => $this->email,
+            'name' => $this->name,
+            'profile_image'  => $this->profile_image,
+            'contact_no'  => $this->contact_no,
+            'addresses' => AddressesResource::collection($this->addresses)
         ];
     }
 }
