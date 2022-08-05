@@ -30,7 +30,7 @@ class CleanerController extends Controller
             return $query->where('category_id', $request->category_id);
         });
 
-        $cleaners = $baseCleaners->paginate(10);
+        $cleaners = $baseCleaners->paginate(2);
         $cleaners = CleanersListResource::collection($cleaners)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $cleaners);
@@ -95,7 +95,7 @@ class CleanerController extends Controller
     public function getActiveCleaners(Request $request)
     {
         $baseCleaners = User::where('role', User::Cleaner)->where('created_by', auth()->user()->id);
-        $cleaners = $baseCleaners->paginate(10);
+        $cleaners = $baseCleaners->paginate(2);
         $cleaners = CleanersListResource::collection($cleaners)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $cleaners);
