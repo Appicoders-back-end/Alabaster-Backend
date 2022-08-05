@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CreateCategorySeeder::class);
 //        $this->call(CreateUrgencySeeder::class);
         $this->call(StoreSeeder::class);
+        $this->call(InventorySeeder::class);
     }
 }

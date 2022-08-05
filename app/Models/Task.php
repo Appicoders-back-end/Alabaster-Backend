@@ -9,8 +9,6 @@ class Task extends Model
 {
     use HasFactory;
 
-    public const STATUS_REQUESTED = 'requested'; //requested by customer but not reviewed and created by contractor
-    public const STATUS_CONFIRMED = 'confirmed'; //reviewed and created by contractor and not assigned to any cleaner
     public const STATUS_PENDING = 'pending'; //assigned to cleaner but not started yet
     public const STATUS_WORKING  = 'working'; //started by cleaner
     public const STATUS_COMPLETED  = 'completed'; //completed

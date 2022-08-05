@@ -7,6 +7,7 @@ use App\Http\Resources\Contractor\Jobs\JobsDetailResource;
 use App\Http\Resources\Contractor\Jobs\JobsListResource;
 use App\Http\Resources\WorkOrder\WorkOrderDetail;
 use App\Models\User;
+use App\Models\WorkRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Task;
@@ -21,7 +22,7 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $jobs = Task::confirmed()->where('contractor_id', auth()->user()->id)->paginate(10);
+        $jobs = Task::where('contractor_id', auth()->user()->id)->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
@@ -35,43 +36,54 @@ class JobController extends Controller
         $validator = Validator::make($request->all(), [
             'category_id' => 'required|numeric',
             'date' => 'required',
-            'time' => 'required',
-            'store_id' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'store_id' => 'required|numeric',
+            'store_address_id' => 'required|numeric',
             'urgency' => 'required',
-            'location_id' => 'required',
-            'customer_id' => 'required'
+            'customer_id' => 'required',
+            'address_id' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
             return apiresponse(false, implode("\n", $validator->errors()->all()));
         }
         $user = auth()->user();
-        if ($user->role != User::Contractor) {
-            return apiResponse(false, 'This request is only accessable in contractor type user');
-        }
-        try {
-            if (isset($request->work_request_id) && $request->work_request_id != null) {
-                $job = Task::find($request->work_request_id);
-                if (!$job) {
-                    return apiResponse(false, 'Work request not found');
-                }
-            } else {
-                $job = new Task();
-            }
 
+        if ($user->role != User::Contractor) {
+            return apiResponse(false, 'This request is only accessable for contractor type user');
+        }
+
+        try {
+            $job = new Task();
             $job->customer_id = $request->customer_id;
+            $job->address_id = $request->address_id;
             $job->contractor_id = auth()->user()->id;
             $job->category_id = $request->category_id;
             $job->date = $request->date;
-            $job->time = date("H:i", strtotime($request->time));
-            $job->date_time = date('Y-m-d H:i:s', strtotime($job->date . ' ' . $job->time));
+            $job->start_time = date("H:i", strtotime($request->start_time));
+            $job->end_time = date("H:i", strtotime($request->end_time));
+            $job->start_date_and_time = date('Y-m-d H:i:s', strtotime($job->date . ' ' . $job->start_time));
             $job->store_id = $request->store_id;
-            $job->address_id = $request->location_id;
-            $job->status = Task::STATUS_CONFIRMED;
+            $job->store_address_id = $request->store_address_id;
+            $job->status = Task::STATUS_PENDING;
             $job->details = $request->details;
             $job->urgency = $request->urgency;
             $job->details = $request->details;
+            $job->shift = $request->shift;
             $job->save();
+
+            if (isset($request->work_request_id) && $request->work_request_id != null) {
+                $workrequest = WorkRequest::find($request->work_request_id);
+                if (!$workrequest) {
+                    return apiResponse(false, 'Work request not found');
+                }
+                $workrequest->status = WorkRequest::STATUS_CONFIRMED;
+                $workrequest->save();
+
+                $job->work_request_id = $request->work_request_id;
+                $job->save();
+            }
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
@@ -85,7 +97,7 @@ class JobController extends Controller
      */
     public function show($id)
     {
-        $job = Task::where('id', $id)->where('status', '!=', Task::STATUS_REQUESTED)->first();
+        $job = Task::where('id', $id)->first();
         if (!$job) {
             return apiResponse(false, __('Record not found'));
         }

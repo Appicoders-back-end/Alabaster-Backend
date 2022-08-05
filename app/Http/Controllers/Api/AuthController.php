@@ -80,6 +80,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
         $user->token = $user->createToken('MyAuthToken')->accessToken;
+        $user->addresses;
 
         return apiResponse(true, __('Logged in successfully'), $user);
     }

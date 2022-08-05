@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\WorkOrder\WorkOrderList;
+use App\Http\Resources\Contractor\Customers\CustomersListResource;
+use App\Http\Resources\WorkOrder\WorkRequestList;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\WorkRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,14 +19,22 @@ class WorkRequestController extends Controller
      */
     public function index(Request $request)
     {
-        $baseTasks = Task::requested()->where('contractor_id', auth()->user()->id);
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $baseTasks = WorkRequest::where('contractor_id', auth()->user()->id)->where('customer_id', $request->customer_id);
         $baseTasks->when(request('name'), function ($q) use ($request) {
             return $q->whereHas('customer', function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->name . '%');
             });
         });
-        $tasks = $baseTasks->paginate(10);
-        $tasks = WorkOrderList::collection($tasks)->response()->getData(true);
+        $tasks = $baseTasks->orderBy('id', 'DESC')->paginate(10);
+        $tasks = WorkRequestList::collection($tasks)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $tasks);
     }
@@ -38,10 +48,11 @@ class WorkRequestController extends Controller
         $validator = Validator::make($request->all(), [
             'category_id' => 'required|numeric',
             'date' => 'required',
-            'time' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
             'store_id' => 'required',
             'urgency' => 'required',
-            'location_id' => 'required',
+            'address_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -52,16 +63,18 @@ class WorkRequestController extends Controller
             return apiResponse(false, 'This request is only accessable in customer');
         }
         try {
-            $task = new Task();
+            $task = new WorkRequest();
             $task->customer_id = $user->id;
+            $task->address_id = $request->address_id;
             $task->contractor_id = $user->created_by;
             $task->category_id = $request->category_id;
             $task->date = $request->date;
-            $task->time = date("H:i", strtotime($request->time));
-            $task->date_time = date('Y-m-d H:i:s', strtotime($task->date . ' ' . $task->time));
+            $task->start_time = date("H:i", strtotime($request->start_time));
+            $task->end_time = date("H:i", strtotime($request->end_time));
+//            $task->date_time = date('Y-m-d H:i:s', strtotime($task->date . ' ' . $task->time));
             $task->store_id = $request->store_id;
-            $task->address_id = $request->location_id;
-            $task->status = Task::STATUS_REQUESTED;
+            $task->store_address_id = $request->store_address_id;
+            $task->status = WorkRequest::STATUS_REQUESTED;
             $task->details = $request->details;
             $task->urgency = $request->urgency;
             $task->details = $request->details;
@@ -71,5 +84,18 @@ class WorkRequestController extends Controller
         }
 
         return apiResponse(true, 'Request has been created successfully');
+    }
+
+    /**
+     * @param Request $request
+     * @return void
+     */
+    public function getWorkRequestCustomers(Request $request)
+    {
+        $workRequestsUserIds = WorkRequest::where('contractor_id', auth()->user()->id)->pluck('customer_id')->toArray();
+        $customers = User::whereIn('id', $workRequestsUserIds)->paginate(10);
+        $customers = CustomersListResource::collection($customers);
+
+        return apiResponse(true, __('Data loaded successfully'), $customers);
     }
 }
