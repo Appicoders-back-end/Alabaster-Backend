@@ -15,12 +15,12 @@ class Task extends Model
 
     public function scopeRequested($query)
     {
-        return $query->whereStatus(Task::STATUS_REQUESTED);
+        return $query->whereStatus(WorkRequest::STATUS_REQUESTED);
     }
 
     public function scopeConfirmed($query)
     {
-        return $query->whereStatus(Task::STATUS_CONFIRMED);
+        return $query->whereStatus(WorkRequest::STATUS_CONFIRMED);
     }
 
     public function scopePending($query)

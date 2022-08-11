@@ -16,4 +16,9 @@ class Checklist extends Model
     {
         return $this->hasMany(Checklist::class, 'parent_id', 'id');
     }
+
+    public function job()
+    {
+        return $this->belongsTo(Task::class, 'task_id', 'id');
+    }
 }
