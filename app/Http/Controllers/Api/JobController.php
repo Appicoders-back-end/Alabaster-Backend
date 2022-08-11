@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Contractor\Checklist\ChecklistResource;
 use App\Http\Resources\Contractor\Jobs\JobsDetailResource;
 use App\Http\Resources\Contractor\Jobs\JobsListResource;
 use App\Http\Resources\WorkOrder\WorkOrderDetail;
@@ -70,7 +71,6 @@ class JobController extends Controller
             $job->status = Task::STATUS_PENDING;
             $job->details = $request->details;
             $job->urgency = $request->urgency;
-            $job->details = $request->details;
             $job->lunch_start_time = date("Y-m-d H:i:s", strtotime($job->date . ' ' . $request->lunch_start_time));
             $job->lunch_end_time = date("Y-m-d H:i:s", strtotime($job->date . ' ' . $request->lunch_end_time));
             $job->shift = $request->shift;
@@ -115,10 +115,15 @@ class JobController extends Controller
      */
     public function getAllChecklist(Request $request)
     {
-        $checklist = Checklist::with('items')->whereNull('parent_id')->get();
+        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->paginate(10);
+        $checklist = ChecklistResource::collection($checklist)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $checklist);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createChecklist(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -132,24 +137,36 @@ class JobController extends Controller
         }
 
         if (count($request->items) == 0) {
-            return apiResponse(false, __('Items is required'));
+            return apiResponse(false, __('Items are required'));
         }
         try {
             $checklist = new Checklist();
             $checklist->task_id = $request->job_id;
             $checklist->name = $request->name;
-            $checklist->description = $request->description;
+//            $checklist->description = $request->description;
             $checklist->status = Checklist::STATUS_UNASSIGNED;
             $checklist->save();
 
-            $newItem = new Checklist();
             foreach ($request->items as $item) {
+                $newItem = new Checklist();
                 $newItem->parent_id = $checklist->id;
                 $newItem->name = $item['name'];
                 $newItem->description = $item['description'];
+
+                if (isset($item['attachment']) && $item['attachment'] != null) {
+                    $file = $item['attachment'];
+                    $file_name = time() . "_" . $file->getClientOriginalName();
+                    $filename = pathinfo($file_name, PATHINFO_FILENAME);
+                    $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+                    $file_name = str_replace(" ", "_", $filename);
+                    $file_name = str_replace(".", "_", $file_name) . "." . $extension;
+                    $path = public_path() . "/storage/uploads/";
+                    $file->move($path, $file_name);
+
+                    $newItem->attachment = $file_name;
+                }
                 $newItem->save();
             }
-
             return apiResponse(true, __('Record has been saved successfully'));
         } catch (Exception $exception){
             return apiResponse(false, $exception->getMessage());
