@@ -74,6 +74,7 @@ class CleanerController extends Controller
             $address->street = $request->street;
             $address->state = $request->state;
             $address->zipcode = $request->zipcode;
+            $address->save();
 
 //            if (count($request->categories) > 0) {
 //                $user->categories()->attach($request->categories);
