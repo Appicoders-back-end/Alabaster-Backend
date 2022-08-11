@@ -17,24 +17,11 @@ class WorkRequestController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'customer_id' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return apiresponse(false, implode("\n", $validator->errors()->all()));
-        }
-
-        $baseTasks = WorkRequest::where('contractor_id', auth()->user()->id)->where('customer_id', $request->customer_id);
-        $baseTasks->when(request('name'), function ($q) use ($request) {
-            return $q->whereHas('customer', function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->name . '%');
-            });
-        });
-        $tasks = $baseTasks->orderBy('id', 'DESC')->paginate(10);
-        $tasks = WorkRequestList::collection($tasks)->response()->getData(true);
+        $baseTasks = WorkRequest::where('contractor_id', auth()->user()->id)->where('customer_id', $id);
+        $tasks = $baseTasks->orderBy('id', 'DESC')->get();
+        $tasks = WorkRequestList::collection($tasks);
 
         return apiResponse(true, __('Data loaded successfully'), $tasks);
     }
@@ -47,9 +34,8 @@ class WorkRequestController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'category_id' => 'required|numeric',
-            'date' => 'required',
+            'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required',
-            'end_time' => 'required',
             'store_id' => 'required',
             'urgency' => 'required',
             'address_id' => 'required',
@@ -60,7 +46,7 @@ class WorkRequestController extends Controller
         }
         $user = auth()->user();
         if ($user->role != User::Customer) {
-            return apiResponse(false, 'This request is only accessable in customer');
+            return apiResponse(false, 'This request is only accessible in customer');
         }
         try {
             $task = new WorkRequest();
@@ -70,14 +56,13 @@ class WorkRequestController extends Controller
             $task->category_id = $request->category_id;
             $task->date = $request->date;
             $task->start_time = date("H:i", strtotime($request->start_time));
-            $task->end_time = date("H:i", strtotime($request->end_time));
+//            $task->end_time = date("H:i", strtotime($request->end_time));
 //            $task->date_time = date('Y-m-d H:i:s', strtotime($task->date . ' ' . $task->time));
             $task->store_id = $request->store_id;
             $task->store_address_id = $request->store_address_id;
             $task->status = WorkRequest::STATUS_REQUESTED;
             $task->details = $request->details;
             $task->urgency = $request->urgency;
-            $task->details = $request->details;
             $task->save();
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());

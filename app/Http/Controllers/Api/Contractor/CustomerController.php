@@ -21,7 +21,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $baseCustomers = User::where('role', User::Customer)->where('created_by', auth::user()->id);
-        $customers = $baseCustomers->paginate(2);
+        $customers = $baseCustomers->paginate(5);
         $customers = CustomersListResource::collection($customers)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $customers);

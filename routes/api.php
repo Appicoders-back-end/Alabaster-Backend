@@ -42,8 +42,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
     Route::post('workRequestsCreate', [WorkRequestController::class, 'store']);
     Route::post('workRequestCustomers', [WorkRequestController::class, 'getWorkRequestCustomers']);
-    Route::post('workRequests', [WorkRequestController::class, 'index']);
+    Route::get('workRequests/{id}', [WorkRequestController::class, 'index']);
     Route::get('jobs', [JobController::class, 'index']);
     Route::post('jobsCreate', [JobController::class, 'store']);
     Route::get('jobDetail/{id}', [JobController::class, 'show']);
+    Route::post('getUsersByRole', [GeneralController::class, 'getUsersByRole']);
+    Route::get('checklist', [JobController::class, 'getAllChecklist']);
+    Route::post('checklistCreate', [JobController::class, 'createChecklist']);
 });

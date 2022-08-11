@@ -9,7 +9,9 @@ use App\Http\Resources\StoreResource;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Store;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GeneralController extends Controller
 {
@@ -55,6 +57,29 @@ class GeneralController extends Controller
         $inventories = $baseInventory->get();
         $inventories = InventoryResource::collection($inventories);
 
-        return apiResponse(true, 'Data loaded succesfully', $inventories);
+        return apiResponse(true, 'Data loaded successfully', $inventories);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUsersByRole(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'role' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $baseUsers = User::with('addresses')->where('role', $request->role);
+        $user = auth()->user();
+        if ($request->role != User::Contractor && $user->role == User::Contractor) {
+            $baseUsers = $baseUsers->where('created_by', $user->id);
+        }
+        $users = $baseUsers->select('id', 'name', 'role', 'email')->get();
+        return apiResponse(true, __('Data loaded successfully'), $users);
     }
 }
