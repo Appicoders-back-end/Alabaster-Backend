@@ -3,11 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ChatsController;
 use App\Http\Controllers\Api\GeneralController;
 use App\Http\Controllers\Api\Contractor\CustomerController as ContractorCustomerController;
 use App\Http\Controllers\Api\Contractor\CleanerController as ContractorCleanerController;
 use App\Http\Controllers\Api\WorkRequestController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\MembersController;
+use App\Http\Controllers\Api\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +40,7 @@ Route::get('customerLocations/{id}', [ContractorCustomerController::class, 'getL
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('customers', [ContractorCustomerController::class, 'index']);
     Route::post('customersCreate', [ContractorCustomerController::class, 'store']);
+    Route::post('updateProfile',[ContractorCustomerController::class, 'updateProfile']);
     Route::post('cleaners', [ContractorCleanerController::class, 'index']);
     Route::post('cleanersCreate', [ContractorCleanerController::class, 'store']);
     Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
@@ -49,4 +53,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('getUsersByRole', [GeneralController::class, 'getUsersByRole']);
     Route::get('checklist', [JobController::class, 'getAllChecklist']);
     Route::post('checklistCreate', [JobController::class, 'createChecklist']);
+    Route::get('getSubscriptionPackages', [SubscriptionController::class, 'getSubscriptionPackages']);
+    Route::get('getSubscriptionHistory', [SubscriptionController::class, 'getSubscriptionHistory']);
+    Route::post('contactQuery', [GeneralController::class, 'contactQuery']);
+    Route::get('chatIndex', [ChatsController::class, 'index']);
+    Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
+    //    Route::post('chatlistCheck', 'ChatsController@chatlistCheck');
+    Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
+    Route::get('pages', [GeneralController::class, 'pages']);
+    Route::get('getUsers', [MembersController::class, 'getUsers']);
+    Route::post('storeMember', [MembersController::class, 'storeMember']);
+    Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
 });

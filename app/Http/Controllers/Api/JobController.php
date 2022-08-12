@@ -115,7 +115,7 @@ class JobController extends Controller
      */
     public function getAllChecklist(Request $request)
     {
-        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->paginate(10);
+        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->paginate(1);
         $checklist = ChecklistResource::collection($checklist)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $checklist);
     }

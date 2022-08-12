@@ -83,4 +83,39 @@ class CustomerController extends Controller
         $locations = AddressesResource::collection($locations);
         return apiResponse(true, __('Data loaded successfully'), $locations);
     }
+
+
+    public function updateProfile(Request $request){
+
+        try{
+            // dd($request->all());
+            $data = $request->except(['profile_image']);
+            // dd($data);
+            if ($request->hasFile('profile_image')) {
+                $file               =   $request->file('profile_image');
+                $fileName = time() . '.' . $request->file('profile_image')->getClientOriginalExtension();
+                $featured_path      =   '../public/storage/uploads';
+                $file->move($featured_path, $fileName);
+                $data['profile_image']   =   $fileName;
+            }
+            User::where('id', $request->user()->id)->update($data);
+            // dd($user);
+            // var_dump($data);die();
+            if (isset($request->addresses) && count($request->addresses) > 0) {
+                foreach ($request->addresses as $address) {
+                    $newAddress = UserAddress::where('id', $address->id)->first();
+                    $newAddress->street = $address['street'];
+                    $newAddress->state = $address['state'];
+                    $newAddress->zipcode = $address['zipcode'];
+                    $newAddress->save();
+                }
+            }
+
+            return apiResponse(true, 'Profile has been updated successfully', $data);
+        }
+
+        catch(Exception $e){
+            return apiResponse(false, $e->getMessage());
+        }
+    }
 }
