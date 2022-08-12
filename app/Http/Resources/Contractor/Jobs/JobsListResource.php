@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Contractor\Jobs;
 
 use App\Http\Resources\Contractor\Customers\AddressesResource;
+use App\Http\Resources\TaskInventoryResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobsListResource extends JsonResource
@@ -30,6 +31,7 @@ class JobsListResource extends JsonResource
             'urgency' => $this->urgency,
             'details' => $this->details,
             'status' => $this->status,
+            'inventories' => TaskInventoryResource::collection($this->inventories)
         ];
     }
 }

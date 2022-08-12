@@ -49,4 +49,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('getUsersByRole', [GeneralController::class, 'getUsersByRole']);
     Route::get('checklist', [JobController::class, 'getAllChecklist']);
     Route::post('checklistCreate', [JobController::class, 'createChecklist']);
+    Route::get('sendCheckList/{id}', [JobController::class, 'sendCheckList']);
 });
