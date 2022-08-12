@@ -33,6 +33,7 @@ class WorkRequestList extends JsonResource
             'store_id' => $this->store ? $this->store->id : null,
             'store_name' => $this->store ? $this->store->name : null,
             'status' => $this->status,
+            'inventories' => $this->inventory
         ];
     }
 }
