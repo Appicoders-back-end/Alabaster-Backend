@@ -198,4 +198,52 @@ class JobController extends Controller
         $checklist->save();
         return apiResponse(true, __('Checklist has been sent successfully'));
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getJobsByCleanerId(Request $request)
+    {
+        $baseJobs = Task::whereIn('status', [Task::STATUS_PENDING, Task::STATUS_WORKING]);
+        if (isset($request->cleaner_id) && $request->cleaner_id != null) {
+            $baseJobs = $baseJobs->where('cleaner_id', $request->cleaner_id);
+        }
+
+        if (isset($request->pagination) && $request->pagination == strtolower('no')) {
+            $jobs = $baseJobs->get();
+            $jobs = JobsDetailResource::collection($jobs);
+        } else {
+            $jobs = $baseJobs->paginate(10);
+            $jobs = JobsDetailResource::collection($jobs)->response()->getData(true);
+        }
+
+        return apiResponse(true, __('Record loaded successfully'), $jobs);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function assignJobToCleaner(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required|numeric',
+            'cleaner_id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $job = Task::find($request->job_id);
+        if (!$job) {
+            return apiResponse(false, __('Job not found'));
+        }
+        $job->cleaner_id = $request->cleaner_id;
+        $job->save();
+
+        return apiResponse(true, __('Job has been assigned successfully'));
+    }
 }
