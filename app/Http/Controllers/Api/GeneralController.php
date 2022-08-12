@@ -7,7 +7,9 @@ use App\Http\Resources\Categories\CategoriesListResource;
 use App\Http\Resources\InventoryResource;
 use App\Http\Resources\StoreResource;
 use App\Models\Category;
+use App\Models\ContactUs;
 use App\Models\Inventory;
+use App\Models\Page;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -81,5 +83,34 @@ class GeneralController extends Controller
         }
         $users = $baseUsers->select('id', 'name', 'role', 'email')->get();
         return apiResponse(true, __('Data loaded successfully'), $users);
+    }
+
+
+    public function contactQuery(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'title'         =>      'required',
+            'message'       =>      'required',
+        ]);
+        if($validator->fails())
+        return apiResponse(false, implode("\n", $validator->errors()->all()));
+
+        $data['user_id']        =       $request->user()->id;
+        $data['title']          =       $request->title;
+        $data['message']        =       $request->message;
+
+        $contact = ContactUs::create($data);
+        if($contact){
+            return apiResponse(true, 'Contact Query has been sent successfully', $contact);
+        }
+        else{
+            return apiresponse(false, 'Some error occurred, please try again');
+        }
+    }
+
+
+    public function pages(){
+        $page = Page::get();
+        return apiResponse(true, 'Pages content found', $page);
     }
 }
