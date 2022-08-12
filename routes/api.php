@@ -64,4 +64,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('getUsers', [MembersController::class, 'getUsers']);
     Route::post('storeMember', [MembersController::class, 'storeMember']);
     Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
+    Route::get('sendChecklist/{id}', [JobController::class, 'sendCheckList']);
+    Route::post('getJobsByCleanerId', [JobController::class, 'getJobsByCleanerId']);
+    Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
+
 });

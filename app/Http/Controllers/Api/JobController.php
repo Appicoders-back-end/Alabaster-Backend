@@ -8,6 +8,7 @@ use App\Http\Resources\Contractor\Jobs\JobsDetailResource;
 use App\Http\Resources\Contractor\Jobs\JobsListResource;
 use App\Http\Resources\WorkOrder\WorkOrderDetail;
 use App\Models\Checklist;
+use App\Models\TaskInventory;
 use App\Models\User;
 use App\Models\WorkRequest;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $jobs = Task::where('contractor_id', auth()->user()->id)->paginate(1);
+        $jobs = Task::where('contractor_id', auth()->user()->id)->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
@@ -76,6 +77,16 @@ class JobController extends Controller
             $job->shift = $request->shift;
             $job->cleaner_id = $request->cleaner_id;
             $job->save();
+
+            if ($request->inventories != null && count($request->inventories) > 0) {
+                foreach ($request->inventories as $inventory) {
+                    $newInventory = new TaskInventory();
+                    $newInventory->task_id = $job->id;
+                    $newInventory->inventory_id = $inventory['inventory_id'];
+                    $newInventory->quantity = $inventory['quantity'];
+                    $newInventory->save();
+                }
+            }
 
             if (isset($request->work_request_id) && $request->work_request_id != null) {
                 $workRequest = WorkRequest::find($request->work_request_id);
@@ -171,5 +182,68 @@ class JobController extends Controller
         } catch (Exception $exception){
             return apiResponse(false, $exception->getMessage());
         }
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendCheckList($id)
+    {
+        $checklist = Checklist::find($id);
+        if (!$checklist) {
+            return apiResponse(false, __('Checklist not found'));
+        }
+        $checklist->status = Checklist::STATUS_ASSIGNED;
+        $checklist->save();
+        return apiResponse(true, __('Checklist has been sent successfully'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getJobsByCleanerId(Request $request)
+    {
+        $baseJobs = Task::whereIn('status', [Task::STATUS_PENDING, Task::STATUS_WORKING]);
+        if (isset($request->cleaner_id) && $request->cleaner_id != null) {
+            $baseJobs = $baseJobs->where('cleaner_id', $request->cleaner_id);
+        }
+
+        if (isset($request->pagination) && $request->pagination == strtolower('no')) {
+            $jobs = $baseJobs->get();
+            $jobs = JobsDetailResource::collection($jobs);
+        } else {
+            $jobs = $baseJobs->paginate(10);
+            $jobs = JobsDetailResource::collection($jobs)->response()->getData(true);
+        }
+
+        return apiResponse(true, __('Record loaded successfully'), $jobs);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function assignJobToCleaner(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required|numeric',
+            'cleaner_id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $job = Task::find($request->job_id);
+        if (!$job) {
+            return apiResponse(false, __('Job not found'));
+        }
+        $job->cleaner_id = $request->cleaner_id;
+        $job->save();
+
+        return apiResponse(true, __('Job has been assigned successfully'));
     }
 }

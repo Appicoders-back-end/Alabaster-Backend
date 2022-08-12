@@ -63,6 +63,9 @@ class WorkRequestController extends Controller
             $task->status = WorkRequest::STATUS_REQUESTED;
             $task->details = $request->details;
             $task->urgency = $request->urgency;
+            if ($request->inventories != null && count($request->inventories) > 0) {
+                $task->inventories = json_encode($request->inventories);
+            }
             $task->save();
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());

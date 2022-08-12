@@ -36,4 +36,22 @@ class WorkRequest extends Model
     {
         return $this->belongsTo(Store::class, 'store_id', 'id');
     }
+
+    public function getInventoryAttribute()
+    {
+        if ($this->inventories == null) {
+            return null;
+        }
+
+        $inventories = collect(json_decode($this->inventories));
+
+        $inventoryArray = [];
+        foreach ($inventories as $key => $inv) {
+            $inventory = Inventory::find($inv->inventory_id);
+            $inventoryArray[$key]['id'] = $inventory->id;
+            $inventoryArray[$key]['name'] = $inventory->name;
+            $inventoryArray[$key]['quantity'] = $inv->quantity;
+        }
+        return $inventoryArray;
+    }
 }
