@@ -67,5 +67,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('sendChecklist/{id}', [JobController::class, 'sendCheckList']);
     Route::post('getJobsByCleanerId', [JobController::class, 'getJobsByCleanerId']);
     Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
-
+    Route::post('startJob', [JobController::class, 'startJob']);
+    Route::post('completeJob', [JobController::class, 'completeJob']);
 });
