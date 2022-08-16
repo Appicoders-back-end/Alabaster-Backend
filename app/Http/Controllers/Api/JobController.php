@@ -221,7 +221,6 @@ class JobController extends Controller
         return apiResponse(true, __('Record loaded successfully'), $jobs);
     }
 
-
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -245,5 +244,94 @@ class JobController extends Controller
         $job->save();
 
         return apiResponse(true, __('Job has been assigned successfully'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function startJob(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required|numeric',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'before_attachment' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $job = Task::find($request->job_id);
+        try {
+            if ($request->file('before_attachment')) {
+                $file = $request->file('before_attachment');
+                $file_name = time() . "_" . $file->getClientOriginalName();
+                $filename = pathinfo($file_name, PATHINFO_FILENAME);
+                $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+                $file_name = str_replace(" ", "_", $filename);
+                $file_name = str_replace(".", "_", $file_name) . "." . $extension;
+                $path = public_path() . "/storage/uploads/";
+                $file->move($path, $file_name);
+
+                $job->before = $file_name;
+            }
+            $job->time_in_latitude = $request->latitude;
+            $job->time_in_longitude = $request->longitude;
+            $job->time_in = Carbon::now();
+            $job->status = Task::STATUS_WORKING;
+            $job->save();
+        } catch (Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
+
+        return apiResponse(true, __('Job started successfully'), $job);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function completeJob(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required|numeric',
+            'after_attachment' => 'required',
+            'rating' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $job = Task::find($request->job_id);
+        try {
+
+            if ($request->file('after_attachment')) {
+                $job->after = saveFile($request->file('after_attachment'));
+            }
+
+            if ($request->file('before_lunch_attachment')) {
+                $job->before_lunch_attachment = saveFile($request->file('before_lunch_attachment'));
+            }
+
+            if ($request->file('after_lunch_attachment')) {
+                $job->after_lunch_attachment = saveFile($request->file('after_lunch_attachment'));
+            }
+
+            $job->time_out = Carbon::now();
+            $job->lunch_start_time = $request->lunch_start_time;
+            $job->lunch_end_time = $request->lunch_end_time;
+            $job->status = Task::STATUS_COMPLETED;
+            $job->rating = $request->rating;
+            $job->note = $request->note;
+            $job->report_problem = $request->report_problem;
+            $job->save();
+        } catch (Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
+
+        return apiResponse(true, __('Job ended successfully'), $job);
     }
 }

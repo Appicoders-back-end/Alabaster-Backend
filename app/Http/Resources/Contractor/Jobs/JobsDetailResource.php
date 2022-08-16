@@ -10,7 +10,7 @@ class JobsDetailResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -20,6 +20,12 @@ class JobsDetailResource extends JsonResource
             'date' => $this->date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
+            'time_in' => $this->time_in,
+            'time_out' => $this->time_out,
+            'before' => $this->time_in,
+            'after' => $this->time_out,
+            'break_in' => $this->break_in,
+            'break_out' => $this->break_out,
             'customer_id' => $this->customer ? $this->customer->id : null,
             'customer_name' => $this->customer ? $this->customer->name : null,
             'customer_image' => $this->customer ? $this->customer->profile_image : null,
@@ -31,6 +37,13 @@ class JobsDetailResource extends JsonResource
             'urgency' => $this->urgency,
             'details' => $this->details,
             'status' => $this->status,
+            'note' => $this->note,
+            'report_problem' => $this->report_problem,
+            'shift' => $this->shift,
+            'lunch_start_time' => $this->lunch_start_time,
+            'lunch_end_time' => $this->lunch_end_time,
+            'before_lunch' => $this->before_lunch,
+            'after_lunch' => $this->after_lunch,
         ];
     }
 }

@@ -51,3 +51,19 @@ if (!function_exists('SendNotification')) {
         }
     }
 }
+
+if (!function_exists('saveImage')) {
+
+    function saveFile($file)
+    {
+        $file_name = time() . "_" . $file->getClientOriginalName();
+        $filename = pathinfo($file_name, PATHINFO_FILENAME);
+        $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+        $file_name = str_replace(" ", "_", $filename);
+        $file_name = str_replace(".", "_", $file_name) . "." . $extension;
+        $path = public_path() . "/storage/uploads/";
+        $file->move($path, $file_name);
+
+        return $file_name;
+    }
+}
