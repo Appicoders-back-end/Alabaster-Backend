@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
-            $table->string('stripe_customer_id')->nullable();
-            $table->rememberToken();
+            $table->foreignId('user_id');
+            $table->string('card_brand')->nullable();
+            $table->text('stripe_source_id')->nullable();
+            $table->string('card_end_number')->nullable();
+            $table->boolean('default_card')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('payment_methods');
     }
 };

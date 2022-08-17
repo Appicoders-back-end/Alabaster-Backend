@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\Contractor\CleanerController as ContractorCleanerCo
 use App\Http\Controllers\Api\WorkRequestController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\MembersController;
+use App\Http\Controllers\Api\NotificationsController;
+use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\SubscriptionController;
 
 /*
@@ -67,6 +69,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('sendChecklist/{id}', [JobController::class, 'sendCheckList']);
     Route::post('getJobsByCleanerId', [JobController::class, 'getJobsByCleanerId']);
     Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
+    Route::post('updatePassword', [AuthController::class, 'updatePassword']);
+    Route::post('storeCard', [PaymentMethodController::class, 'storeCard']);
+    Route::post('updateDefaultCard/{id}', [PaymentMethodController::class, 'updateDefaultCard']);
+    Route::get('showCards', [PaymentMethodController::class, 'showMethod']);
+    Route::post('deleteCard', [PaymentMethodController::class, 'deleteCard']);
+    Route::get('getUserNotificaions', [NotificationsController::class, 'getUserNotificaions']);
+    Route::get('logout', [AuthController::class, 'logout']);
     Route::post('startJob', [JobController::class, 'startJob']);
     Route::post('completeJob', [JobController::class, 'completeJob']);
 });

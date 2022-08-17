@@ -99,7 +99,7 @@ class ChatsController extends Controller
 
         /** @var \App\Models\Chatlist $msg */
         //        $msg    =   Chatlist::with(['customer', 'provider', 'services'])->findOrFail($id);
-        $title  =   "You have a message from " . $request->user()->username;
+        $title  =   "You have a message from " . $request->user()->name;
         // $message   =   $message->message;
 
         SendNotification($message->sender_id, $title, $message);
