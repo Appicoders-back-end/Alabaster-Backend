@@ -76,4 +76,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('deleteCard', [PaymentMethodController::class, 'deleteCard']);
     Route::get('getUserNotificaions', [NotificationsController::class, 'getUserNotificaions']);
     Route::get('logout', [AuthController::class, 'logout']);
+    Route::post('startJob', [JobController::class, 'startJob']);
+    Route::post('completeJob', [JobController::class, 'completeJob']);
 });
