@@ -85,18 +85,29 @@ class CustomerController extends Controller
     }
 
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
 
-        try{
-            // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'email' => 'required|email|unique:users,email,'. $request->user()->id,
+            'contact_no' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        try {
+//             dd($request->all(), $request->user());
             $data = $request->except(['profile_image', 'street', 'state', 'zipcode', 'addresses']);
             // dd($data);
             if ($request->hasFile('profile_image')) {
-                $file               =   $request->file('profile_image');
+                $file = $request->file('profile_image');
                 $fileName = time() . '.' . $request->file('profile_image')->getClientOriginalExtension();
-                $featured_path      =   '../public/storage/uploads';
+                $featured_path = '../public/storage/uploads';
                 $file->move($featured_path, $fileName);
-                $data['profile_image']   =   $fileName;
+                $data['profile_image'] = $fileName;
             }
             User::where('id', $request->user()->id)->update($data);
             // dd($user);
@@ -114,9 +125,7 @@ class CustomerController extends Controller
             }
 
             return apiResponse(true, 'Profile has been updated successfully', $data);
-        }
-
-        catch(Exception $e){
+        } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
     }
