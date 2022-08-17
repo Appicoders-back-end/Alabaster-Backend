@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Stripe\StripeClient;
 
 class AuthController extends Controller
 {
@@ -32,11 +33,21 @@ class AuthController extends Controller
         }
 
         try {
+
+            $stripe = new StripeClient(env("STRIPE_SECRET_KEY"));
+            $stripeCustomer = $stripe->customers->create([
+
+                'email' => $request->email,
+                'name' => $request->username,
+            ]);
+
             $user = new user();
+            $user['stripe_customer_id'] = $stripeCustomer->id;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->role = User::Contractor;
+
             if (!$user->save()) {
                 return apiResponse(false, __('Something went wrong'));
             }
@@ -78,10 +89,14 @@ class AuthController extends Controller
             return apiResponse(false, __("Invalid Credentials"));
         }
 
-        $user = Auth::user();
+        $user = User::findOrFail(auth()->user()->id);
+        $user->is_online = '1';
+        $user->device_id = $request->device_id;
+        $user->save();
         $user->token = $user->createToken('MyAuthToken')->accessToken;
         $user->addresses;
 
+        broadcast(new \App\Events\OnlineStatus($user))->toOthers();
         return apiResponse(true, __('Logged in successfully'), $user);
     }
 
@@ -168,5 +183,41 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
+    }
+
+
+    public function updatePassword(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'old_password'          =>          'required_with:password|min:8',
+            'new_password'          =>          'min:8|required_with:confirm_password|same:confirm_password|different:old_password',
+        ]);
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+        try {
+            $old_password   =   Hash::check($request->old_password, Auth::User()->password);
+            if ($old_password) {
+                $data['password']       =   Hash::make($request->new_password);
+                $user = User::findOrFail(auth()->user()->id)->update($data);
+                if ($user) {
+                    return apiresponse(true, 'Password has been updated successfully', $data);
+                } else {
+                    return apiresponse(false, 'Error occurred, please try again');
+                }
+            } else {
+                return apiresponse(false, "Old password is incorrect");
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+        }
+    }
+
+    public function logout()
+    {
+        $user = request()->user();
+        User::findOrFail($user->id)->update(['device_id' => null, 'is_online' => '0']);
+        return apiresponse(true, 'You have been logged out successfully');
     }
 }

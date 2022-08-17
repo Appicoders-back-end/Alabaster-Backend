@@ -22,7 +22,7 @@ class MembersController extends Controller
 
         $data['contractor_id']      =       $request->user()->id;
         $data['member_id']          =       $request->member_id;
-        $data['relation']          =       $request->relation;
+        $data['relation']           =       $request->relation;
 
         $member = UserMember::create($data);
 
@@ -36,7 +36,7 @@ class MembersController extends Controller
     public function viewMembersList(){
         $user = request()->user();
 
-        $user = UserMember::where('contractor_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $user = UserMember::with('member')->where('contractor_id', $user->id)->orderBy('created_at', 'DESC')->get();
         return apiResponse(true, 'Subscribed Users Found', $user);
     }
 }

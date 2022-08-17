@@ -89,7 +89,7 @@ class CustomerController extends Controller
 
         try{
             // dd($request->all());
-            $data = $request->except(['profile_image']);
+            $data = $request->except(['profile_image', 'street', 'state', 'zipcode', 'addresses']);
             // dd($data);
             if ($request->hasFile('profile_image')) {
                 $file               =   $request->file('profile_image');
@@ -103,8 +103,10 @@ class CustomerController extends Controller
             // var_dump($data);die();
             if (isset($request->addresses) && count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
-                    $newAddress = UserAddress::where('id', $address->id)->first();
+// dd($address);
+                    $newAddress = isset($address['address_id']) ? UserAddress::where('id', $address['address_id'])->first() : new UserAddress();
                     $newAddress->street = $address['street'];
+                    $newAddress->user_id = $request->user()->id;
                     $newAddress->state = $address['state'];
                     $newAddress->zipcode = $address['zipcode'];
                     $newAddress->save();
