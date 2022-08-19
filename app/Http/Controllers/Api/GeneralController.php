@@ -78,7 +78,7 @@ class GeneralController extends Controller
 
         $baseUsers = User::with('addresses')->where('role', $request->role);
         $user = auth()->user();
-        if ($request->role != User::Contractor && $user->role == User::Contractor) {
+        if ($user->role == User::Contractor) {
             $baseUsers = $baseUsers->where('created_by', $user->id);
         }
         $users = $baseUsers->select('id', 'name', 'role', 'email')->get();

@@ -90,7 +90,7 @@ class CustomerController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
-            'email' => 'required|email|unique:users,email,'. $request->user()->id,
+            // 'email' => 'required|email|unique:users,email,'. $request->user()->id,
             'contact_no' => 'required|numeric'
         ]);
 
@@ -99,9 +99,13 @@ class CustomerController extends Controller
         }
 
         try {
-//             dd($request->all(), $request->user());
+
             $data = $request->except(['profile_image', 'street', 'state', 'zipcode', 'addresses']);
-            // dd($data);
+            if($request->user()->role == User::Contractor || $request->user()->role == User::Customer){
+                unset($data['working_start_time']);
+                unset($data['working_end_time']);
+                unset($data['category_id']);
+            }
             if ($request->hasFile('profile_image')) {
                 $file = $request->file('profile_image');
                 $fileName = time() . '.' . $request->file('profile_image')->getClientOriginalExtension();
@@ -114,8 +118,17 @@ class CustomerController extends Controller
             // var_dump($data);die();
             if (isset($request->addresses) && count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
-// dd($address);
-                    $newAddress = isset($address['address_id']) ? UserAddress::where('id', $address['address_id'])->first() : new UserAddress();
+                    $newAddress = null;
+                    if(isset($address['address_id'])){
+                        $newAddress =  UserAddress::where('id', $address['address_id'])->first();
+                    }
+
+                    if($newAddress == null){
+                        $newAddress = new UserAddress();
+                    }
+
+                    // $newAddress = isset($address['address_id']) ? UserAddress::where('id', $address['address_id'])->first() : new UserAddress();
+                    // dd($newAddress);
                     $newAddress->street = $address['street'];
                     $newAddress->user_id = $request->user()->id;
                     $newAddress->state = $address['state'];
@@ -123,8 +136,9 @@ class CustomerController extends Controller
                     $newAddress->save();
                 }
             }
-
-            return apiResponse(true, 'Profile has been updated successfully', $data);
+            $user = User::where('id', $request->user()->id)->first();
+            $user->addresses;
+            return apiResponse(true, 'Profile has been updated successfully', $user);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }

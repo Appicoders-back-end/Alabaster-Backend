@@ -33,9 +33,7 @@ class ChatsController extends Controller
         $user = request()->user();
         $validator = Validator::make($request->all(), [
             'user_id'       =>      'required|exists:users,id',
-            'type'          =>      'required|in:text,image,media',
-            'message'       =>      [Rule::requiredIf($request->type == "text")],
-            'media'         =>      [Rule::requiredIf($request->type == "media")]
+            'type'          =>      'required|in:text,photo,audio,video,document',
         ]);
 
         if ($validator->fails())
@@ -76,7 +74,7 @@ class ChatsController extends Controller
             $messageData['sent_to_type'] = $chatlist->from_user_type;
             $messageData['sent_to_id'] = $chatlist->from_user_id;
         }
-        if ($request->type == "media" and $request->hasFile('media')) {
+        if ($request->type == "photo" and $request->hasFile('media')) {
             $fileName = time() . '.' . $request->file('media')->getClientOriginalExtension();
             $request->file('media')->move("../public/storage/uploads", $fileName);
             $messageData['media'] = $fileName;
@@ -84,10 +82,26 @@ class ChatsController extends Controller
             $messageData['message'] = $request->message;
         }
 
-        if ($request->type == "audio" and $request->hasFile('audio')) {
+        if ($request->type == "video" and $request->hasFile('media')) {
             $fileName = time() . '.' . $request->file('media')->getClientOriginalExtension();
-            $request->file('audio')->move("../public/storage/uploads", $fileName);
-            $messageData['audio'] = $fileName;
+            $request->file('media')->move("../public/storage/uploads", $fileName);
+            $messageData['media'] = $fileName;
+        } else {
+            $messageData['message'] = $request->message;
+        }
+
+        if ($request->type == "document" and $request->hasFile('media')) {
+            $fileName = time() . '.' . $request->file('media')->getClientOriginalExtension();
+            $request->file('media')->move("../public/storage/uploads", $fileName);
+            $messageData['media'] = $fileName;
+        } else {
+            $messageData['message'] = $request->message;
+        }
+
+        if ($request->type == "audio" and $request->hasFile('media')) {
+            $fileName = time() . '.' . $request->file('media')->getClientOriginalExtension();
+            $request->file('media')->move("../public/storage/uploads", $fileName);
+            $messageData['media'] = $fileName;
         } else {
             $messageData['message'] = $request->message;
         }
