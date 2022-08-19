@@ -25,7 +25,7 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $jobs = Task::where('contractor_id', auth()->user()->id)->paginate(10);
+        $jobs = Task::where('contractor_id', auth()->user()->id)->requested()->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
@@ -126,7 +126,7 @@ class JobController extends Controller
      */
     public function getAllChecklist(Request $request)
     {
-        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->paginate(1);
+        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->paginate(10);
         $checklist = ChecklistResource::collection($checklist)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $checklist);
     }
