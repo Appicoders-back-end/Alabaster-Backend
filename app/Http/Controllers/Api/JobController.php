@@ -25,8 +25,21 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $jobs = Task::where('contractor_id', auth()->user()->id)->paginate(10);
+        $baseJobs = Task::query();
+        if (auth()->user()->role == User::Contractor) {
+            $baseJobs = $baseJobs->where('contractor_id', auth()->user()->id);
+        }
+
+        if(isset($request->status) && $request->status != null){
+            if($request->status == 'unassigned') {
+                $baseJobs = $baseJobs->whereNull('cleaner_id');
+            } else {
+                $baseJobs = $baseJobs->whereStatus($request->status);
+            }
+        }
+        $jobs = $baseJobs->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
+
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 
