@@ -30,7 +30,7 @@ return new class extends Migration
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->text('details')->nullable();
-            $table->enum('status', [Task::STATUS_PENDING, Task::STATUS_WORKING, Task::STATUS_COMPLETED])->default(Task::STATUS_PENDING)->nullable();
+            $table->enum('status', [Task::STATUS_UNASSIGNED, Task::STATUS_PENDING, Task::STATUS_WORKING, Task::STATUS_COMPLETED])->default(Task::STATUS_UNASSIGNED)->nullable();
             $table->dateTime('lunch_start_time')->nullable();
             $table->dateTime('lunch_end_time')->nullable();
             $table->string('shift')->nullable();

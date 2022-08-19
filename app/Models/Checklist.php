@@ -19,6 +19,6 @@ class Checklist extends Model
 
     public function job()
     {
-        return $this->belongsTo(Task::class, 'task_id', 'id');c
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 }
