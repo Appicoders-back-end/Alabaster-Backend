@@ -37,6 +37,7 @@ class JobController extends Controller
                 $baseJobs = $baseJobs->whereStatus($request->status);
             }
         }
+
         $jobs = $baseJobs->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
 
@@ -139,7 +140,7 @@ class JobController extends Controller
      */
     public function getAllChecklist(Request $request)
     {
-        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->paginate(1);
+        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->paginate(10);
         $checklist = ChecklistResource::collection($checklist)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $checklist);
     }
