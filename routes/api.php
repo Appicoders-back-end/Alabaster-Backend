@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('workRequestsCreate', [WorkRequestController::class, 'store']);
     Route::post('workRequestCustomers', [WorkRequestController::class, 'getWorkRequestCustomers']);
     Route::get('workRequests/{id}', [WorkRequestController::class, 'index']);
-    Route::get('jobs', [JobController::class, 'index']);
+    Route::post('jobs', [JobController::class, 'index']);
     Route::post('jobsCreate', [JobController::class, 'store']);
     Route::get('jobDetail/{id}', [JobController::class, 'show']);
     Route::post('getUsersByRole', [GeneralController::class, 'getUsersByRole']);
