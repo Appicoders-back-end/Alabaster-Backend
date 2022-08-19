@@ -26,12 +26,32 @@ class JobController extends Controller
     public function index(Request $request)
     {
         $baseJobs = Task::query();
-        if (auth()->user()->role == User::Contractor) {
-            $baseJobs = $baseJobs->where('contractor_id', auth()->user()->id);
-        }
+        $baseJobs->when(auth()->user()->id == User::Contractor, function ($query) {
+            return $query->where('contractor_id', auth()->user()->id);
+        });
 
-        if(isset($request->status) && $request->status != null){
-            if($request->status == 'unassigned') {
+        $baseJobs->when($request->contractor_id, function ($query) use ($request) {
+            return $query->where('contractor_id', $request->contractor_id);
+        });
+
+        $baseJobs->when(auth()->user()->id == User::Cleaner, function ($query) {
+            return $query->where('cleaner_id', auth()->user()->id);
+        });
+
+        $baseJobs->when($request->cleaner_id, function ($query) use ($request) {
+            return $query->where('cleaner_id', $request->cleaner_id);
+        });
+
+        $baseJobs->when(request('name'), function ($query) use ($request) {
+            return $query->whereHas('customer', function ($customerQuery) use ($request) {
+                $customerQuery->where('name', 'like', '%' . $request->name . '%');
+            });
+        });
+
+        if (isset($request->status) && $request->status != null) {
+            if ($request->status == 'unassigned') {
+                $baseJobs = $baseJobs->whereNull('cleaner_id');
+            } else if ($request->status == 'assigned') {
                 $baseJobs = $baseJobs->whereNull('cleaner_id');
             } else {
                 $baseJobs = $baseJobs->whereStatus($request->status);
@@ -83,7 +103,7 @@ class JobController extends Controller
             $job->end_time = date("Y-m-d H:i:s", strtotime($job->date . ' ' . $request->end_time));
             $job->store_id = $request->store_id;
             $job->store_address_id = $request->store_address_id;
-            $job->status = Task::STATUS_PENDING;
+            $job->status = Task::STATUS_UNASSIGNED;
             $job->details = $request->details;
             $job->urgency = $request->urgency;
             $job->lunch_start_time = date("Y-m-d H:i:s", strtotime($job->date . ' ' . $request->lunch_start_time));
@@ -255,6 +275,7 @@ class JobController extends Controller
             return apiResponse(false, __('Job not found'));
         }
         $job->cleaner_id = $request->cleaner_id;
+        $job->status = Task::STATUS_PENDING;
         $job->save();
 
         return apiResponse(true, __('Job has been assigned successfully'));
@@ -347,5 +368,22 @@ class JobController extends Controller
         }
 
         return apiResponse(true, __('Job ended successfully'), $job);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getJobLocations(Request $request)
+    {
+        $baseJobs = Task::whereNotNull('cleaner_id')->where('status', '!=', Task::STATUS_COMPLETED);
+        $baseJobs->when(request('name'), function ($query) use ($request) {
+            return $query->whereHas('cleaner', function ($cleanerQuery) use ($request) {
+                $cleanerQuery->where('name', 'like', '%' . $request->name . '%');
+            });
+        });
+
+        $jobs = $baseJobs->paginate(10);
+        return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 }
