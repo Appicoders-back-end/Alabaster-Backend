@@ -15,6 +15,9 @@ use Illuminate\Validation\Rule;
 
 class ChatsController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $user = request()->user();
@@ -30,13 +33,16 @@ class ChatsController extends Controller
         return apiresponse(true, 'Chatlist', $chatlist);
     }
 
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function sendMessage(Request $request)
     {
         $user = request()->user();
         $validator = Validator::make($request->all(), [
-            'user_id'       =>      'required|exists:users,id',
-            'type'          =>      'required|in:text,photo,audio,video,document',
+            'user_id' => 'required|exists:users,id',
+            'type' => 'required|in:text,photo,audio,video,document',
         ]);
 
         if ($validator->fails())
@@ -67,7 +73,7 @@ class ChatsController extends Controller
             'type' => $request->type,
             'sent_from_type' => 'App\Models\User',
             'sent_from_id' => $user->id,
-            'image'     =>  $request->image,
+            'image' => $request->image,
         ];
         //public_path('images')
         if ($chatlist->from_user_type == "App\Models\User" && $chatlist->from_user_id == $user->id) {
@@ -116,41 +122,44 @@ class ChatsController extends Controller
 
         /** @var \App\Models\Chatlist $msg */
         //        $msg    =   Chatlist::with(['customer', 'provider', 'services'])->findOrFail($id);
-        $title  =   "You have a message from " . $request->user()->name;
+        $title = "You have a message from " . $request->user()->name;
         // $message   =   $message->message;
 
         SendNotification($message->sender_id, $title, $message);
 
         Notification::create([
-            'send_to_type'      =>  $message->sent_to_type,
-            'reciever_id'       =>  $message->sent_to_id,
-            'sender_id'         =>  $message->sent_from_id,
-            'title'             =>  $title,
-            'message'           =>  $message->message,
-            'type'              =>  'msg',
-            'resource_type'     =>  'App\Models\Message',
-            'resource_id'       =>  $message->id,
-            'is_read'           =>  0
+            'send_to_type' => $message->sent_to_type,
+            'reciever_id' => $message->sent_to_id,
+            'sender_id' => $message->sent_from_id,
+            'title' => $title,
+            'message' => $message->message,
+            'type' => 'msg',
+            'resource_type' => 'App\Models\Message',
+            'resource_id' => $message->id,
+            'is_read' => 0
         ]);
 
         return apiresponse(true, 'Message Sent', $message);
     }
 
-
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
-        $messages = Message::where(['chatlist_id'=>$id])->orderBy('created_at', 'DESC')->simplePaginate(10);
-        if($messages)
-        {
+        $messages = Message::where(['chatlist_id' => $id])->orderBy('created_at', 'DESC')->simplePaginate(10);
+        if ($messages) {
             return apiresponse(true, 'Messages Found', $messages);
-        }
-        else
-        {
+        } else {
             return apiresponse(false, 'Messages Not Found');
         }
     }
 
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function checkSessionBeforeMessage(Request $request)
     {
         $chathead = Chatlist::where(DB::raw("(from_user_id  =  " . Auth::user()->id . " AND to_user_id  = $request->id) or (from_user_id  = $request->id AND to_user_id  = " . Auth::user()->id . ")"), '>', DB::raw('0'))
@@ -176,8 +185,7 @@ class ChatsController extends Controller
             $chathead = Chatlist::where(DB::raw("(from_user_id  =  " . Auth::user()->id . " AND to_user_id  = $request->id) or (from_user_id  = $request->id AND to_user_id  = " . Auth::user()->id . ")"), '>', DB::raw('0'))
                 ->first();
         }
-        $chathead->user =    User::find($request->id);
+        $chathead->user = User::find($request->id);
         return apiresponse(true, 'chathead', $chathead);
     }
-
 }
