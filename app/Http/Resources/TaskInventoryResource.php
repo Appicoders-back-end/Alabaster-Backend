@@ -15,9 +15,11 @@ class TaskInventoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->id, //id from task_inventories table
             'name' => $this->name,
+            'inventory_id' => $this->pivot->inventory_id, //id from inventories table
             'quantity' => $this->pivot->quantity,
+            'quantity_used' => $this->pivot->quantity_used == null ? 0 : $this->pivot->quantity_used,
         ];
     }
 }

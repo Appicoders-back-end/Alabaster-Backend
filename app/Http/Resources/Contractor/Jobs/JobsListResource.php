@@ -23,15 +23,20 @@ class JobsListResource extends JsonResource
             'customer_image' => $this->customer ? $this->customer->profile_image : null,
             'customer_email' => $this->customer ? $this->customer->email : null,
             'customer_contact' => $this->customer ? $this->customer->contact_no : null,
+            'cleaner_id' => $this->cleaner ? $this->cleaner->id : null,
+            'cleaner_name' => $this->cleaner ? $this->cleaner->name : null,
+            'cleaner_image' => $this->cleaner ? $this->cleaner->profile_image : null,
             'service_type' => $this->category ? $this->category->name : null,
             'location' => $this->location ? new AddressesResource($this->location) : null,
             'date' => $this->date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
+            'estimated_working_hours' => "2 hours",
+            'working_hours' => "3 days 45 minutes",
             'urgency' => $this->urgency,
             'details' => $this->details,
             'status' => $this->status,
-            'inventories' => TaskInventoryResource::collection($this->inventories)
+            'inventories' => TaskInventoryResource::collection($this->inventories),
         ];
     }
 }

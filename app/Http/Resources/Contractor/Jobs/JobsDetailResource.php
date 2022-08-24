@@ -2,7 +2,10 @@
 
 namespace App\Http\Resources\Contractor\Jobs;
 
+use App\Http\Resources\Contractor\Checklist\ChecklistResource;
 use App\Http\Resources\Contractor\Customers\AddressesResource;
+use App\Http\Resources\TaskInventoryResource;
+use App\Models\Checklist;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobsDetailResource extends JsonResource
@@ -22,8 +25,8 @@ class JobsDetailResource extends JsonResource
             'end_time' => $this->end_time,
             'time_in' => $this->time_in,
             'time_out' => $this->time_out,
-            'before' => $this->time_in,
-            'after' => $this->time_out,
+            'before' => $this->before,
+            'after' => $this->after,
             'break_in' => $this->break_in,
             'break_out' => $this->break_out,
             'customer_id' => $this->customer ? $this->customer->id : null,
@@ -44,6 +47,8 @@ class JobsDetailResource extends JsonResource
             'lunch_end_time' => $this->lunch_end_time,
             'before_lunch' => $this->before_lunch,
             'after_lunch' => $this->after_lunch,
+            'inventories' => TaskInventoryResource::collection($this->inventories),
+            'checklist' => ChecklistResource::collection(Checklist::with('items')->whereNull('parent_id')->where('task_id', $this->id)->get()),
         ];
     }
 }

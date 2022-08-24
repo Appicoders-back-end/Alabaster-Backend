@@ -61,6 +61,6 @@ class Task extends Model
 
     public function inventories()
     {
-        return $this->belongsToMany(Inventory::class, 'task_inventories', 'task_id', 'inventory_id')->withPivot('quantity');
+        return $this->belongsToMany(Inventory::class, 'task_inventories', 'task_id', 'inventory_id')->withPivot('inventory_id', 'quantity', 'quantity_used');
     }
 }

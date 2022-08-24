@@ -26,39 +26,39 @@ class JobController extends Controller
     public function index(Request $request)
     {
         $baseJobs = Task::query();
-        $baseJobs->when(auth()->user()->id == User::Contractor, function ($query) {
+        $baseJobs->when(auth()->user()->role == User::Contractor, function ($query) {
             return $query->where('contractor_id', auth()->user()->id);
         });
-
         $baseJobs->when($request->contractor_id, function ($query) use ($request) {
             return $query->where('contractor_id', $request->contractor_id);
         });
-
-        $baseJobs->when(auth()->user()->id == User::Cleaner, function ($query) {
+        $baseJobs->when(auth()->user()->role == User::Cleaner, function ($query) {
             return $query->where('cleaner_id', auth()->user()->id);
         });
-
         $baseJobs->when($request->cleaner_id, function ($query) use ($request) {
             return $query->where('cleaner_id', $request->cleaner_id);
         });
-
         $baseJobs->when(request('name'), function ($query) use ($request) {
             return $query->whereHas('customer', function ($customerQuery) use ($request) {
                 $customerQuery->where('name', 'like', '%' . $request->name . '%');
+            })->orWhereHas('cleaner', function ($cleanerQuery) use ($request) {
+                $cleanerQuery->where('name', 'like', '%' . $request->name . '%');
             });
         });
-
         if (isset($request->status) && $request->status != null) {
-            if ($request->status == 'unassigned') {
-                $baseJobs = $baseJobs->whereNull('cleaner_id');
-            } else if ($request->status == 'assigned') {
-                $baseJobs = $baseJobs->whereNull('cleaner_id');
+            $request->status = strtolower($request->status);
+            if ($request->status == 'upcoming') {
+                $baseJobs = $baseJobs->where('start_time', '>', Carbon::now());
+            } else if ($request->status == 'active') {
+                $baseJobs = $baseJobs->whereIn('status', [Task::STATUS_PENDING, Task::STATUS_WORKING]);
             } else {
                 $baseJobs = $baseJobs->whereStatus($request->status);
             }
         }
-
-        $jobs = $baseJobs->paginate(10);
+        if (isset($request->date) && $request->date != null) {
+            $baseJobs = $baseJobs->whereDate('start_time', $request->date)->orWhereDate('time_in', $request->date);
+        }
+        $jobs = $baseJobs->paginate(2);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $jobs);
@@ -244,11 +244,22 @@ class JobController extends Controller
             $baseJobs = $baseJobs->where('cleaner_id', $request->cleaner_id);
         }
 
+        if (isset($request->status) && $request->status != null) {
+            $request->status = strtolower($request->status);
+            if ($request->status == 'upcoming') {
+                $baseJobs = $baseJobs->where('start_time', '>', Carbon::now());
+            } else if ($request->status == 'active') {
+                $baseJobs = $baseJobs->whereIn('status', [Task::STATUS_PENDING, Task::STATUS_WORKING]);
+            } else {
+                $baseJobs = $baseJobs->whereStatus($request->status);
+            }
+        }
+
         if (isset($request->pagination) && $request->pagination == strtolower('no')) {
             $jobs = $baseJobs->get();
             $jobs = JobsDetailResource::collection($jobs);
         } else {
-            $jobs = $baseJobs->paginate(10);
+            $jobs = $baseJobs->paginate(1);
             $jobs = JobsDetailResource::collection($jobs)->response()->getData(true);
         }
 
@@ -328,7 +339,7 @@ class JobController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function completeJob(Request $request)
+    public function jobComplete(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'job_id' => 'required|numeric',
@@ -374,16 +385,22 @@ class JobController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getJobLocations(Request $request)
+    public function getActiveLocations(Request $request)
     {
-        $baseJobs = Task::whereNotNull('cleaner_id')->where('status', '!=', Task::STATUS_COMPLETED);
+        $baseJobs = Task::whereNotNull('cleaner_id')->where('status', '!=', Task::STATUS_COMPLETED)->where('contractor_id', auth()->user()->id);
         $baseJobs->when(request('name'), function ($query) use ($request) {
             return $query->whereHas('cleaner', function ($cleanerQuery) use ($request) {
                 $cleanerQuery->where('name', 'like', '%' . $request->name . '%');
             });
         });
 
+        $baseJobs->when(request('status'), function ($query) use ($request) {
+            return $query->whereStatus($request);
+        });
+
         $jobs = $baseJobs->paginate(10);
+        $jobs = JobsListResource::collection($jobs)->response()->getData(true);
+
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 }
