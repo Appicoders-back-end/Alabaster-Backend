@@ -60,7 +60,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('contactQuery', [GeneralController::class, 'contactQuery']);
     Route::get('chatIndex', [ChatsController::class, 'index']);
     Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
-    //    Route::post('chatlistCheck', 'ChatsController@chatlistCheck');
+    Route::post('chatlistCheck', 'ChatsController@checkSessionBeforeMessage');
     Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
     Route::get('pages', [GeneralController::class, 'pages']);
     Route::get('getUsers', [MembersController::class, 'getUsers']);
