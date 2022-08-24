@@ -40,23 +40,46 @@ Route::get('inventories', [GeneralController::class, 'getInventories']);
 Route::get('customerLocations/{id}', [ContractorCustomerController::class, 'getLocations']);
 
 Route::group(['middleware' => 'auth:api'], function () {
+    /*auth*/
+    Route::post('updateProfile',[ContractorCustomerController::class, 'updateProfile']);
+    Route::post('updatePassword', [AuthController::class, 'updatePassword']);
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('getUsers', [MembersController::class, 'getUsers']);
+    Route::post('storeMember', [MembersController::class, 'storeMember']);
+    Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
+
+    /*notifications*/
+    Route::get('getUserNotificaions', [NotificationsController::class, 'getUserNotificaions']);
+
+    /*payments*/
+    Route::post('storeCard', [PaymentMethodController::class, 'storeCard']);
+    Route::post('updateDefaultCard/{id}', [PaymentMethodController::class, 'updateDefaultCard']);
+    Route::get('showCards', [PaymentMethodController::class, 'showMethod']);
+    Route::post('deleteCard', [PaymentMethodController::class, 'deleteCard']);
+    Route::post('subscribe', [SubscriptionController::class, 'subscribe']);
+    Route::get('getSubscriptionPackages', [SubscriptionController::class, 'getSubscriptionPackages']);
+    Route::get('getSubscriptionHistory', [SubscriptionController::class, 'getSubscriptionHistory']);
+
+    /*chats*/
+    Route::get('chatIndex', [ChatsController::class, 'index']);
+    Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
+    //    Route::post('chatlistCheck', 'ChatsController@chatlistCheck');
+    Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
+
     Route::post('customers', [ContractorCustomerController::class, 'index']);
     Route::post('customersCreate', [ContractorCustomerController::class, 'store']);
-    Route::post('updateProfile',[ContractorCustomerController::class, 'updateProfile']);
     Route::post('cleaners', [ContractorCleanerController::class, 'index']);
     Route::post('cleanersCreate', [ContractorCleanerController::class, 'store']);
     Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
     Route::post('workRequestsCreate', [WorkRequestController::class, 'store']);
     Route::post('workRequestCustomers', [WorkRequestController::class, 'getWorkRequestCustomers']);
     Route::get('workRequests/{id}', [WorkRequestController::class, 'index']);
-    Route::get('jobs', [JobController::class, 'index']);
+    Route::post('jobs', [JobController::class, 'index']);
     Route::post('jobsCreate', [JobController::class, 'store']);
     Route::get('jobDetail/{id}', [JobController::class, 'show']);
     Route::post('getUsersByRole', [GeneralController::class, 'getUsersByRole']);
     Route::get('checklist', [JobController::class, 'getAllChecklist']);
     Route::post('checklistCreate', [JobController::class, 'createChecklist']);
-    Route::get('getSubscriptionPackages', [SubscriptionController::class, 'getSubscriptionPackages']);
-    Route::get('getSubscriptionHistory', [SubscriptionController::class, 'getSubscriptionHistory']);
     Route::post('contactQuery', [GeneralController::class, 'contactQuery']);
     Route::get('chatIndex', [ChatsController::class, 'index']);
     Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
@@ -69,14 +92,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('sendChecklist/{id}', [JobController::class, 'sendCheckList']);
     Route::post('getJobsByCleanerId', [JobController::class, 'getJobsByCleanerId']);
     Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
-    Route::post('updatePassword', [AuthController::class, 'updatePassword']);
-    Route::post('storeCard', [PaymentMethodController::class, 'storeCard']);
-    Route::post('updateDefaultCard/{id}', [PaymentMethodController::class, 'updateDefaultCard']);
-    Route::get('showCards', [PaymentMethodController::class, 'showMethod']);
-    Route::post('deleteCard', [PaymentMethodController::class, 'deleteCard']);
-    Route::get('getUserNotificaions', [NotificationsController::class, 'getUserNotificaions']);
-    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('pages', [GeneralController::class, 'pages']);
     Route::post('startJob', [JobController::class, 'startJob']);
     Route::post('completeJob', [JobController::class, 'completeJob']);
-    Route::post('subscribe', [SubscriptionController::class, 'subscribe']);
+    Route::post('jobLocations', [JobController::class, 'getJobLocations']);
 });

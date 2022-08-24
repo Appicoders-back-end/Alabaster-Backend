@@ -9,19 +9,10 @@ class Task extends Model
 {
     use HasFactory;
 
+    public const STATUS_UNASSIGNED = 'unassigned'; //unassign this job to any cleaner
     public const STATUS_PENDING = 'pending'; //assigned to cleaner but not started yet
     public const STATUS_WORKING  = 'working'; //started by cleaner
     public const STATUS_COMPLETED  = 'completed'; //completed
-
-    public function scopeRequested($query)
-    {
-        return $query->whereStatus(WorkRequest::STATUS_REQUESTED);
-    }
-
-    public function scopeConfirmed($query)
-    {
-        return $query->whereStatus(WorkRequest::STATUS_CONFIRMED);
-    }
 
     public function scopePending($query)
     {
