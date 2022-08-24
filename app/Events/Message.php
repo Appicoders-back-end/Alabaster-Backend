@@ -17,6 +17,7 @@ class Message implements ShouldBroadcast
     private $user_type = "";
     private $user = null;
     public $message = null;
+    public $chatlist = null;
 
      /**
      * Message constructor.
@@ -25,10 +26,10 @@ class Message implements ShouldBroadcast
      * @param \App\Models\Message $message
      */
 
-    public function __construct($user_type, $user, $message)
+    public function __construct($user_type, $chatlist, $message)
     {
         $this->user_type = $user_type;
-        $this->user = $user;
+        $this->chatlist = $chatlist;
         $this->message = $message;
     }
 
@@ -43,6 +44,6 @@ class Message implements ShouldBroadcast
         if ($this->user_type == "App\Models\User") {
             $user_typee = 'user';
         }
-        return new Channel($user_typee . '.' . $this->user->id);
+        return new Channel($user_typee . '.' . $this->chatlist);
     }
 }

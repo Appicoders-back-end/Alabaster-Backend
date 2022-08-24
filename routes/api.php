@@ -82,6 +82,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('checklist', [JobController::class, 'getAllChecklist']);
     Route::post('checklistCreate', [JobController::class, 'createChecklist']);
     Route::post('contactQuery', [GeneralController::class, 'contactQuery']);
+    Route::get('chatIndex', [ChatsController::class, 'index']);
+    Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
+    Route::post('chatlistCheck', 'ChatsController@checkSessionBeforeMessage');
+    Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
+    Route::get('pages', [GeneralController::class, 'pages']);
+    Route::get('getUsers', [MembersController::class, 'getUsers']);
+    Route::post('storeMember', [MembersController::class, 'storeMember']);
+    Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
     Route::get('sendChecklist/{id}', [JobController::class, 'sendCheckList']);
     Route::post('getJobsByCleanerId', [JobController::class, 'getJobsByCleanerId']);
     Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
