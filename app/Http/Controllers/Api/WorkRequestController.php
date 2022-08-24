@@ -81,7 +81,11 @@ class WorkRequestController extends Controller
     public function getWorkRequestCustomers(Request $request)
     {
         $workRequestsUserIds = WorkRequest::where('contractor_id', auth()->user()->id)->pluck('customer_id')->toArray();
-        $customers = User::whereIn('id', $workRequestsUserIds)->paginate(10);
+        $baseCustomers = User::whereIn('id', $workRequestsUserIds);
+//        $baseCustomers->when(request('name'), function ($query) use ($request) {
+//            return $query->where('name', $request->name);
+//        });
+        $customers = $baseCustomers->paginate(10);
         $customers = CustomersListResource::collection($customers);
 
         return apiResponse(true, __('Data loaded successfully'), $customers);

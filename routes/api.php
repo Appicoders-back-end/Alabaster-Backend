@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\MembersController;
 use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\SubscriptionController;
+use App\Http\Controllers\Api\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +87,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
     Route::get('pages', [GeneralController::class, 'pages']);
     Route::post('startJob', [JobController::class, 'startJob']);
-    Route::post('completeJob', [JobController::class, 'completeJob']);
-    Route::post('jobLocations', [JobController::class, 'getJobLocations']);
+    Route::post('jobComplete', [JobController::class, 'jobComplete']);
+    Route::post('getActiveLocations', [JobController::class, 'getActiveLocations']);
+    Route::get('contractorDashboard', [DashboardController::class, 'getContractorStats']);
+    Route::get('cleanerDashboard', [DashboardController::class, 'getCleanerStats']);
+    Route::get('customerDashboard', [DashboardController::class, 'getCustomerStats']);
 });
