@@ -159,14 +159,18 @@ class ChatsController extends Controller
 
             $chathead = Chatlist::create([
                 "from_user_id" => Auth::user()->id,
-                "to_user_id" => $request->id
+                "to_user_id" => $request->id,
+                "from_user_type" => "App\Models\User",
+                "to_user_type" => "App\Models\User",
             ]);
+
         } else {
 
             $chathead = Chatlist::where('id', $chathead->id)->update([
                 "from_user_id" => Auth::user()->id,
                 "to_user_id" => $request->id,
-
+                "from_user_type" => "App\Models\User",
+                "to_user_type" => "App\Models\User",
             ]);
 
             $chathead = Chatlist::where(DB::raw("(from_user_id  =  " . Auth::user()->id . " AND to_user_id  = $request->id) or (from_user_id  = $request->id AND to_user_id  = " . Auth::user()->id . ")"), '>', DB::raw('0'))

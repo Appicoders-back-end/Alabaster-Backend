@@ -66,6 +66,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
     //    Route::post('chatlistCheck', 'ChatsController@chatlistCheck');
     Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
+    Route::get('chatIndex', [ChatsController::class, 'index']);
+    Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
+    Route::post('chatlistCheck', [ChatsController::class, 'checkSessionBeforeMessage']);
+    Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
 
     Route::post('customers', [ContractorCustomerController::class, 'index']);
     Route::post('customersCreate', [ContractorCustomerController::class, 'store']);
@@ -82,10 +86,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('checklist', [JobController::class, 'getAllChecklist']);
     Route::post('checklistCreate', [JobController::class, 'createChecklist']);
     Route::post('contactQuery', [GeneralController::class, 'contactQuery']);
-    Route::get('chatIndex', [ChatsController::class, 'index']);
-    Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
-    Route::post('chatlistCheck', 'ChatsController@checkSessionBeforeMessage');
-    Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
     Route::get('pages', [GeneralController::class, 'pages']);
     Route::get('getUsers', [MembersController::class, 'getUsers']);
     Route::post('storeMember', [MembersController::class, 'storeMember']);
