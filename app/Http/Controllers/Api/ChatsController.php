@@ -155,7 +155,6 @@ class ChatsController extends Controller
     {
         $chathead = Chatlist::where(DB::raw("(from_user_id  =  " . Auth::user()->id . " AND to_user_id  = $request->id) or (from_user_id  = $request->id AND to_user_id  = " . Auth::user()->id . ")"), '>', DB::raw('0'))
             ->first();
-        // return Auth::user()->id;
         if (empty($chathead)) {
 
             $chathead = Chatlist::create([
