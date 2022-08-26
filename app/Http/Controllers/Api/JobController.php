@@ -358,22 +358,20 @@ class JobController extends Controller
                 $job->after = saveFile($request->file('after_attachment'));
             }
 
-            if ($request->file('before_lunch_attachment')) {
-                $job->before_lunch_attachment = saveFile($request->file('before_lunch_attachment'));
-            }
-
-            if ($request->file('after_lunch_attachment')) {
-                $job->after_lunch_attachment = saveFile($request->file('after_lunch_attachment'));
-            }
-
             $job->time_out = Carbon::now();
-            $job->lunch_start_time = $request->lunch_start_time;
-            $job->lunch_end_time = $request->lunch_end_time;
             $job->status = Task::STATUS_COMPLETED;
             $job->rating = $request->rating;
             $job->note = $request->note;
             $job->report_problem = $request->report_problem;
             $job->save();
+
+            if (count($request->checklists) > 0) {
+                foreach ($request->checklists as $checklist) {
+                    $checklist = Checklist::find($checklist);
+                    $checklist->is_completed = '1';
+                    $checklist->save();
+                }
+            }
         } catch (Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());
         }
@@ -402,5 +400,90 @@ class JobController extends Controller
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $jobs);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateInventoryStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'inventories' => 'required|array'
+        ]);
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        foreach ($request->inventories as $inventory) {
+            $taskInventory = TaskInventory::where('id', $inventory['task_inventory_id'])->first();
+            if (!$taskInventory) {
+                continue;
+            }
+            $taskInventory->quantity_used = $inventory['quantity_used'];
+            $taskInventory->save();
+        }
+
+        return apiResponse(true, __('Inventory has been updated successfully'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
+    public function breakIn(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        try {
+            $job = Task::find($request->job_id);
+            if ($request->file('before_lunch_attachment')) {
+                $job->before_lunch_attachment = saveFile($request->file('before_lunch_attachment'));
+            }
+            $job->break_in = Carbon::now();
+            $job->lunch_in_latitude = $request->latitude;
+            $job->lunch_in_longitude = $request->longitude;
+            $job->save();
+
+            return apiResponse(true, __('Lunch time started successfully'));
+        } catch (Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
+    public function breakOut(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        try {
+            $job = Task::find($request->job_id);
+            if ($request->file('after_lunch_attachment')) {
+                $job->after_lunch_attachment = saveFile($request->file('after_lunch_attachment'));
+            }
+            $job->break_out = Carbon::now();
+            $job->lunch_out_latitude = $request->latitude;
+            $job->lunch_out_longitude = $request->longitude;
+            $job->save();
+
+            return apiResponse(true, __('Lunch time out successfully'));
+        } catch (Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
     }
 }

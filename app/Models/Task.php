@@ -11,8 +11,8 @@ class Task extends Model
 
     public const STATUS_UNASSIGNED = 'unassigned'; //unassign this job to any cleaner
     public const STATUS_PENDING = 'pending'; //assigned to cleaner but not started yet
-    public const STATUS_WORKING  = 'working'; //started by cleaner
-    public const STATUS_COMPLETED  = 'completed'; //completed
+    public const STATUS_WORKING = 'working'; //started by cleaner
+    public const STATUS_COMPLETED = 'completed'; //completed
 
     public function scopePending($query)
     {
@@ -61,6 +61,6 @@ class Task extends Model
 
     public function inventories()
     {
-        return $this->belongsToMany(Inventory::class, 'task_inventories', 'task_id', 'inventory_id')->withPivot('inventory_id', 'quantity', 'quantity_used');
+        return $this->belongsToMany(Inventory::class, 'task_inventories', 'task_id', 'inventory_id')->withPivot('id', 'quantity', 'quantity_used');
     }
 }

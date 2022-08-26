@@ -95,9 +95,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
     Route::get('pages', [GeneralController::class, 'pages']);
     Route::post('startJob', [JobController::class, 'startJob']);
+    Route::post('breakIn', [JobController::class, 'breakIn']);
+    Route::post('breakOut', [JobController::class, 'breakOut']);
     Route::post('jobComplete', [JobController::class, 'jobComplete']);
     Route::post('getActiveLocations', [JobController::class, 'getActiveLocations']);
     Route::get('contractorDashboard', [DashboardController::class, 'getContractorStats']);
     Route::get('cleanerDashboard', [DashboardController::class, 'getCleanerStats']);
     Route::get('customerDashboard', [DashboardController::class, 'getCustomerStats']);
+    Route::post('updateInventoryStatus', [JobController::class, 'updateInventoryStatus']);
 });

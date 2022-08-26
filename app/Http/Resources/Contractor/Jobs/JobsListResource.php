@@ -11,13 +11,13 @@ class JobsListResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
         return [
-            'id'    => $this->id,
+            'id' => $this->id,
             'customer_id' => $this->customer ? $this->customer->id : null,
             'customer_name' => $this->customer ? $this->customer->name : null,
             'customer_image' => $this->customer ? $this->customer->profile_image : null,
@@ -33,6 +33,8 @@ class JobsListResource extends JsonResource
             'end_time' => $this->end_time,
             'estimated_working_hours' => "2 hours",
             'working_hours' => "3 days 45 minutes",
+            'time_in_latitude' => $this->time_in_latitude,
+            'time_in_longitude' => $this->time_in_longitude,
             'urgency' => $this->urgency,
             'details' => $this->details,
             'status' => $this->status,

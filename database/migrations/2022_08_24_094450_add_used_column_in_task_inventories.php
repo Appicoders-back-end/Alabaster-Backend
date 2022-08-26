@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('task_inventories', function (Blueprint $table) {
-            $table->integer('quantity_used')->after('quantity')->nullable();
+            $table->integer('quantity_used')->default('0')->after('quantity')->nullable();
         });
     }
 
