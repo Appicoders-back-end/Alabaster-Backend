@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('task_inventories', function (Blueprint $table) {
-            $table->integer('quantity_used')->default('0')->after('quantity')->nullable();
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->string('time_out_latitude', 20)->nullable();
+            $table->string('time_out_longitude', 20)->nullable();
         });
     }
 
@@ -25,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('task_inventories', function (Blueprint $table) {
-            $table->dropColumn('quantity_used');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropColumn('time_out_latitude');
+            $table->dropColumn('time_out_longitude');
         });
     }
 };

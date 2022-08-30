@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('task_inventories', function (Blueprint $table) {
-            $table->integer('quantity_used')->default('0')->after('quantity')->nullable();
+        Schema::table('checklists', function (Blueprint $table) {
+            $table->enum('remarks', ['below_standard', 'meet_standard', 'exceed_standard'])->nullable()->after('status');
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('task_inventories', function (Blueprint $table) {
-            $table->dropColumn('quantity_used');
+        Schema::table('checklists', function (Blueprint $table) {
+            $table->dropColumn('remarks');
         });
     }
 };

@@ -23,6 +23,7 @@ class ChecklistResource extends JsonResource
             'cleaner_profile_image' => $this->job->cleaner != null ? $this->job->cleaner->profile_image : null,
             'job_location' => $this->job->location,
             'status' => $this->status,
+            'remarks' => $this->remarks,
             'items' =>  ChecklistItemResource::collection($this->items),
         ];
     }

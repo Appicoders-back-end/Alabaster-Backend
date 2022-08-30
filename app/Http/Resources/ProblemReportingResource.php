@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Resources\Contractor\Jobs;
+namespace App\Http\Resources;
 
-use App\Http\Resources\Contractor\Customers\AddressesResource;
-use App\Http\Resources\TaskInventoryResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Contractor\Customers\AddressesResource;
 
-class JobsListResource extends JsonResource
+class ProblemReportingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -29,16 +28,11 @@ class JobsListResource extends JsonResource
             'service_type' => $this->category ? $this->category->name : null,
             'location' => $this->location ? new AddressesResource($this->location) : null,
             'date' => $this->date,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-            'estimated_working_hours' => "2 hours", //TODO will dynamic soon
-            'working_hours' => "3 days 45 minutes", //TODO will dynamic soon
-            'time_in_latitude' => $this->time_in_latitude,
-            'time_in_longitude' => $this->time_in_longitude,
-            'urgency' => $this->urgency,
-            'details' => $this->details,
+            'sign_in_time' => $this->time_in,
+            'sign_out_time' => $this->time_out,
+            'total_hours' => "2 hours", //TODO will dynamic soon
             'status' => $this->status,
-            'inventories' => TaskInventoryResource::collection($this->inventories),
+            'report_problem' => $this->status
         ];
     }
 }
