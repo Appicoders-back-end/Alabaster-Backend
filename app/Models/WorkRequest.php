@@ -9,8 +9,9 @@ class WorkRequest extends Model
 {
     use HasFactory;
 
-    public const STATUS_REQUESTED = 'requested'; //requested by customer but not reviewed and created by contractor
-    public const STATUS_CONFIRMED = 'confirmed'; //reviewed and created by contractor and not assigned to any cleaner
+    public const STATUS_PENDING = 'pending'; //requested by customer but not reviewed and created by contractor
+    public const STATUS_ACCEPT = 'accept'; //accepted and created by contractor
+    public const STATUS_DECLINED = 'declined'; //declined by contractor
 
     public function customer()
     {

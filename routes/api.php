@@ -71,14 +71,22 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('chatlistCheck', [ChatsController::class, 'checkSessionBeforeMessage']);
     Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
 
+    /*work order Request*/
+    Route::post('workRequestsCreate', [WorkRequestController::class, 'store']);
+    Route::post('workRequestCustomers', [WorkRequestController::class, 'getWorkRequestCustomers']);
+    Route::post('workRequests/{id}', [WorkRequestController::class, 'index']);
+    Route::post('declineWorkRequest', [WorkRequestController::class, 'declineWorkRequest']);
+
+    /*dashboard API*/
+    Route::get('contractorDashboard', [DashboardController::class, 'getContractorStats']);
+    Route::get('cleanerDashboard', [DashboardController::class, 'getCleanerStats']);
+    Route::get('customerDashboard', [DashboardController::class, 'getCustomerStats']);
+
     Route::post('customers', [ContractorCustomerController::class, 'index']);
     Route::post('customersCreate', [ContractorCustomerController::class, 'store']);
     Route::post('cleaners', [ContractorCleanerController::class, 'index']);
     Route::post('cleanersCreate', [ContractorCleanerController::class, 'store']);
     Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
-    Route::post('workRequestsCreate', [WorkRequestController::class, 'store']);
-    Route::post('workRequestCustomers', [WorkRequestController::class, 'getWorkRequestCustomers']);
-    Route::get('workRequests/{id}', [WorkRequestController::class, 'index']);
     Route::post('jobs', [JobController::class, 'index']);
     Route::post('jobsCreate', [JobController::class, 'store']);
     Route::get('jobDetail/{id}', [JobController::class, 'show']);
@@ -99,8 +107,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('breakOut', [JobController::class, 'breakOut']);
     Route::post('jobComplete', [JobController::class, 'jobComplete']);
     Route::post('getActiveLocations', [JobController::class, 'getActiveLocations']);
-    Route::get('contractorDashboard', [DashboardController::class, 'getContractorStats']);
-    Route::get('cleanerDashboard', [DashboardController::class, 'getCleanerStats']);
-    Route::get('customerDashboard', [DashboardController::class, 'getCustomerStats']);
     Route::post('updateInventoryStatus', [JobController::class, 'updateInventoryStatus']);
+    Route::post('timeSheet', [JobController::class, 'timeSheet']);
+    Route::post('problemReporting', [JobController::class, 'problemReporting']);
+    Route::post('weeklyInspections', [JobController::class, 'weeklyInspections']);
+    Route::post('completedJobsLocations', [JobController::class, 'getCompletedJobsLocations']);
+    Route::post('updateChecklistRemark', [JobController::class, 'updateChecklistRemark']);
+    Route::post('checklistReports', [JobController::class, 'checklistReports']);
 });

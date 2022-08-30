@@ -3,17 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChecklistReportResource;
 use App\Http\Resources\Contractor\Checklist\ChecklistResource;
+use App\Http\Resources\Contractor\Customers\AddressesResource;
+use App\Http\Resources\Contractor\Jobs\AttendanceResource;
 use App\Http\Resources\Contractor\Jobs\JobsDetailResource;
 use App\Http\Resources\Contractor\Jobs\JobsListResource;
+use App\Http\Resources\ProblemReportingResource;
+use App\Http\Resources\WeeklyInspectionResource;
 use App\Http\Resources\WorkOrder\WorkOrderDetail;
 use App\Models\Checklist;
 use App\Models\TaskInventory;
 use App\Models\User;
+use App\Models\UserAddress;
 use App\Models\WorkRequest;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 
@@ -79,6 +87,7 @@ class JobController extends Controller
             'store_address_id' => 'required|numeric',
             'urgency' => 'required',
             'customer_id' => 'required',
+            'cleaner_id' => 'required',
             'address_id' => 'required|numeric',
         ]);
 
@@ -103,7 +112,7 @@ class JobController extends Controller
             $job->end_time = date("Y-m-d H:i:s", strtotime($job->date . ' ' . $request->end_time));
             $job->store_id = $request->store_id;
             $job->store_address_id = $request->store_address_id;
-            $job->status = Task::STATUS_UNASSIGNED;
+            $job->status = Task::STATUS_PENDING;
             $job->details = $request->details;
             $job->urgency = $request->urgency;
             $job->lunch_start_time = date("Y-m-d H:i:s", strtotime($job->date . ' ' . $request->lunch_start_time));
@@ -127,7 +136,7 @@ class JobController extends Controller
                 if (!$workRequest) {
                     return apiResponse(false, __('Work request not found'));
                 }
-                $workRequest->status = WorkRequest::STATUS_CONFIRMED;
+                $workRequest->status = WorkRequest::STATUS_ACCEPT;
                 $workRequest->save();
 
                 $job->work_request_id = $request->work_request_id;
@@ -363,9 +372,11 @@ class JobController extends Controller
             $job->rating = $request->rating;
             $job->note = $request->note;
             $job->report_problem = $request->report_problem;
+            $job->time_out_latitude = $request->time_out_latitude;
+            $job->time_out_longitude = $request->time_out_longitude;
             $job->save();
 
-            if (count($request->checklists) > 0) {
+            if (isset($request->checklists) && count($request->checklists) > 0) {
                 foreach ($request->checklists as $checklist) {
                     $checklist = Checklist::find($checklist);
                     $checklist->is_completed = '1';
@@ -387,8 +398,8 @@ class JobController extends Controller
     {
         $baseJobs = Task::whereNotNull('cleaner_id')->where('status', '!=', Task::STATUS_COMPLETED)->where('contractor_id', auth()->user()->id);
         $baseJobs->when(request('name'), function ($query) use ($request) {
-            return $query->whereHas('cleaner', function ($cleanerQuery) use ($request) {
-                $cleanerQuery->where('name', 'like', '%' . $request->name . '%');
+            return $query->whereHas('cleaner', function ($customerQuery) use ($request) {
+                $customerQuery->where('name', 'like', '%' . $request->name . '%');
             });
         });
 
@@ -485,5 +496,162 @@ class JobController extends Controller
         } catch (Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function timeSheet(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'cleaner_id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $baseAttendance = Task::where('cleaner_id', $request->cleaner_id)->where('status', Task::STATUS_COMPLETED);
+        if ((isset($request->date_from) && $request->date_from != null) && (isset($request->date_to) && $request->date_to != null)) {
+            $baseAttendance = $baseAttendance->whereDate('time_out', '>=', $request->date_from)->whereDate('time_out', '<=', $request->date_to);
+        }
+        if ((isset($request->location_id) && $request->location_id != null)) {
+            $baseAttendance = $baseAttendance->where('address_id', $request->location_id);
+        }
+        $attendance = $baseAttendance->paginate(2);
+        $attendance = AttendanceResource::collection($attendance)->response()->getData(true);
+
+        return apiResponse(true, __('Data loaded successfully'), $attendance);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function problemReporting(Request $request)
+    {
+        $baseJobs = Task::where('contractor_id', auth()->user()->id)->completed();
+
+        if ((isset($request->date_from) && $request->date_from != null) && (isset($request->date_to) && $request->date_to != null)) {
+            $baseJobs = $baseJobs->whereDate('time_out', '>=', $request->date_from)->whereDate('time_out', '<=', $request->date_to);
+        }
+        if ((isset($request->location_id) && $request->location_id != null)) {
+            $baseJobs = $baseJobs->where('address_id', $request->location_id);
+        }
+
+        $jobs = ProblemReportingResource::collection($baseJobs->paginate(2))->response()->getData(true);
+        return apiResponse(true, __('Data loaded successfully'), $jobs);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function weeklyInspections(Request $request)
+    {
+        if (auth()->user()->role != User::Contractor) {
+            return apiResponse(false, __('This request is only accessible for contractor type user'));
+        }
+        $baseJobs = Task::where('contractor_id', auth()->user()->id)->Completed();
+
+        if ((isset($request->date_from) && $request->date_from != null) && (isset($request->date_to) && $request->date_to != null)) {
+            $baseJobs = $baseJobs->whereDate('date', '>=', $request->date_from)->whereDate('date', '<=', $request->date_to);
+        }
+
+        $baseJobs->when($request->location_id, function ($query) use ($request) {
+            return $query->where('address_id', $request->location_id);
+        });
+
+        $baseJobs->when($request->cleaner_id, function ($query) use ($request) {
+            return $query->where('cleaner_id', $request->cleaner_id);
+        });
+
+        $baseJobs->when($request->customer_id, function ($query) use ($request) {
+            return $query->where('customer_id', $request->customer_id);
+        });
+
+        $jobs = $baseJobs->paginate(10);
+
+        $jobs = WeeklyInspectionResource::collection($jobs)->response()->getData(true);
+
+        return apiResponse(true, __('Data loaded successfully'), $jobs);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getCompletedJobsLocations(Request $request)
+    {
+        if (auth()->user()->role != User::Contractor) {
+            return apiResponse(false, __('This request is only accessible for contractor type user'));
+        }
+
+        $baseJobIds = Task::leftJoin('user_addresses as address', 'tasks.address_id', 'address.id')->where('contractor_id', auth()->user()->id)->completed();
+        $baseJobIds->when($request->cleaner_id, function ($query) use ($request) {
+            return $query->where('cleaner_id', $request->cleaner_id);
+        });
+
+        $locations = $baseJobIds->select('tasks.id as job_id', 'address.id', 'address.street', 'address.state', 'address.zipcode', DB::raw("CONCAT(address.street, ', ', address.state, ', ', address.zipcode) AS formatted_address"))->get();
+
+        return apiResponse(true, __('Data loaded successfully'), $locations);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateChecklistRemark(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'checklist_id' => 'required|numeric',
+            'remarks' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $checklist = Checklist::find($request->checklist_id);
+        if (!$checklist) {
+            return apiResponse(false, __('Checklist not found'));
+        }
+        try {
+            $checklist->remarks = $request->remarks;
+            $checklist->save();
+
+            return apiResponse(true, __('Remarks has been added successfully'));
+        } catch (Exception $exception) {
+            return apiResponse(false, __('Something went wrong'), $exception->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checklistReports(Request $request)
+    {
+        $baseChecklist = Checklist::whereNull('parent_id')->whereHas('job', function ($query) {
+            $query->where('status', Task::STATUS_COMPLETED);
+        });
+
+        if ((isset($request->date_from) && $request->date_from != null) && (isset($request->date_to) && $request->date_to != null)) {
+            $baseChecklist = $baseChecklist->whereHas('job', function ($query) use ($request) {
+                $query->whereDate('date', '>=', $request->date_from)->whereDate('date', '<=', $request->date_to);
+            });
+        }
+
+        $baseChecklist->when($request->location_id, function ($query) use ($request) {
+            return $query->whereHas('job', function ($jobQuery) use ($request) {
+                $jobQuery->where('address_id', $request->location_id);
+            });
+        });
+
+        $checklist = $baseChecklist->paginate(2);
+        $checklist = ChecklistReportResource::collection($checklist)->response()->getData(true);
+
+        return apiResponse(true, __('Record found'), $checklist);
     }
 }

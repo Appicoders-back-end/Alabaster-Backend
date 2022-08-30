@@ -19,7 +19,10 @@ class WorkRequestController extends Controller
      */
     public function index(Request $request, $id)
     {
-        $baseTasks = WorkRequest::where('contractor_id', auth()->user()->id)->where('customer_id', $id);
+        $baseTasks = WorkRequest::where('customer_id', $id);
+        $baseTasks->when(request('name'), function ($query) use ($request) {
+            return $query->where('id', 'like', '%' . $request->name . '%');
+        });
         $tasks = $baseTasks->orderBy('id', 'DESC')->get();
         $tasks = WorkRequestList::collection($tasks);
 
@@ -46,7 +49,7 @@ class WorkRequestController extends Controller
         }
         $user = auth()->user();
         if ($user->role != User::Customer) {
-            return apiResponse(false, 'This request is only accessible in customer');
+            return apiResponse(false, 'This request is only accessible for customer');
         }
         try {
             $task = new WorkRequest();
@@ -60,7 +63,7 @@ class WorkRequestController extends Controller
 //            $task->date_time = date('Y-m-d H:i:s', strtotime($task->date . ' ' . $task->time));
             $task->store_id = $request->store_id;
             $task->store_address_id = $request->store_address_id;
-            $task->status = WorkRequest::STATUS_REQUESTED;
+            $task->status = WorkRequest::STATUS_PENDING;
             $task->details = $request->details;
             $task->urgency = $request->urgency;
             if ($request->inventories != null && count($request->inventories) > 0) {
@@ -83,11 +86,33 @@ class WorkRequestController extends Controller
         $workRequestsUserIds = WorkRequest::where('contractor_id', auth()->user()->id)->pluck('customer_id')->toArray();
         $baseCustomers = User::whereIn('id', $workRequestsUserIds);
         $baseCustomers->when(request('name'), function ($query) use ($request) {
-            return $query->where('name', $request->name);
+            return $query->where('name', 'like', '%' . $request->name . '%');
         });
         $customers = $baseCustomers->paginate(10);
         $customers = CustomersListResource::collection($customers);
 
         return apiResponse(true, __('Data loaded successfully'), $customers);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
+    public function declineWorkRequest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        try {
+            WorkRequest::where('id', $request->id)->update(['status' => WorkRequest::STATUS_DECLINED]);
+            return apiResponse(true, __('Request has been declined successfully'));
+        } catch (\Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
     }
 }

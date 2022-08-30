@@ -28,7 +28,7 @@ return new class extends Migration
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
             $table->text('details')->nullable();
-            $table->enum('status', [WorkRequest::STATUS_REQUESTED, WorkRequest::STATUS_CONFIRMED])->default(WorkRequest::STATUS_REQUESTED)->nullable();
+            $table->enum('status', [WorkRequest::STATUS_PENDING, WorkRequest::STATUS_ACCEPT, WorkRequest::STATUS_DECLINED])->default(WorkRequest::STATUS_PENDING)->nullable();
             $table->dateTime('lunch_start_time')->nullable();
             $table->dateTime('lunch_end_time')->nullable();
             $table->string('shift')->nullable();

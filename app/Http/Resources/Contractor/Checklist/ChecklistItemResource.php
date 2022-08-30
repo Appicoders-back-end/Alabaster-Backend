@@ -19,7 +19,8 @@ class ChecklistItemResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'parent_id' => $this->parent_id,
-            'attachment' => $this->attachment
+            'attachment' => $this->attachment,
+            'is_completed' => $this->is_completed,
         ];
     }
 }
