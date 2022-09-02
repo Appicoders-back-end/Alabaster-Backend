@@ -10,7 +10,7 @@ class ChecklistReportResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -18,6 +18,8 @@ class ChecklistReportResource extends JsonResource
         $total_items = $this->items->count();
         $items_done = $this->items->where('is_completed', 1)->count();
         $items_not_done = $this->items->where('is_completed', 0)->count();
+        $completed_percent = ($items_done * 100) / $total_items; //calculate complete percentage
+
         return [
             'id' => $this->id,
             'job_id' => $this->job->id,
@@ -29,9 +31,9 @@ class ChecklistReportResource extends JsonResource
             'total_items' => $total_items,
             'items_done' => $items_done,
             'items_not_done' => $items_not_done,
-            'completed_percent' => "90%", //todo will dynamic soon
+            'completed_percent' => $completed_percent . '%',
             'date' => $this->job->date,
-            'items' =>  ChecklistItemResource::collection($this->items),
+            'items' => ChecklistItemResource::collection($this->items),
         ];
     }
 }

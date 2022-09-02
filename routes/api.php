@@ -39,18 +39,22 @@ Route::get('categories', [GeneralController::class, 'getCategories']);
 Route::post('stores', [GeneralController::class, 'getStores']);
 Route::get('inventories', [GeneralController::class, 'getInventories']);
 Route::get('customerLocations/{id}', [ContractorCustomerController::class, 'getLocations']);
+Route::get('test-notification', [GeneralController::class, 'testNotification']);
+Route::get('pages', [GeneralController::class, 'pages']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     /*auth*/
-    Route::post('updateProfile',[ContractorCustomerController::class, 'updateProfile']);
+    Route::post('updateProfile', [ContractorCustomerController::class, 'updateProfile']);
     Route::post('updatePassword', [AuthController::class, 'updatePassword']);
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('getUsers', [MembersController::class, 'getUsers']);
     Route::post('storeMember', [MembersController::class, 'storeMember']);
     Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
+    Route::get('updateGetStartedStatus', [GeneralController::class, 'updateGetStartedStatus']);
 
     /*notifications*/
-    Route::get('getUserNotificaions', [NotificationsController::class, 'getUserNotificaions']);
+    Route::get('getUserNotifications', [NotificationsController::class, 'getUserNotifications']);
+    Route::get('updateNotificationSetting', [NotificationsController::class, 'updateNotificationSetting']);
 
     /*payments*/
     Route::post('storeCard', [PaymentMethodController::class, 'storeCard']);
@@ -63,11 +67,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     /*chats*/
     Route::get('chatIndex', [ChatsController::class, 'index']);
-    Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
-    //    Route::post('chatlistCheck', 'ChatsController@chatlistCheck');
+    Route::get('viewChatlist/{id}', [ChatsController::class, 'show']);
     Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
     Route::get('chatIndex', [ChatsController::class, 'index']);
-    Route::get('viewChatlist/{id}', [ChatsController::class, 'show'] );
+    Route::get('viewChatlist/{id}', [ChatsController::class, 'show']);
     Route::post('chatlistCheck', [ChatsController::class, 'checkSessionBeforeMessage']);
     Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
 
@@ -82,11 +85,19 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('cleanerDashboard', [DashboardController::class, 'getCleanerStats']);
     Route::get('customerDashboard', [DashboardController::class, 'getCustomerStats']);
 
+    /*customers*/
     Route::post('customers', [ContractorCustomerController::class, 'index']);
     Route::post('customersCreate', [ContractorCustomerController::class, 'store']);
     Route::post('cleaners', [ContractorCleanerController::class, 'index']);
     Route::post('cleanersCreate', [ContractorCleanerController::class, 'store']);
     Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
+
+    /*members*/
+    Route::get('getUsers', [MembersController::class, 'getUsers']);
+    Route::post('storeMember', [MembersController::class, 'storeMember']);
+    Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
+
+    /*job listings and reports*/
     Route::post('jobs', [JobController::class, 'index']);
     Route::post('jobsCreate', [JobController::class, 'store']);
     Route::get('jobDetail/{id}', [JobController::class, 'show']);
@@ -94,14 +105,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('checklist', [JobController::class, 'getAllChecklist']);
     Route::post('checklistCreate', [JobController::class, 'createChecklist']);
     Route::post('contactQuery', [GeneralController::class, 'contactQuery']);
-    Route::get('pages', [GeneralController::class, 'pages']);
-    Route::get('getUsers', [MembersController::class, 'getUsers']);
-    Route::post('storeMember', [MembersController::class, 'storeMember']);
-    Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
     Route::get('sendChecklist/{id}', [JobController::class, 'sendCheckList']);
     Route::post('getJobsByCleanerId', [JobController::class, 'getJobsByCleanerId']);
     Route::post('assignJobToCleaner', [JobController::class, 'assignJobToCleaner']);
-    Route::get('pages', [GeneralController::class, 'pages']);
     Route::post('startJob', [JobController::class, 'startJob']);
     Route::post('breakIn', [JobController::class, 'breakIn']);
     Route::post('breakOut', [JobController::class, 'breakOut']);
@@ -114,4 +120,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('completedJobsLocations', [JobController::class, 'getCompletedJobsLocations']);
     Route::post('updateChecklistRemark', [JobController::class, 'updateChecklistRemark']);
     Route::post('checklistReports', [JobController::class, 'checklistReports']);
+    Route::post('getCustomerActiveJobs', [JobController::class, 'getCustomerActiveJobs']);
+    Route::post('updateChecklist', [JobController::class, 'updateChecklist']);
+    Route::post('deleteChecklist', [JobController::class, 'deleteChecklist']);
+    Route::post('contractorComment', [JobController::class, 'contractorComment']);
+    Route::post('sendJobReportToCustomer', [JobController::class, 'sendReportToCustomer']);
 });

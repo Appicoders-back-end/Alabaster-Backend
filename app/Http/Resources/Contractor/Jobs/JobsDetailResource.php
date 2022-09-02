@@ -60,6 +60,7 @@ class JobsDetailResource extends JsonResource
             'lunch_in_longitude' => $this->lunch_in_longitude,
             'lunch_out_latitude' => $this->lunch_out_latitude,
             'lunch_out_longitude' => $this->lunch_out_longitude,
+            'contractor_comment' => $this->contractor_comment,
             'inventories' => TaskInventoryResource::collection($this->inventories),
             'checklist' => ChecklistResource::collection(Checklist::with('items')->whereNull('parent_id')->where('task_id', $this->id)->get()),
         ];

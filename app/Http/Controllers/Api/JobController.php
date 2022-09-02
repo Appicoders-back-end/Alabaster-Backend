@@ -222,7 +222,7 @@ class JobController extends Controller
                 $newItem->save();
             }
             return apiResponse(true, __('Record has been saved successfully'));
-        } catch (Exception $exception){
+        } catch (Exception $exception) {
             return apiResponse(false, $exception->getMessage());
         }
     }
@@ -588,12 +588,26 @@ class JobController extends Controller
             return apiResponse(false, __('This request is only accessible for contractor type user'));
         }
 
-        $baseJobIds = Task::leftJoin('user_addresses as address', 'tasks.address_id', 'address.id')->where('contractor_id', auth()->user()->id)->completed();
+        $baseJobIds = Task::leftJoin('user_addresses as address', 'address.id', 'tasks.address_id')
+            ->leftJoin('users as customers', 'customers.id', 'tasks.customer_id')
+            ->where('tasks.contractor_id', auth()->user()->id)->where('tasks.status', Task::STATUS_COMPLETED);
+
         $baseJobIds->when($request->cleaner_id, function ($query) use ($request) {
             return $query->where('cleaner_id', $request->cleaner_id);
         });
 
-        $locations = $baseJobIds->select('tasks.id as job_id', 'address.id', 'address.street', 'address.state', 'address.zipcode', DB::raw("CONCAT(address.street, ', ', address.state, ', ', address.zipcode) AS formatted_address"))->get();
+        $baseJobIds->when($request->name, function ($query) use ($request) {
+            return $query->where(function ($searchQuery) use ($request) {
+                $searchQuery->orWhere('address.street', 'like', '%' . $request->name . '%')->orWhere('address.state', 'like', '%' . $request->name . '%')->orWhere('address.zipcode', 'like', '%' . $request->name . '%');
+            });
+        });
+
+        $locations = $baseJobIds->select('tasks.id as job_id',
+            'address.id',
+            'address.street',
+            'address.state',
+            'address.zipcode',
+            DB::raw("CONCAT(address.street, ', ', address.state, ', ', address.zipcode) AS formated_address"))->get();
 
         return apiResponse(true, __('Data loaded successfully'), $locations);
     }
@@ -633,8 +647,12 @@ class JobController extends Controller
      */
     public function checklistReports(Request $request)
     {
+        if (auth()->user()->role != User::Contractor) {
+            return apiResponse(false, __('This request is only accessible for contractor type user'));
+        }
+
         $baseChecklist = Checklist::whereNull('parent_id')->whereHas('job', function ($query) {
-            $query->where('status', Task::STATUS_COMPLETED);
+            $query->where('contractor_id', auth()->user()->id)->where('status', Task::STATUS_COMPLETED);
         });
 
         if ((isset($request->date_from) && $request->date_from != null) && (isset($request->date_to) && $request->date_to != null)) {
@@ -649,9 +667,170 @@ class JobController extends Controller
             });
         });
 
-        $checklist = $baseChecklist->paginate(2);
+        $checklist = $baseChecklist->paginate(10);
         $checklist = ChecklistReportResource::collection($checklist)->response()->getData(true);
 
         return apiResponse(true, __('Record found'), $checklist);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getCustomerActiveJobs(Request $request)
+    {
+        if (auth()->user()->role != User::Customer) {
+            return apiResponse(false, __('This request is only accessible for customer type user'));
+        }
+
+        $baseJobs = Task::where('customer_id', auth()->user()->id)->where('status', '!=', Task::STATUS_COMPLETED);
+
+        $baseJobs->when($request->name, function ($query) use ($request) {
+            return $query->whereHas('cleaner', function ($jobQuery) use ($request) {
+                $jobQuery->where('name', 'like', '%' . $request->name . '%');
+            });
+        });
+
+        $baseJobs->when($request->category_id, function ($query) use ($request) {
+            return $query->where('category_id', $request->category_id);
+        });
+
+        $jobs = $baseJobs->paginate(1);
+        $jobs = JobsListResource::collection($jobs)->response()->getData(true);
+
+        return apiResponse(true, __('Record found'), $jobs);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateChecklist(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric',
+            'items' => 'required|array'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        if (count($request->items) == 0) {
+            return apiResponse(false, __('Items are required'));
+        }
+
+        $checklist = Checklist::where('id', $request->id)->first();
+        if ($checklist == null) {
+            return apiResponse(false, __('Checklist not found'));
+        }
+
+        try {
+            $checklist->name = $request->name;
+            $checklist->save();
+
+            Checklist::where('parent_id', $checklist->id)->delete();
+            foreach ($request->items as $item) {
+                $newItem = new Checklist();
+                $newItem->parent_id = $checklist->id;
+                $newItem->name = $item['name'];
+                $newItem->description = $item['description'];
+
+                if (isset($item['attachment']) && $item['attachment'] != null) {
+                    $file = $item['attachment'];
+                    $file_name = time() . "_" . $file->getClientOriginalName();
+                    $filename = pathinfo($file_name, PATHINFO_FILENAME);
+                    $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+                    $file_name = str_replace(" ", "_", $filename);
+                    $file_name = str_replace(".", "_", $file_name) . "." . $extension;
+                    $path = public_path() . "/storage/uploads/";
+                    $file->move($path, $file_name);
+
+                    $newItem->attachment = $file_name;
+                }
+                $newItem->save();
+            }
+            return apiResponse(true, __('Record has been saved successfully'));
+        } catch (Exception $exception) {
+            return apiResponse(false, $exception->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteChecklist(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $checklist = Checklist::where('id', $request->id)->first();
+        if ($checklist == null) {
+            return apiResponse(false, __('Checklist not found'));
+        }
+
+        try {
+            Checklist::where('parent_id', $checklist->id)->delete();
+            $checklist->delete();
+
+            return apiResponse(true, __("Checklist has been deleted"));
+        } catch (Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function contractorComment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric',
+            'comment' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        try {
+            $job = Task::find($request->id);
+            $job->contractor_comment = $request->comment;
+            $job->save();
+
+            return apiResponse(true, __('Your comment has been submitted successfully'));
+        } catch (Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function sendReportToCustomer(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        try {
+            $job = Task::find($request->id);
+            //todo will send email
+            return apiResponse(true, __('Job report has been sent to the customer'));
+        } catch (Exception $e) {
+            return apiResponse(false, __('Something went wrong'), $e->getMessage());
+        }
     }
 }

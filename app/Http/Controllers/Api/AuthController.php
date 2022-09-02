@@ -89,7 +89,7 @@ class AuthController extends Controller
             return apiResponse(false, __("Invalid Credentials"));
         }
 
-        $user = User::findOrFail(auth()->user()->id);
+        $user = User::where('id', auth()->user()->id)->first();
         $user->is_online = '1';
         $user->device_id = $request->device_id;
         $user->save();

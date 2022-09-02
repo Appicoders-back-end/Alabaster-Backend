@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Contractor\Customers\CustomersListResource;
 use App\Http\Resources\WorkOrder\WorkRequestList;
+use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\WorkRequest;
@@ -70,6 +71,21 @@ class WorkRequestController extends Controller
                 $task->inventories = json_encode($request->inventories);
             }
             $task->save();
+
+            $user = auth()->user();
+            $title = $user->name;
+            $message = sprintf("%s sent you work order request", $user->name);
+            SendNotification($user->device_id, $title, $message);
+
+            Notification::create([
+                'reciever_id' => $user->created_by,
+                'sender_id' => $user->id,
+                'title' => $title,
+                'message' => $message,
+                'content_id' => $task->id,
+                'content_type' => "work_order_request",
+                'is_read' => 0
+            ]);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
