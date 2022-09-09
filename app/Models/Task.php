@@ -65,6 +65,11 @@ class Task extends Model
         return $this->belongsToMany(Inventory::class, 'task_inventories', 'task_id', 'inventory_id')->withPivot('id', 'quantity', 'quantity_used');
     }
 
+    public function checklists()
+    {
+        return $this->hasMany(Checklist::class,  'task_id', 'id')->whereNull('parent_id');
+    }
+
     public function getEstimatedTime()
     {
         return true;

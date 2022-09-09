@@ -4,6 +4,7 @@ use App\Models\User;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
+use Stripe\StripeClient;
 
 if (!function_exists('apiResponse')) {
     /**
@@ -100,5 +101,26 @@ if (!function_exists('getTimeString')) {
 
 //        $formattedDate = $interval->format('%h')." Hours ".$interval->format('%i')." Minutes";
         return $timeString;
+    }
+}
+
+if (!function_exists('getStripeCustomerId')) {
+
+    function getStripeCustomerId($user)
+    {
+        $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
+        if ($user->stripe_customer_id != null) {
+            return $user->stripe_customer_id;
+        }
+        $stripeCustomer = $stripe->customers->create([
+            'email' => $user->email,
+            'name' => $user->name,
+        ]);
+
+        $stripe_customer_id = $stripeCustomer->id;
+        $user->update(['stripe_customer_id' => $stripe_customer_id]);
+//        $stripeCustomer = $this->stripe->customers->retrieve($stripe_customer_id);
+
+        return $user->stripe_customer_id;
     }
 }

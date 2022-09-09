@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Contractor\Checklist\ChecklistResource;
 use App\Http\Resources\Contractor\Customers\AddressesResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,6 +33,8 @@ class WeeklyInspectionResource extends JsonResource
             'estimated_working_hours' => "2 hours", //TODO will dynamic soon
             'working_hours' => "3 days 45 minutes", //TODO will dynamic soon
             'status' => $this->status,
+            'contractor_comment' => $this->contractor_comment,
+            'checklist' => $this->checklists->count() > 0 ? ChecklistResource::collection($this->checklists) : null,
         ];
     }
 }

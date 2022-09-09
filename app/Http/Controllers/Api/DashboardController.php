@@ -20,8 +20,8 @@ class DashboardController extends Controller
         if (auth()->user()->role != User::Contractor) {
             return apiResponse(false, 'This request is only accessible for contractor');
         }
-        $job = Task::query()->where('contractor_id', auth()->user()->id)->orderBy('updated_at', 'DESC')->first();
-        return apiResponse(true, __('Data loaded successfully'), new JobsDetailResource($job));
+        $job = Task::query()->where('contractor_id', auth()->user()->id)->where('status', Task::STATUS_COMPLETED)->orderBy('updated_at', 'DESC')->first();
+        return apiResponse(true, __('Data loaded successfully'), $job != null ? new JobsDetailResource($job) : null);
     }
 
     /**
@@ -34,7 +34,7 @@ class DashboardController extends Controller
             return apiResponse(false, 'This request is only accessible for cleaner');
         }
 
-        $jobs = Task::query()->where('cleaner_id', auth()->user()->id)->where('status', '!=', Task::STATUS_COMPLETED)->orderBy('updated_at', 'DESC')->get();
+        $jobs = Task::query()->where('cleaner_id', auth()->user()->id)->orderBy('updated_at', 'DESC')->get();
 //        $activeJobs = $jobs->where('status', Task::STATUS_WORKING);
 //        $nextJobs = $jobs->where('status', Task::STATUS_PENDING);
 
@@ -42,7 +42,7 @@ class DashboardController extends Controller
         $data['pending'] = $jobs->where('status', Task::STATUS_PENDING)->count();
         $data['working'] = $jobs->where('status', Task::STATUS_WORKING)->count();
         $data['completed'] = $jobs->where('status', Task::STATUS_COMPLETED)->count();
-        $data['jobs'] = $jobs->count() == 0 ? null : JobsListResource::collection($jobs);
+        $data['jobs'] = $jobs->count() == 0 ? null : JobsListResource::collection($jobs->where('status', '!=', Task::STATUS_COMPLETED));
 //        $data['next_jobs'] = $nextJobs->count() == 0 ? null : JobsListResource::collection($nextJobs);
 
         return apiResponse(true, __('Data loaded successfully'), $data);

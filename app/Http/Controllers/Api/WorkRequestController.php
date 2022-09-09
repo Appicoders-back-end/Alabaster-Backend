@@ -65,6 +65,7 @@ class WorkRequestController extends Controller
             $task->store_id = $request->store_id;
             $task->store_address_id = $request->store_address_id;
             $task->status = WorkRequest::STATUS_PENDING;
+            $task->service_name = $request->service_name;
             $task->details = $request->details;
             $task->urgency = $request->urgency;
             if ($request->inventories != null && count($request->inventories) > 0) {
@@ -125,7 +126,29 @@ class WorkRequestController extends Controller
         }
 
         try {
-            WorkRequest::where('id', $request->id)->update(['status' => WorkRequest::STATUS_DECLINED]);
+            $user = auth()->user();
+
+            $workRequest = WorkRequest::where('id', $request->id)->first();
+            $workRequest->status = WorkRequest::STATUS_DECLINED;
+            $workRequest->save();
+
+            $customer = User::where('id', $workRequest->customer_id)->first();
+            $title = "Work Request Declined";
+            $message = sprintf('Your work request %s has been declined by %s', $workRequest->id, $user->name);
+            if ($customer->is_receive_notification == '1') {
+                SendNotification($customer->device_id, $title, $message);
+            }
+
+            Notification::create([
+                'reciever_id' => $workRequest->customer_id,
+                'sender_id' => $user->id,
+                'title' => $title,
+                'message' => $message,
+                'content_id' => $workRequest->id,
+                'content_type' => "declined_work_request",
+                'is_read' => 0
+            ]);
+
             return apiResponse(true, __('Request has been declined successfully'));
         } catch (\Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());

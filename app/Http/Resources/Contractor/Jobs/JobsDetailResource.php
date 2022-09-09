@@ -45,8 +45,7 @@ class JobsDetailResource extends JsonResource
             'shift' => $this->shift,
             'lunch_start_time' => $this->lunch_start_time,
             'lunch_end_time' => $this->lunch_end_time,
-            'before_lunch_image' => $this->before_lunch,
-            'after_lunch_image' => $this->after_lunch,
+            'after_lunch_image' => $this->after_lunch_attachment,
             'estimated_break_hours' => "20 minutes", //TODO will dynamic soon
             'break_hours' => "30 minutes", //TODO will dynamic soon
             'estimated_working_hours' => "2 hours", //TODO will dynamic soon

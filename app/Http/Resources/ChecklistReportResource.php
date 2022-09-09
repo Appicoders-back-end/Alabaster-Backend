@@ -18,7 +18,7 @@ class ChecklistReportResource extends JsonResource
         $total_items = $this->items->count();
         $items_done = $this->items->where('is_completed', 1)->count();
         $items_not_done = $this->items->where('is_completed', 0)->count();
-        $completed_percent = ($items_done * 100) / $total_items; //calculate complete percentage
+        $completed_percent = $items_done ? 0 > ($items_done * 100) / $total_items : 0; //calculate complete percentage
 
         return [
             'id' => $this->id,

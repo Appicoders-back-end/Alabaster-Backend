@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Contractor\Cleaners\CleanersDetail;
 use App\Http\Resources\Contractor\Cleaners\CleanersListResource;
 use App\Mail\UserCreated;
+use App\Models\Task;
 use App\Models\User;
 use App\Models\UserAddress;
 use Exception;
@@ -22,15 +23,21 @@ class CleanerController extends Controller
      */
     public function index(Request $request)
     {
-        $baseCleaners = User::where('role', User::Cleaner)->where('created_by', auth()->user()->id);
-        $baseCleaners->when(request('name'), function ($query) use ($request) {
-            return $query->where('name', 'like', '%' . $request->name . '%');
-        });
-        $baseCleaners->when(request('category_id'), function ($query) use ($request) {
-            return $query->where('category_id', $request->category_id);
-        });
+        if (auth()->user()->role == User::Customer) {
+            $completedJobsCleanerIds = Task::where('customer_id', auth()->user()->id)->where('status', Task::STATUS_COMPLETED)->pluck('cleaner_id')->toArray();
+            $baseCleaners = User::whereIn('id', $completedJobsCleanerIds);
+        } else {
+            $baseCleaners = User::where('role', User::Cleaner)->where('created_by', auth()->user()->id);
 
-        $cleaners = $baseCleaners->paginate(2);
+            $baseCleaners->when(request('name'), function ($query) use ($request) {
+                return $query->where('name', 'like', '%' . $request->name . '%');
+            });
+            $baseCleaners->when(request('category_id'), function ($query) use ($request) {
+                return $query->where('category_id', $request->category_id);
+            });
+        }
+
+        $cleaners = $baseCleaners->paginate(10);
         $cleaners = CleanersListResource::collection($cleaners)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $cleaners);
@@ -95,8 +102,8 @@ class CleanerController extends Controller
      */
     public function getActiveCleaners(Request $request)
     {
-        $baseCleaners = User::where('role', User::Cleaner)->where('created_by', auth()->user()->id);
-        $cleaners = $baseCleaners->paginate(2);
+        $baseCleaners = User::where('role', User::Cleaner)->where('created_by', auth()->user()->id)->where('is_online', '1');
+        $cleaners = $baseCleaners->paginate(10);
         $cleaners = CleanersListResource::collection($cleaners)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $cleaners);

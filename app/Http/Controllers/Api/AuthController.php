@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
+use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +35,6 @@ class AuthController extends Controller
         }
 
         try {
-
             $stripe = new StripeClient(env("STRIPE_SECRET_KEY"));
             $stripeCustomer = $stripe->customers->create([
 
@@ -95,6 +96,10 @@ class AuthController extends Controller
         $user->save();
         $user->token = $user->createToken('MyAuthToken')->accessToken;
         $user->addresses;
+//        $user->membership = Subscription::leftJoin('user_subscriptions', );
+        if ($user->role != User::Contractor) {
+            $user->contractor_no = User::find($user->created_by)->contact_no;
+        }
 
         broadcast(new \App\Events\OnlineStatus($user))->toOthers();
         return apiResponse(true, __('Logged in successfully'), $user);
@@ -185,7 +190,10 @@ class AuthController extends Controller
         }
     }
 
-
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updatePassword(Request $request)
     {
 
@@ -214,10 +222,34 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function logout()
     {
         $user = request()->user();
         User::findOrFail($user->id)->update(['device_id' => null, 'is_online' => '0']);
         return apiresponse(true, 'You have been logged out successfully');
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateOnlineStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'is_online' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $user = User::where('id', auth()->user()->id)->first();
+        $user->is_online = $request->is_online;
+        $user->save();
+
+        return apiresponse(true, __('Status has been changed successfully'));
     }
 }

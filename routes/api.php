@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('storeMember', [MembersController::class, 'storeMember']);
     Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
     Route::get('updateGetStartedStatus', [GeneralController::class, 'updateGetStartedStatus']);
+    Route::post('updateOnlineStatus', [AuthController::class, 'updateOnlineStatus']);
 
     /*notifications*/
     Route::get('getUserNotifications', [NotificationsController::class, 'getUserNotifications']);
