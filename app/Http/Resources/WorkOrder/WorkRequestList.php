@@ -29,6 +29,7 @@ class WorkRequestList extends JsonResource
             'category_id' => $this->category ? $this->category->id : null,
             'category_name' => $this->category ? $this->category->name : null,
             'urgency' => $this->urgency,
+            'service_name' => $this->service_name,
             'details' => $this->details,
             'store_id' => $this->store ? $this->store->id : null,
             'store_name' => $this->store ? $this->store->name : null,

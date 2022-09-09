@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Contractor\Customers\CustomersListResource;
 use App\Http\Resources\WorkOrder\WorkRequestList;
+use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\WorkRequest;
@@ -64,12 +65,28 @@ class WorkRequestController extends Controller
             $task->store_id = $request->store_id;
             $task->store_address_id = $request->store_address_id;
             $task->status = WorkRequest::STATUS_PENDING;
+            $task->service_name = $request->service_name;
             $task->details = $request->details;
             $task->urgency = $request->urgency;
             if ($request->inventories != null && count($request->inventories) > 0) {
                 $task->inventories = json_encode($request->inventories);
             }
             $task->save();
+
+            $user = auth()->user();
+            $title = $user->name;
+            $message = sprintf("%s sent you work order request", $user->name);
+            SendNotification($user->device_id, $title, $message);
+
+            Notification::create([
+                'reciever_id' => $user->created_by,
+                'sender_id' => $user->id,
+                'title' => $title,
+                'message' => $message,
+                'content_id' => $task->id,
+                'content_type' => "work_order_request",
+                'is_read' => 0
+            ]);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
@@ -109,7 +126,29 @@ class WorkRequestController extends Controller
         }
 
         try {
-            WorkRequest::where('id', $request->id)->update(['status' => WorkRequest::STATUS_DECLINED]);
+            $user = auth()->user();
+
+            $workRequest = WorkRequest::where('id', $request->id)->first();
+            $workRequest->status = WorkRequest::STATUS_DECLINED;
+            $workRequest->save();
+
+            $customer = User::where('id', $workRequest->customer_id)->first();
+            $title = "Work Request Declined";
+            $message = sprintf('Your work request %s has been declined by %s', $workRequest->id, $user->name);
+            if ($customer->is_receive_notification == '1') {
+                SendNotification($customer->device_id, $title, $message);
+            }
+
+            Notification::create([
+                'reciever_id' => $workRequest->customer_id,
+                'sender_id' => $user->id,
+                'title' => $title,
+                'message' => $message,
+                'content_id' => $workRequest->id,
+                'content_type' => "declined_work_request",
+                'is_read' => 0
+            ]);
+
             return apiResponse(true, __('Request has been declined successfully'));
         } catch (\Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());

@@ -185,7 +185,9 @@ class ChatsController extends Controller
             $chathead = Chatlist::where(DB::raw("(from_user_id  =  " . Auth::user()->id . " AND to_user_id  = $request->id) or (from_user_id  = $request->id AND to_user_id  = " . Auth::user()->id . ")"), '>', DB::raw('0'))
                 ->first();
         }
-        $chathead->user = User::find($request->id);
+
+        $chathead->from_user = $chathead->from_user;
+        $chathead->to_user = $chathead->to_user;
         return apiresponse(true, 'chathead', $chathead);
     }
 }

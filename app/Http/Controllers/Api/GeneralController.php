@@ -12,6 +12,7 @@ use App\Models\Inventory;
 use App\Models\Page;
 use App\Models\Store;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -82,35 +83,74 @@ class GeneralController extends Controller
             $baseUsers = $baseUsers->where('created_by', $user->id);
         }
         $users = $baseUsers->select('id', 'name', 'role', 'email')->get();
+
         return apiResponse(true, __('Data loaded successfully'), $users);
     }
 
 
-    public function contactQuery(Request $request){
-
-        $validator = Validator::make($request->all(),[
-            'title'         =>      'required',
-            'message'       =>      'required',
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function contactQuery(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'message' => 'required',
         ]);
-        if($validator->fails())
-        return apiResponse(false, implode("\n", $validator->errors()->all()));
 
-        $data['user_id']        =       $request->user()->id;
-        $data['title']          =       $request->title;
-        $data['message']        =       $request->message;
-
-        $contact = ContactUs::create($data);
-        if($contact){
-            return apiResponse(true, 'Contact Query has been sent successfully', $contact);
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
         }
-        else{
-            return apiresponse(false, 'Some error occurred, please try again');
+
+        try {
+            $data['user_id'] = $request->user()->id;
+            $data['title'] = $request->title;
+            $data['message'] = $request->message;
+
+            $contact = ContactUs::create($data);
+            return apiResponse(true, __('Contact Query has been sent successfully'), $contact);
+        } catch (\Exception $e) {
+            return apiresponse(false, __('Some error occurred, please try again'), $e->getMessage());
         }
     }
 
-
-    public function pages(){
+    /**
+     * @return JsonResponse
+     */
+    public function pages()
+    {
         $page = Page::get();
         return apiResponse(true, 'Pages content found', $page);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function testNotification()
+    {
+        try {
+            $token = "dm2VxsqoRiKEIhXViTToRv:APA91bGLXETB5xzTSE9guGwUnaqSvFSOnpnNXejE9nlkXcOsu9q5IE6n6KD3Z32nAIEIMQ1ochvRQyAj66-TtADALOr3uwniDh555AbHTc1LQhNtOjbjL5ajCOhm8dN5f93wwEzrG0uS";
+            $title = "Test Notification";
+            $message = sprintf("%s sent you work order request", "Test user");
+            SendNotification($token, $title, $message);
+
+            return apiResponse(true, __('Notification has been sent successfully'));
+        } catch (\Exception $e) {
+            return apiResponse(false, __("Something went wrong"), $e->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateGetStartedStatus(Request $request)
+    {
+        $user = $request->user();
+        $user->get_started = '1';
+        $user->save();
+
+        return apiResponse(true, __('Status has been changed successfully'));
     }
 }

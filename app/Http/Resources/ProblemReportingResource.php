@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contractor\Customers\AddressesResource;
+use DateTime;
 
 class ProblemReportingResource extends JsonResource
 {
@@ -30,7 +31,7 @@ class ProblemReportingResource extends JsonResource
             'date' => $this->date,
             'sign_in_time' => $this->time_in,
             'sign_out_time' => $this->time_out,
-            'total_hours' => "2 hours", //TODO will dynamic soon
+            'total_hours' => $this->getCalculatedTotalTime(), //todo will dynamic
             'status' => $this->status,
             'report_problem' => $this->status
         ];

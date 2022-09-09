@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DateTime;
 
 class Task extends Model
 {
@@ -62,5 +63,36 @@ class Task extends Model
     public function inventories()
     {
         return $this->belongsToMany(Inventory::class, 'task_inventories', 'task_id', 'inventory_id')->withPivot('id', 'quantity', 'quantity_used');
+    }
+
+    public function checklists()
+    {
+        return $this->hasMany(Checklist::class,  'task_id', 'id')->whereNull('parent_id');
+    }
+
+    public function getEstimatedTime()
+    {
+        return true;
+    }
+
+    public function getCalculatedTotalTime()
+    {
+        $timeString = null;
+
+        $datetime1 = new DateTime($this->time_in);
+        $datetime2 = new DateTime($this->time_out);
+        $interval = $datetime1->diff($datetime2);
+
+        if ($interval->format('%d') > 0) {
+            $timeString .= $interval->format('%d') . ' Days ';
+        }
+        if ($interval->format('%h') > 0) {
+            $timeString .= $interval->format('%h') . ' Hours ';
+        }
+        if ($interval->format('%i') > 0) {
+            $timeString .= $interval->format('%i') . ' Minutes ';
+        }
+//        $formattedDate = $interval->format('%h')." Hours ".$interval->format('%i')." Minutes";
+        return $timeString;
     }
 }
