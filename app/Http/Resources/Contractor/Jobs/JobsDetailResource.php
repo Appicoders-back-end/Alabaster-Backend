@@ -26,7 +26,9 @@ class JobsDetailResource extends JsonResource
             'time_in' => $this->time_in,
             'time_out' => $this->time_out,
             'before' => $this->before,
+            'before_type' => $this->before_type,
             'after' => $this->after,
+            'after_type' => $this->after_type,
             'break_in' => $this->break_in,
             'break_out' => $this->break_out,
             'customer_id' => $this->customer ? $this->customer->id : null,
@@ -46,10 +48,10 @@ class JobsDetailResource extends JsonResource
             'lunch_start_time' => $this->lunch_start_time,
             'lunch_end_time' => $this->lunch_end_time,
             'after_lunch_image' => $this->after_lunch_attachment,
-            'estimated_break_hours' => "20 minutes", //TODO will dynamic soon
-            'break_hours' => "30 minutes", //TODO will dynamic soon
-            'estimated_working_hours' => "2 hours", //TODO will dynamic soon
-            'working_hours' => "3 days 45 minutes", //TODO will dynamic soon
+            'estimated_break_hours' => $this->getEstimatedBreakTime(),
+            'break_hours' => $this->getCalculatedBreakTime(),
+            'estimated_working_hours' => $this->getEstimatedTime(),
+            'working_hours' => $this->getCalculatedTotalTime(),
             'rating' => $this->rating,
             'time_in_latitude' => $this->time_in_latitude,
             'time_in_longitude' => $this->time_in_longitude,

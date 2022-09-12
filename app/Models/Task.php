@@ -72,7 +72,23 @@ class Task extends Model
 
     public function getEstimatedTime()
     {
-        return true;
+        $timeString = null;
+
+        $datetime1 = new DateTime($this->start_time);
+        $datetime2 = new DateTime($this->end_time);
+        $interval = $datetime1->diff($datetime2);
+
+        if ($interval->format('%d') > 0) {
+            $timeString .= $interval->format('%d') . ' Days ';
+        }
+        if ($interval->format('%h') > 0) {
+            $timeString .= $interval->format('%h') . ' Hours ';
+        }
+        if ($interval->format('%i') > 0) {
+            $timeString .= $interval->format('%i') . ' Minutes ';
+        }
+//        $formattedDate = $interval->format('%h')." Hours ".$interval->format('%i')." Minutes";
+        return $timeString;
     }
 
     public function getCalculatedTotalTime()
@@ -81,6 +97,48 @@ class Task extends Model
 
         $datetime1 = new DateTime($this->time_in);
         $datetime2 = new DateTime($this->time_out);
+        $interval = $datetime1->diff($datetime2);
+
+        if ($interval->format('%d') > 0) {
+            $timeString .= $interval->format('%d') . ' Days ';
+        }
+        if ($interval->format('%h') > 0) {
+            $timeString .= $interval->format('%h') . ' Hours ';
+        }
+        if ($interval->format('%i') > 0) {
+            $timeString .= $interval->format('%i') . ' Minutes ';
+        }
+//        $formattedDate = $interval->format('%h')." Hours ".$interval->format('%i')." Minutes";
+        return $timeString;
+    }
+
+    public function getEstimatedBreakTime()
+    {
+        $timeString = null;
+
+        $datetime1 = new DateTime($this->lunch_start_time);
+        $datetime2 = new DateTime($this->lunch_end_time);
+        $interval = $datetime1->diff($datetime2);
+
+        if ($interval->format('%d') > 0) {
+            $timeString .= $interval->format('%d') . ' Days ';
+        }
+        if ($interval->format('%h') > 0) {
+            $timeString .= $interval->format('%h') . ' Hours ';
+        }
+        if ($interval->format('%i') > 0) {
+            $timeString .= $interval->format('%i') . ' Minutes ';
+        }
+//        $formattedDate = $interval->format('%h')." Hours ".$interval->format('%i')." Minutes";
+        return $timeString;
+    }
+
+    public function getCalculatedBreakTime()
+    {
+        $timeString = null;
+
+        $datetime1 = new DateTime($this->break_in);
+        $datetime2 = new DateTime($this->break_out);
         $interval = $datetime1->diff($datetime2);
 
         if ($interval->format('%d') > 0) {

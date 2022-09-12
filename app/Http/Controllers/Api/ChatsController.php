@@ -39,6 +39,7 @@ class ChatsController extends Controller
      */
     public function sendMessage(Request $request)
     {
+//        dd(env('PUSHER_APP_ID'), env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_CLUSTER'));
         $user = request()->user();
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../assets/plugins/bootstrap/css/bootstrap.min.css"/>
     <!-- Core css -->
     <link rel="stylesheet" href="../assets/css/style.min.css"/>
+    @yield('style')
 </head>
 <body class="font-muli theme-cyan gradient">
 <div class="auth option2">
@@ -23,26 +24,29 @@
                 </div>
                 <form action="{{route('admin.do_login')}}" method="POST">
                     <div class="form-group">
-                        <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                               aria-describedby="emailHelp" placeholder="Enter email">
                     </div>
                     @if (isset($errors) && $errors->has('email'))
                         <span class="help-block">
-                            <strong>{{ $message }}</strong>
+                            <strong>{{ $errors->first('email') }}</strong>
                         </span>
                     @endif
                     <div class="form-group">
                         <label class="form-label">
-                            <a href="forgot-password.html" class="mb-2 text-white float-right small">I forgot password</a></label>
-                        <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <a href="forgot-password.html" class="mb-2 text-white float-right small">I forgot
+                                password</a></label>
+                        <input name="password" type="password" class="form-control"
+                               placeholder="Password">
                     </div>
                     @if (isset($errors) && $errors->has('password'))
                         <span class="help-block">
-                            <strong>{{ $message }}</strong>
+                            <strong>{{ $errors->first('password') }}</strong>
                         </span>
                     @endif
-{{--                    @if(session()->has('error'))--}}
-{{--                        <p class="text-danger">{{session()}}</p>--}}
-{{--                    @endif--}}
+                    {{--                    @if(session()->has('error'))--}}
+                    {{--                        <p class="text-danger">{{session()}}</p>--}}
+                    {{--                    @endif--}}
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary btn-block" title="">Sign in</button>
                     </div>
@@ -57,5 +61,6 @@
 <script src="../assets/bundles/lib.vendor.bundle.js"></script>
 <!-- Start project main js  and page js -->
 <script src="../assets/js/core.js"></script>
+@yield('scripts')
 </body>
 </html>
