@@ -31,8 +31,12 @@ class JobsListResource extends JsonResource
             'date' => $this->date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
-            'estimated_working_hours' => "2 hours", //TODO will dynamic soon
-            'working_hours' => "3 days 45 minutes", //TODO will dynamic soon
+            'before' => $this->before,
+            'before_type' => $this->before_type,
+            'after' => $this->after,
+            'after_type' => $this->after_type,
+            'estimated_working_hours' => $this->getEstimatedTime(),
+            'working_hours' => $this->getCalculatedTotalTime(),
             'time_in_latitude' => $this->time_in_latitude,
             'time_in_longitude' => $this->time_in_longitude,
             'urgency' => $this->urgency,
