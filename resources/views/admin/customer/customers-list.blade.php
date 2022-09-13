@@ -114,18 +114,16 @@
                                                         <div class="font-15 font-weight-bold" id="status"></div>
                                                     </td>
                                                 </tr>
-                                                <span id="addresses">
-                                                    <tr>
-                                                        <td width="50%">
-                                                            <div class="font-15">Address 1</div>
-                                                        </td>
-                                                        <td width="50%">
-                                                            <div class="font-15 font-weight-bold">3 Renaissance Square,
-                                                                White Plains, NY 10601
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </span>
+                                                <tr>
+                                                    <td width="50%">
+                                                        <div class="font-15">Address 1</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold">3 Renaissance Square,
+                                                            White Plains, NY 10601
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -152,7 +150,7 @@
             $('#contact_no').text(user.contact_no);
             $('#email').text(user.email);
             $('#status').text(user.status).css('textTransform', 'capitalize');
-            $('#addresses').append('<tr><td width="50%"><div class="font-15">Address 1</div></td><td width="50%"><div class="font-15 font-weight-bold"></div></td> </tr>');
+            $('tbody').append('<tr><td width="50%"><div class="font-15">Address 2</div></td><td width="50%"><div class="font-15 font-weight-bold"></div></td> </tr>');
 
             $('#viewDetailModal').modal('show');
         }

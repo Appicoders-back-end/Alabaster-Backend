@@ -88,7 +88,7 @@ class AuthController extends Controller
             return apiResponse(false, __('Please verify your account'));
         }
 
-        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => strtolower($request->role)])) {
             return apiResponse(false, __("Invalid Credentials"));
         }
 
