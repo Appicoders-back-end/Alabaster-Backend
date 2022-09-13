@@ -34,10 +34,9 @@
                 </li>
                 <li class=" border-bottom"><a href="work-order.html"><span
                             class="ml-3 text-white">Work Order</span></a></li>
-                <li class=" border-bottom"><a href="category.html"><span class="ml-3 text-white">Category</span></a>
+                <li class=" border-bottom"><a href="{{route('admin.categories')}}"><span class="ml-3 text-white">Category</span></a>
                 </li>
-                <li class=" border-bottom"><a href="queries.html"><span
-                            class="ml-3 text-white">Queries</span></a></li>
+                <li class=" border-bottom"><a href="{{route('admin.contact-queries')}}"><span class="ml-3 text-white">Queries</span></a></li>
                 <li class=" border-bottom"><a href="term-service.html"><span class="ml-3 text-white">Terms & Service </span></a>
                 </li>
                 <li class=" border-bottom"><a href="privacy-policy.html"><span class="ml-3 text-white">Privacy & Policy</span></a>

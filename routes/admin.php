@@ -24,10 +24,17 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
 
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [UserController::class, 'customers']);
+        /*users*/
         Route::get('customers', [UserController::class, 'customers'])->name('admin.customers');
         Route::get('cleaners', [UserController::class, 'cleaners'])->name('admin.cleaners');
         Route::get('contractors', [UserController::class, 'contractors'])->name('admin.contractors');
+        Route::post('updateUserStatus/{id}', [UserController::class, 'updateStatus'])->name('admin.updateUserStatus');
+        /*contact queries*/
+        Route::get('contact-queries', [AdminController::class, 'contactQueries'])->name('admin.contact-queries');
+        /*subscriptions*/
         Route::get('subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
+        /*categories*/
+        Route::get('categories', [AdminController::class, 'categories'])->name('admin.categories');
         Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
     });
 });

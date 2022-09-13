@@ -47,12 +47,21 @@ class UserController extends Controller
      */
     public function contractors(Request $request)
     {
-        $baseUsers = User::where('role', User::Contractor);
+        $baseUsers = User::with('addresses')->where('role', User::Contractor);
         $baseUsers->when($request->search, function ($query) use ($request) {
             return $query->where('name', 'like', '%' . $request->search . '%');
         });
         $users = $baseUsers->paginate(10);
 
         return view('admin.contractor.contractors-list', ['users' => $users]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->status = $request->status;
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => __("User status has been updated successfully")]);
     }
 }

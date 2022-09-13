@@ -189,7 +189,7 @@ class JobController extends Controller
             return apiResponse(false, $e->getMessage());
         }
 
-        return apiResponse(true, 'Job has been created successfully');
+        return apiResponse(true, 'Job has been created successfully. Don\'t forget to add checklist.');
     }
 
     /**
@@ -709,10 +709,6 @@ class JobController extends Controller
      */
     public function getCompletedJobsLocations(Request $request)
     {
-//        if (auth()->user()->role != User::Contractor) {
-//            return apiResponse(false, __('This request is only accessible for contractor type user'));
-//        }
-
         $baseJobIds = Task::leftJoin('user_addresses as address', 'address.id', 'tasks.address_id')
             ->leftJoin('users as customers', 'customers.id', 'tasks.customer_id')
 //            ->where('tasks.contractor_id', auth()->user()->id)
