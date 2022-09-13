@@ -90,7 +90,7 @@ class AuthController extends Controller
 
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => strtolower($request->role)])) {
             return apiResponse(false, __("Invalid Credentials"));
-        } 
+        }
 
         $user = User::where('id', auth()->user()->id)->first();
         $user->is_online = '1';
