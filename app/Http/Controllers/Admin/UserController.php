@@ -40,4 +40,19 @@ class UserController extends Controller
 
         return view('admin.cleaner.cleaners-list', ['users' => $users]);
     }
+
+    /**
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function contractors(Request $request)
+    {
+        $baseUsers = User::where('role', User::Contractor);
+        $baseUsers->when($request->search, function ($query) use ($request) {
+            return $query->where('name', 'like', '%' . $request->search . '%');
+        });
+        $users = $baseUsers->paginate(10);
+
+        return view('admin.contractor.contractors-list', ['users' => $users]);
+    }
 }

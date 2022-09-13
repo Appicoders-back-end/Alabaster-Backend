@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\UserSubscription;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -25,6 +26,7 @@ class AuthController extends Controller
     public function signUp(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => ['required', 'min:8'],
             'confirm_password' => 'required|same:password'
@@ -39,7 +41,7 @@ class AuthController extends Controller
             $stripeCustomer = $stripe->customers->create([
 
                 'email' => $request->email,
-                'name' => $request->username,
+                'name' => $request->name,
             ]);
 
             $user = new user();
@@ -96,7 +98,7 @@ class AuthController extends Controller
         $user->save();
         $user->token = $user->createToken('MyAuthToken')->accessToken;
         $user->addresses;
-//        $user->membership = Subscription::leftJoin('user_subscriptions', );
+        $user->is_subscribed = UserSubscription::where('user_id', $user->id)->count() > 0 ? true : false;
         if ($user->role != User::Contractor) {
             $user->contractor_no = User::find($user->created_by)->contact_no;
         }

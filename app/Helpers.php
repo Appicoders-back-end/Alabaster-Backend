@@ -24,6 +24,21 @@ if (!function_exists('apiResponse')) {
     }
 }
 
+if (!function_exists('formattedTime')) {
+
+    /**
+     * @param $time
+     * @return string|null
+     */
+    function formattedTime($time)
+    {
+        if (!$time) {
+            return null;
+        }
+        return date('H:i A', strtotime($time));
+    }
+}
+
 if (!function_exists('SendNotification')) {
     /**
      * Send Notification to Device

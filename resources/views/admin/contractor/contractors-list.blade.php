@@ -9,16 +9,13 @@
                         <div class="table-responsive">
                             <table class="table table-hover table-vcenter text-nowrap table-striped mb-0">
                                 <div class="all-users row">
-                                    <h4 class=" text-dark font-weight-bold col-9">Cleaners</h4>
+                                    <h4 class=" text-dark font-weight-bold col-9">Supervisors/Contractors</h4>
                                 </div>
                                 <thead class="bg-dark">
                                 <tr>
                                     <th class="text-white">Name</th>
                                     <th class="text-white">Phone No</th>
                                     <th class="text-white">Email Address</th>
-                                    <th class="text-white">Category</th>
-                                    <th class="text-white">Start Time</th>
-                                    <th class="text-white">End Time</th>
                                     <th class="text-white">Status</th>
                                     <th class="text-white">Action</th>
                                 </tr>
@@ -30,12 +27,9 @@
                                             <div class="font-15">{{$user->name}}</div>
                                         </td>
                                         <td>
-                                            <div class="font-15">{{$user->contact_no}}</div>
+                                            <div class="font-15">{{$user->contact_no ?? '-'}}</div>
                                         </td>
                                         <td>{{$user->email}}</td>
-                                        <td>{{$user->category ? $user->category->name : null}}</td>
-                                        <td>{{$user->working_start_time != null ? formattedTime($user->working_start_time) : '-'}}</td>
-                                        <td>{{$user->working_end_time != null ? formattedTime($user->working_end_time) : '-'}}</td>
                                         <td>
                                             <select class="form-control" name="status">
                                                 <option {{$user->status == 'active' ? 'selected' : null}}>Active
@@ -56,12 +50,12 @@
                                 </tbody>
                             </table>
 
+
                             <div class="col-sm-12 col-md-7 mt-3">
-                                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                <div class="dataTables_paginate paging_simple_numbers">
                                     {{$users->appends(request()->all())->links('vendor.pagination.bootstrap-4')}}
                                 </div>
                             </div>
-
 
                             <!-- The Modal View -->
                             <div class="modal fade" id="myModal2">
@@ -70,7 +64,7 @@
 
                                         <!-- Modal Header -->
                                         <div class="modal-header">
-                                            <h4 class="text-white">Cleaner View</h4>
+                                            <h4 class="text-white">Customer View</h4>
                                             <button type="button" class="close text-white" data-dismiss="modal">
                                                 &times;
                                             </button>
@@ -132,39 +126,6 @@
                                                 <tr>
 
                                                     <td width="50%">
-                                                        <div class="font-15">Category</div>
-                                                    </td>
-                                                    <td width="50%">
-                                                        <div class="font-15 font-weight-bold">Abrasives</div>
-                                                    </td>
-
-                                                </tr>
-
-                                                <tr>
-
-                                                    <td width="50%">
-                                                        <div class="font-15">Start Time</div>
-                                                    </td>
-                                                    <td width="50%">
-                                                        <div class="font-15 font-weight-bold">10:00 AM</div>
-                                                    </td>
-
-                                                </tr>
-
-                                                <tr>
-
-                                                    <td width="50%">
-                                                        <div class="font-15">End Time</div>
-                                                    </td>
-                                                    <td width="50%">
-                                                        <div class="font-15 font-weight-bold">02:00 PM</div>
-                                                    </td>
-
-                                                </tr>
-
-                                                <tr>
-
-                                                    <td width="50%">
                                                         <div class="font-15">Status</div>
                                                     </td>
                                                     <td width="50%">
@@ -173,29 +134,45 @@
 
                                                 </tr>
 
+                                                <tr>
+
+                                                    <td width="50%">
+                                                        <div class="font-15">Address 1</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold">3 Renaissance Square,
+                                                            White Plains, NY 10601
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td width="50%">
+                                                        <div class="font-15">Address 2</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold">White Plains, NY
+                                                            10601
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
                                                 </tbody>
                                             </table>
-
-
                                         </div>
-
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-dark" data-dismiss="modal">Close
                                             </button>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
-
     </div>
 @endsection

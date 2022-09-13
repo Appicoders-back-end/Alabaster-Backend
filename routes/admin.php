@@ -26,6 +26,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::get('/', [UserController::class, 'customers']);
         Route::get('customers', [UserController::class, 'customers'])->name('admin.customers');
         Route::get('cleaners', [UserController::class, 'cleaners'])->name('admin.cleaners');
+        Route::get('contractors', [UserController::class, 'contractors'])->name('admin.contractors');
+        Route::get('subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
         Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
     });
 });
