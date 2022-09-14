@@ -6418,7 +6418,7 @@ font-size:.8125rem;
 	z-index: 999
 }
 .offcanvas-active #header_top {
-background-color: #f6921e;	
+background-color: #f6921e;
 border-right: 1px solid rgba(0,40,100,0.12);
 }
 @media screen and (max-width: 767px) {
@@ -6431,7 +6431,7 @@ border-right: 1px solid rgba(0,40,100,0.12);
 }
 @media screen and (max-width: 1200px) {
 .offcanvas-active #left-sidebar {
-	left: 0;
+	left: 50px;
 	position: fixed;
 	z-index: 99
 }
@@ -6582,7 +6582,7 @@ body.aside-opened .aside {
 }
 @media screen and (max-width: 1200px) {
 #header_top {
-	background: #2f663e;
+	background: #f6921e;
 	border-right: 1px solid rgba(0,40,100,0.12)
 }
 }
@@ -6781,24 +6781,20 @@ background-color: #f6921e;	flex-direction: row;
 	-moz-border-radius: 0;
 	border-radius: 0;
 	border-right: 2px solid transparent;
-	color: #4D5052;
+	color: #fff;
 	position: relative;
 	padding: 10px 10px 10px 35px;
 	outline-width: 0;
 	font-size: 15px
 }
 .metismenu a:hover {
-	color: #292b30
+	color: #f6921e
 }
-/*.metismenu .active>a {
+.active {
 	font-weight: 600;
-	color: #292b30;
-	border-color: #292b30
-}*/
-.metismenu .active ul .active a {
-	color: #292b30;
-	background: transparent
+	color: #f6921e !important;
 }
+
 .metismenu ul {
 	padding: 0;
 	list-style: none
@@ -6908,7 +6904,7 @@ background-color: #f6921e;	flex-direction: row;
 	position: fixed;
 	top: 0;
 	bottom: 0;
-	
+
 }
 @media screen and (max-width: 1200px) {
 #left-sidebar {
@@ -7520,7 +7516,8 @@ left:.75rem
 	color: #4D5052
 }
 .table {
-	color: inherit
+	color: inherit;
+    color: #212529 !important;
 }
 .table thead th {
 	border-top: 0;
@@ -12765,7 +12762,7 @@ padding:.5rem 1rem
 
 
 .metismenu a:hover {
-    color: #fff;
+    color: #f6921e;
 }
 .modal-title {
 	text-align: center;

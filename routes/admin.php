@@ -35,6 +35,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::get('subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
         /*categories*/
         Route::get('categories', [AdminController::class, 'categories'])->name('admin.categories');
+        /*pages*/
+        Route::get('terms', [AdminController::class, 'terms'])->name('admin.terms');
+        Route::get('privacy', [AdminController::class, 'privacy'])->name('admin.privacy');
+        Route::post('update-page', [AdminController::class, 'updatePage'])->name('admin.update-page');
+        /*payments*/
+        Route::get('payments', [AdminController::class, 'payments'])->name('admin.payments');
         Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
     });
 });

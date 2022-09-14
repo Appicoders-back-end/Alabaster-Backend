@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('admin_assets')}}/images/favicon.ico" type="image/x-icon">
     <title>Alabaster Admin Panel</title>
 
     <!-- Bootstrap Core and vandor -->
-    <link rel="stylesheet" href="../assets/plugins/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../assets/plugins/dropify/css/dropify.min.css">
-    <link rel="stylesheet" href="../assets/plugins/summernote/dist/summernote.css"/>
-    <link rel="stylesheet" href="../assets/plugins/sweetalert/sweetalert.css">
+    <link rel="stylesheet" href="{{asset('admin_assets')}}/plugins/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{asset('admin_assets')}}/plugins/dropify/css/dropify.min.css">
+    <link rel="stylesheet" href="{{asset('admin_assets')}}/plugins/summernote/dist/summernote.css"/>
+    <link rel="stylesheet" href="{{asset('admin_assets')}}/plugins/sweetalert/sweetalert.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
           integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
     <!-- Core css -->
-    <link rel="stylesheet" href="../assets/css/style.min.css"/>
+    <link rel="stylesheet" href="{{asset('admin_assets')}}/css/style.min.css"/>
     @yield('style')
 </head>
 
@@ -32,7 +32,7 @@
     </div>
     <!-- Start Main leftbar navigation -->
     <div id="left-sidebar" class="sidebar">
-        <h5 class="brand-name"><img src="..\\assets\images\logo.png"></h5>
+        <h5 class="brand-name"><img src="{{asset('admin_assets')}}\images\logo.png"></h5>
         @include('admin.layouts.menu')
     </div>
 
@@ -48,7 +48,8 @@
                                 <input type="text" class="form-control" name="search"
                                        value="{{isset(request()->search) ? request()->search : null}}">
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn btn-outline-secondary" type="button">Search</button>
+                                    <button type="submit" class="btn btn-outline-secondary" type="button">Search
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -70,40 +71,27 @@
 </div>
 
 <!-- Start Main project js, jQuery, Bootstrap -->
-<script src="../assets/bundles/lib.vendor.bundle.js"></script>
+<script src="{{asset('admin_assets')}}/bundles/lib.vendor.bundle.js"></script>
 
 <!-- Start Plugin Js -->
-<script src="../assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-<script src="../assets/plugins/dropify/js/dropify.min.js"></script>
-<script src="../assets/bundles/summernote.bundle.js"></script>
-<script src="../assets/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="{{asset('admin_assets')}}/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="{{asset('admin_assets')}}/plugins/dropify/js/dropify.min.js"></script>
+<script src="{{asset('admin_assets')}}/bundles/summernote.bundle.js"></script>
+<script src="{{asset('admin_assets')}}/plugins/sweetalert/sweetalert.min.js"></script>
 
 <!-- Start project main js  and page js -->
-<script src="../assets/js/core.js"></script>
-<script src="assets/js/form/dropify.js"></script>
-<script src="assets/js/page/summernote.js"></script>
-<script src="assets/js/page/dialogs.js"></script>
+<script src="{{asset('admin_assets')}}/js/core.js"></script>
 <script>
 
     $(".sidebar-dropdown > a").click(function () {
         $(".sidebar-submenu").slideUp(200);
-        if (
-            $(this)
-                .parent()
-                .hasClass("active")
-        ) {
+        if ($(this).parent().hasClass("active")) {
             $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .parent()
-                .removeClass("active");
+            $(this).parent().removeClass("active");
         } else {
             $(".sidebar-dropdown").removeClass("active");
-            $(this)
-                .next(".sidebar-submenu")
-                .slideDown(200);
-            $(this)
-                .parent()
-                .addClass("active");
+            $(this).next(".sidebar-submenu").slideDown(200);
+            $(this).parent().addClass("active");
         }
     });
 
