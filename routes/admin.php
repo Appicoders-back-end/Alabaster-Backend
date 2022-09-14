@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         /*contact queries*/
         Route::get('contact-queries', [AdminController::class, 'contactQueries'])->name('admin.contact-queries');
         /*subscriptions*/
-        Route::get('subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
+        Route::resource('subscriptions', SubscriptionController::class);
         /*categories*/
         Route::get('categories', [AdminController::class, 'categories'])->name('admin.categories');
         /*pages*/

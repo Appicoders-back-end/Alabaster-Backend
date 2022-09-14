@@ -66,6 +66,7 @@
 
             </div>
         </div>
+        @include('admin.layouts.message')
         @yield('content')
     </div>
 </div>
