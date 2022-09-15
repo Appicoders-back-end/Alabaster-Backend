@@ -9,6 +9,7 @@ use App\Http\Resources\Contractor\Customers\CustomersListResource;
 use App\Mail\UserCreated;
 use App\Models\User;
 use App\Models\UserAddress;
+use App\Models\UserSubscription;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,19 +88,20 @@ class CustomerController extends Controller
 
     public function updateProfile(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
             // 'email' => 'required|email|unique:users,email,'. $request->user()->id,
             'contact_no' => 'required|numeric'
-        ]);
+        ],
+//            ['contact_no.required' => 'Enter Contact Number'],
+            ['contact_no.numeric' => 'Please Enter Valid Number']
+        );
 
         if ($validator->fails()) {
             return apiresponse(false, implode("\n", $validator->errors()->all()));
         }
 
         try {
-
             $data = $request->except(['profile_image', 'street', 'state', 'zipcode', 'addresses']);
             if($request->user()->role == User::Contractor || $request->user()->role == User::Customer){
                 unset($data['working_start_time']);
@@ -138,6 +140,7 @@ class CustomerController extends Controller
             }
             $user = User::where('id', $request->user()->id)->first();
             $user->addresses;
+            $user->is_subscribed = UserSubscription::where('user_id', $user->id)->count() > 0 ? true : false;
             return apiResponse(true, 'Profile has been updated successfully', $user);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());

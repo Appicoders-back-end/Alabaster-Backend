@@ -60,8 +60,35 @@ class SubscriptionController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'package_name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->messages())->withInput();
+        }
+
+        try {
+            $subs = Subscription::find($request->id);
+            $subs->package_name = $request->package_name;
+            $subs->price = $request->price;
+            $subs->interval_time = $request->interval_time;
+            $subs->description = $request->description;
+            $subs->save();
+
+            return redirect()->to('admin/subscriptions')->with('success', __('Plan has been created successfully!'));
+        } catch (\Exception $exception) {
+            return redirect()->to('admin/subscriptions')->with('error', $exception->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        $subs = Subscription::where('id', $id)->delete();
+        return redirect()->to('admin/subscriptions')->with('success', __('Plan has been deleted successfully!'));
     }
 }

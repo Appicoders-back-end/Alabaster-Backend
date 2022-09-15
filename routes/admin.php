@@ -34,6 +34,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::get('contact-queries', [AdminController::class, 'contactQueries'])->name('admin.contact-queries');
         /*subscriptions*/
         Route::resource('subscriptions', SubscriptionController::class);
+        Route::post('update_subscription', [SubscriptionController::class, 'update'])->name('admin.update_subscription');
+        Route::get('delete_subscription/{id}', [SubscriptionController::class, 'delete'])->name('admin.delete_subscription');
         /*categories*/
         Route::get('categories', [AdminController::class, 'categories'])->name('admin.categories');
         /*pages*/

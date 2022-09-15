@@ -5,7 +5,6 @@
         <div class="container-fluid">
             <div class="tab-content">
                 <div class="tab-pane active" id="">
-
                     <div class="row">
                         <div class="col-md-12">
                             <!-- Button to Open the Modal -->
@@ -56,8 +55,7 @@
                                 </div>
                             </div>
                             <!-- Edit Modal -->
-                            <div class="modal fade text-left" id="editModal"
-                                 style="display: none;" aria-hidden="true">
+                            <div class="modal fade text-left" id="editModal" style="display: none;" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
                                     <div class="modal-content">
                                         <!-- Modal Header -->
@@ -69,37 +67,37 @@
                                             </button>
                                         </div>
                                         <!-- Modal body -->
-                                        <div class="modal-body ">
-                                            <div class="md-form mr-3 ml-3 mt-2">
-                                                <label data-error="wrong" data-success="right"
-                                                       for="defaultForm-pass">Select
-                                                    Plan</label>
-                                                <select class="form-control border-dark"
-                                                        id="exampleFormControlSelect1">
-                                                    <option>Monthly Plan</option>
-                                                    <option>Quarterly Plan</option>
-                                                    <option>Yearly Plan</option>
-                                                </select>
-                                            </div>
-                                            <div class="md-form mr-3 ml-3 mt-2">
-                                                <label data-error="wrong" data-success="right"
-                                                       for="defaultForm-pass">Amount</label>
-                                                <input type="number"
-                                                       class=" mb-2 border-dark form-control validate">
-                                            </div>
+                                        <form action="" method="post" id="edit_form">
+                                            {{csrf_field()}}
+                                            <input type="hidden" name="id" id="edit_id" value="">
+                                            <!-- Modal body -->
+                                            <div class="modal-body ">
+                                                <div class="md-form mr-3 ml-3 mt-2">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Package Name</label>
+                                                    <input name="package_name" id="edit_package_name" type="text" class=" mb-2 border-dark form-control validate" required>
+                                                </div>
+                                                <div class="md-form mr-3 ml-3 mt-2">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Select Plan</label>
+                                                    <select name="interval_time" id="edit_interval_time" class="form-control border-dark">
+                                                        <option value="monthly">Monthly Plan</option>
+                                                        <option value="quarterly">Quarterly Plan</option>
+                                                        <option value="yearly">Yearly Plan</option>
+                                                    </select>
+                                                </div>
+                                                <div class="md-form mr-3 ml-3 mt-2">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Amount</label>
+                                                    <input name="price" id="edit_price" type="number" class=" mb-2 border-dark form-control validate" required>
+                                                </div>
 
-                                            <div class="md-form mr-3 ml-3 mt-2 mb-3">
-                                                <label data-error="wrong" data-success="right"
-                                                       for="defaultForm-pass">Description</label>
-                                                <textarea class="form-control border-dark"
-                                                          id="exampleFormControlTextarea1"
-                                                          rows="3"></textarea>
+                                                <div class="md-form mr-3 ml-3 mt-2 mb-3">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Description</label>
+                                                    <textarea name="description" id="edit_description" class="form-control border-dark" id="exampleFormControlTextarea1" rows="3" required></textarea>
+                                                </div>
                                             </div>
-
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button class="btn btn-dark">Save</button>
-                                        </div>
+                                            <div class="modal-footer d-flex justify-content-center">
+                                                <button class="btn btn-dark">Update</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -120,13 +118,12 @@
                                         </li>
                                     </ul>
                                     <div class="text-center mt-6">
-                                        <button type="button" class="btn btn-danger mt-3"
-                                                data-toggle="modal" data-target="#editModal">
+                                        <button type="button" class="btn btn-danger mt-3" onClick="return openEditModal({{$subscription}})">
                                             Edit
                                         </button>
-                                        <button type="button" class="btn btn-dark mt-3">
+                                        <a href="{{route('admin.delete_subscription', $subscription->id)}}" class="btn btn-dark mt-3" onclick="return confirm('Are you sure you want to delete?')">
                                             Delete
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -138,4 +135,19 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        function openEditModal(subs) {
+            let updateUrl = {!! json_encode(route('admin.update_subscription')) !!}
+            $('#edit_id').val(subs.id);
+            $('#edit_package_name').val(subs.package_name);
+            $('#edit_price').val(subs.price);
+            $('#edit_interval_time').val(subs.interval_time);
+            $('#edit_description').text(subs.description);
+
+            $('#edit_form').attr('action', updateUrl);
+            $('#editModal').modal('show');
+        }
+    </script>
 @endsection
