@@ -28,14 +28,15 @@ class CleanerController extends Controller
             $baseCleaners = User::whereIn('id', $completedJobsCleanerIds);
         } else {
             $baseCleaners = User::where('role', User::Cleaner)->where('created_by', auth()->user()->id);
-
-            $baseCleaners->when(request('name'), function ($query) use ($request) {
-                return $query->where('name', 'like', '%' . $request->name . '%');
-            });
-            $baseCleaners->when(request('category_id'), function ($query) use ($request) {
-                return $query->where('category_id', $request->category_id);
-            });
         }
+
+        $baseCleaners->when(request('name'), function ($query) use ($request) {
+            return $query->where('name', 'like', '%' . $request->name . '%');
+        });
+
+        $baseCleaners->when(request('category_id'), function ($query) use ($request) {
+            return $query->where('category_id', $request->category_id);
+        });
 
         $cleaners = $baseCleaners->paginate(10);
         $cleaners = CleanersListResource::collection($cleaners)->response()->getData(true);
