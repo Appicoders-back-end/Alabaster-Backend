@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SubscriptionController;
+use App\Http\Controllers\Admin\JobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::post('update-page', [AdminController::class, 'updatePage'])->name('admin.update-page');
         /*payments*/
         Route::get('payments', [AdminController::class, 'payments'])->name('admin.payments');
+        /*work orders*/
+        Route::get('work-orders', [JobController::class, 'getWorkRequest'])->name('admin.work-orders');
         Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
     });
 });

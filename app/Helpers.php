@@ -139,3 +139,18 @@ if (!function_exists('getStripeCustomerId')) {
         return $user->stripe_customer_id;
     }
 }
+
+if (!function_exists('formattedDate')) {
+
+    /**
+     * @param $date
+     * @return string|null
+     */
+    function formattedDate($date)
+    {
+        if (!$date) {
+            return null;
+        }
+        return date('m-d-Y', strtotime($date));
+    }
+}

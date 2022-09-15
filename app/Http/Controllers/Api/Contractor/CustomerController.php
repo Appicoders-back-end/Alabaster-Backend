@@ -92,10 +92,10 @@ class CustomerController extends Controller
             'name' => ['required'],
             // 'email' => 'required|email|unique:users,email,'. $request->user()->id,
             'contact_no' => 'required|numeric'
-        ],
-//            ['contact_no.required' => 'Enter Contact Number'],
-            ['contact_no.numeric' => 'Please Enter Valid Number']
-        );
+        ], [
+            'contact_no.required' => 'Enter Contact Number',
+            'contact_no.numeric' => 'Enter Valid Number'
+        ]);
 
         if ($validator->fails()) {
             return apiresponse(false, implode("\n", $validator->errors()->all()));
