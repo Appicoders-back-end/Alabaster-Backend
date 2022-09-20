@@ -26,7 +26,8 @@
                         <span class="ml-3">Store</span><i class="ml-3 fas fa-angle-down"></i>
                     </a>
                     <ul class="sub-menu">
-                        <li class=" border-top"><a href="store-detail.html">Store Detail</a></li>
+                        <li class=" border-top"><a href="{{route('admin.inventories')}}">Inventories</a></li>
+                        <li class=" border-top"><a href="{{route('admin.stores')}}">Stores</a></li>
                         <li class="border-top"><a href="inventory-request.html">Inventory Request </a></li>
                         <li class="border-top"><a href="inventory-report.html">Inventory Report </a></li>
                     </ul>
