@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -43,6 +44,30 @@ class AdminController extends Controller
         });
         $categories = $baseCategories->get();
         return view('admin.categories', ['categories' => $categories]);
+    }
+
+    public function storeCategories(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:categories,name',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->messages())->withInput();
+        }
+
+        try {
+            $category = new Category();
+            $category->name = $request->name;
+            if ($request->file('image')) {
+                $category->image = saveFile($request->file('image'));
+            }
+            $category->save();
+
+            return redirect()->to('admin/categories')->with('success', __('Category has been created successfully!'));
+        } catch (\Exception $exception) {
+            return redirect()->to('admin/categories')->with('error', $exception->getMessage());
+        }
     }
 
     /**

@@ -15,6 +15,15 @@
                 <?= htmlentities(Session::get('error'))?>
             </div>
         @endif
+        {{-- @if(Session::has('errors'))
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-dismissible" style="text-align:center;">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
+                    <strong>Error!</strong>
+                    <div>{{ $error }}</div>
+                </div>
+            @endforeach
+        @endif --}}
         </div>
     </div>
 </div>

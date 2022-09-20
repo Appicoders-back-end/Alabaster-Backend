@@ -15,6 +15,6 @@ class Category extends Model
             return null;
         }
 
-        return url('/storage/uploads/').'/'. $this['image'];
+        return url('/storage/uploads/') . '/' . $this['image'];
     }
 }
