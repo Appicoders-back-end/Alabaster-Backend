@@ -44,6 +44,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
 
         /*categories*/
         Route::get('categories', [AdminController::class, 'categories'])->name('admin.categories');
+        Route::post('categories/store', [AdminController::class, 'storeCategories'])->name('admin.categories.store');
 
         /*stores*/
         Route::get('stores', [StoreController::class, 'index'])->name('admin.stores');
@@ -56,6 +57,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::post('inventories/update', [InventoryController::class, 'update'])->name('admin.inventories.update');
         Route::get('store_inventories/{id}', [InventoryController::class, 'getStoreInventories'])->name('admin.store_inventories');
         Route::get('edit_store_inventories/{id}', [InventoryController::class, 'editStoreInventories'])->name('admin.edit_store_inventories');
+        Route::post('update_store_inventories', [InventoryController::class, 'updateStoreInventories'])->name('admin.update_store_inventories');
 
         /*pages*/
         Route::get('terms', [AdminController::class, 'terms'])->name('admin.terms');

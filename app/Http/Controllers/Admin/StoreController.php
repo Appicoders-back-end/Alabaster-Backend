@@ -37,7 +37,7 @@ class StoreController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:stores,name',
             'addresses' => 'required|array'
         ]);
 
@@ -76,7 +76,7 @@ class StoreController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'name' => 'required',
+            'name' => 'required|unique:inventories,name,', $request->id,
             'addresses' => 'required|array'
         ]);
 

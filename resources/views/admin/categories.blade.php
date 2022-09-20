@@ -23,7 +23,9 @@
                                 <tbody>
                                 @foreach($categories as $category)
                                     <tr>
-                                        <td><div class="font-15">{{$category->name}}</div></td>
+                                        <td>
+                                            <div class="font-15">{{$category->name}}</div>
+                                        </td>
                                         <td><img style="background-color: #000000" width="60" src="{{$category->getImageUrl()}}"></td>
                                     </tr>
                                 @endforeach
@@ -46,20 +48,22 @@
                     <button type="button" class="close text-white" data-dismiss="modal">×</button>
                 </div>
                 <!-- Modal body -->
-                <div class="modal-body ">
-                    <div class="md-form mr-3 ml-3 mt-3">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Category Name</label>
-                        <input type="text" class=" mb-2 border-dark form-control validate" placeholder="Enter Category Name">
+                <form action="{{route('admin.categories.store')}}" method="post" enctype="multipart/form-data">
+                    {{csrf_field()}}
+                    <div class="modal-body ">
+                        <div class="md-form mr-3 ml-3 mt-3">
+                            <label data-error="wrong" data-success="right" for="defaultForm-pass">Category Name</label>
+                            <input name="name" type="text" class=" mb-2 border-dark form-control validate" placeholder="Enter Category Name">
+                        </div>
+                        <div class="md-form mr-3 ml-3 mt-3">
+                            <label data-error="wrong" data-success="right" for="defaultForm-pass">Upload Image</label>
+                            <input name="image" type="file" class=" mb-2 border-dark form-control validate" accept="image/*">
+                        </div>
                     </div>
-                    <div class="md-form mr-3 ml-3 mt-3">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Upload Image</label>
-                        <input type="file" class=" mb-2 border-dark form-control validate">
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-dark">Save</button>
                     </div>
-
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button class="btn btn-dark">Save</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>

@@ -55,6 +55,10 @@ class InventoryController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -84,17 +88,6 @@ class InventoryController extends Controller
      */
     public function getStoreInventories(Request $request, $id)
     {
-        $baseStore = Store::with('inventories')->where('id', $id);
-        $baseStore->when($request->search, function ($query) use ($request) {
-            return $query->where('name', 'like', '%' . $request->search . '%');
-        });
-        $store = $baseStore->first();
-
-        return view('admin.stores.store-inventories', ['store' => $store, 'inventories' => $store->inventories]);
-    }
-
-    public function editStoreInventories(Request $request, $id)
-    {
         foreach (Inventory::get() as $row) {
             $storeInventory = StoreInventory::where('inventory_id', $row->id)->where('store_id', $id)->first();
             if ($storeInventory) {
@@ -114,6 +107,53 @@ class InventoryController extends Controller
         });
         $store = $baseStore->first();
 
+        return view('admin.stores.store-inventories', ['store' => $store, 'inventories' => $store->inventories]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Application|Factory|View
+     */
+    public function editStoreInventories(Request $request, $id)
+    {
+        $baseStore = Store::with('inventories')->where('id', $id);
+        $baseStore->when($request->search, function ($query) use ($request) {
+            return $query->where('name', 'like', '%' . $request->search . '%');
+        });
+        $store = $baseStore->first();
+
         return view('admin.stores.edit-store-inventories', ['store' => $store, 'inventories' => $store->inventories]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function updateStoreInventories(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'store_id' => 'required',
+            'inventories' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->messages())->withInput();
+        }
+
+        try {
+            foreach ($request->inventories as $row) {
+                $inventory = StoreInventory::where('inventory_id', $row['id'])->where('store_id', $request->store_id)->first();
+
+                $storeInventory = $inventory ? $inventory : new StoreInventory();
+                $storeInventory->inventory_id = $row['id'];
+                $storeInventory->store_id = $request['store_id'];
+                $storeInventory->quantity = $row['quantity'];
+                $storeInventory->save();
+            }
+            return redirect()->to('admin/store_inventories/' . $request->store_id)->with('success', __('Inventories has been updated successfully'));
+        } catch (\Exception $exception) {
+            return redirect()->to('admin/store_inventories/' . $request->store_id)->with('error', $exception->getMessage());
+        }
     }
 }
