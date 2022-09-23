@@ -53,19 +53,17 @@ if (!function_exists('SendNotification')) {
             if ($device_id) {
                 $factor = (new Factory())->withServiceAccount(
                     '{
-                        "type": "service_account",
-                        "project_id": "alabaster-66547",
-                        "private_key_id": "4f798c10df59be194e74c3a5668832ce252f0787",
-                        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCnppRi2eJp1KWS\n1gVPCfXdiAgYPJjUh2IBLorGhan2+8TMa6KAtmP1mJVnLxRjV2pMc5jtFXouYrZt\nMBGBx4g4lcEE2MGcIbRJrEqNyVQMpkCDm85ftX+MrbIFotDu4NIxGZOEdFT5PRVG\ntD2orfG2vG2FC4T16baI+zj9MXeljzj1wN8hqyGVQa5DsF8r1gYRn3lxP8ZfKiBo\n+7iVq1FcfEiPa37fQtRR8HJ8TqVvpDLH9aMn9V17fXcu6/LV8Hbq92u5nmS6Vkeo\nKONy9S6IFk1bbknhiT8ro4s6AxDQRQ7cmWbe12P6UX6mN6MIGwWfrtdolCvVCABK\nG/zujBpTAgMBAAECggEATUltib6hcqFt7SnOC7hvSH/QH4A8AmohI6NVpZx0FODP\nQl/ya7zpiwya/5UEJKHlZrY5zz5B88VdDSwGPhqCsXdUIsxcQQKGrxoGyqOAJE62\nWhXHR3cQBIYEljWPdThenfUI/Rx2Gepvdwdbj3oU/uWR5a5ATu+9zxtlk8+stTz4\n6q94GwrPdtWFyK8zXS8raXDlhMfOhkDkDB9uZN2agfnMVMGM0h2HKbPSv3iwznck\nbH3rG6vjKQvbr8T+QfPGlS6L7Jzr4VZj+fhwPPw8EwuNkqQnzNH46f/0rV+x99pa\nOBI3+QeyBol29axcJqfMrc8kSxlw7RjDgjFsoVwh2QKBgQDWMVb6Qi/weY0dgw84\n8tjK7t2TghIHHkaj7hmh/bza6RqoqFpMEhrvU6PFzpaWlYCeYOmsBiEQVpRSM5Nk\nYqDdgSMFG9MprxWTE10ZjLit/q9LC9d9i5vQexQ5XYtkZTeEn5vac03c7ONGZSU6\nfORzYMYuF3/1Ss2yprR0UMqAawKBgQDIX6d5weoPk/4byyY0kaQVG0oxGGchSPOi\nQyzv5/MCe/h/cwjdQfUf0UBSI4P4Xv8qpEfNlR4EMIPHzLlm5tX4AoSI47vhnDQU\n7IrL7NVCLMz509SDmda55RMF8ixGan/ZP5EcZGwlVylCfAsghlU800lbpN+x+pc7\nw6MyHS8nuQKBgQC6nkp1yO0TzBPTPrkomQ2h4fRT7OPgJ9TMR0s2BGljIe4EPIpP\n9QZatrjeQ1yY3rEtTKrLIpv0LDsWU7F7qSMXWsg0T0Xv74gQmLJo7F6L2nbIIA0k\naVrcjh/Uy1gDpNx2RMn5zrRsZEiwsLd6+g3hKNQCnJ70DLSjjvNy1GFa+QKBgFdr\nrFTp7qWnStlzc5LB7BWtV1w+KliSTIGBz2xIBXUTA2MPnFF0Qm8ES4zKo/xL7gX7\nsLwYEAWB6SzVvBoSIk5XQt26hjEzhmGOpiu8g3qgszlYW0KjbtSiBf+1He4G7wqo\nujXp9mkAMycnmW8yTKQCBuJt947eJvdTLrNhmj45AoGAIbwAUqmNSQGqmph2Lo68\nqu9wu6MmRkI3mx0PqSD77DCu/u82B8fI6uL6gdrTtY+HujGvTgJIQ24y+tIAsjZP\n2+gLnbzseznyhVsXtNYE8aAnqJftO34k9POgFG6N5X/lzk+06CpMe1JYITwErVrh\n+ImExSNPWjKClJf/5eJkdqk=\n-----END PRIVATE KEY-----\n",
-                        "client_email": "firebase-adminsdk-rbpub@alabaster-66547.iam.gserviceaccount.com",
-                        "client_id": "114432327285873759343",
-                        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                        "token_uri": "https://oauth2.googleapis.com/token",
-                        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-                        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rbpub%40alabaster-66547.iam.gserviceaccount.com"
-                    }'
-
-                );
+                      "type": "service_account",
+                      "project_id": "alabaster-73af0",
+                      "private_key_id": "0cc6e75b8fa36e08088bd41c83da9c098ce1a007",
+                      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9c5sIqRrU88yM\nNVZdMehcvZaI+GDwTnznp9Cp7EU0hSAhtV1iU3j9sbKFQOv1N23ZOjprjUQmluMM\nuYMCR58blRxpsiz9QN0/ni+HqHVL3Bj2QHcBI+677U4mRr4YQ+dHd92zh4Abw6GX\nIwO4q4g1amt1x1u+F1IyZYz3FdTUKip1dZeSGOrbnYeb6RZcKR8P0+nbmz6TnNKb\nTFAg6/DEdMPr5vZTM2ivE4HYcUejMebsSjwjYZTe+eHKNk4JN9Nsy8n0m9tquhQP\nOx/+OgWBhdqb7y3GrSq8ayVQ5bsLGP5hnpml+KVMutk+7DrgsYc9NgOSLIuAnRtM\nPs8GqxYbAgMBAAECggEAGEPYVZGjOCdJyaODPkiIJGi8ASse72h+IwWhekIi0wlC\nBk8+eLuMQaIi5WJdVnkU/r+wf9oGIpMs3ZJdL0uRG21LyFXj4UQPknhmSg/PhjnY\nkKHNHD5H85X/bnOdIWqBEuxNXxM521SBO+RmM570wTKyNNGl9ID0LDRJi9QmAE51\ny5ZqlFIe1snTt/JSZkVZ7TgHyGhoGbV3L4cqeWLqhOv/pyYuDqbc76NwKcDwMpSX\njWz+xJyFXIh+6OVlPtcg4mON0xJUlvz36FdBw37ge4l8JfvS5BSJkvZpaY8oLvlJ\ntVZ9QjVjax9Ua5Z09zYaEj83rtGhqhOnO4uOV6r68QKBgQDm4KkoqKO1H9Btb0Qr\nwZ0mv3ois2uYY6QZmZDI0UUHrLH/c85dH81GDPEbvyObCuEppiTEP9sJgQg9G20U\nbAAAGMjlr5JYnyc1V+5pRm2V6zmhm/ezU/TLklrHhKeV7gWSt0dy8NixYLQc7A2e\nJNSRoSr1UvUz8puGtTt6CsRoLwKBgQDSEPrYmG8TLqLgqYBuJ2TdlIukYDxSIaaY\nSFrpMVsI0M6Fq1Z4+DRvp+rmCDDitouYrQeiqK+oEFyGcoNCJXi7zGdoEBaDbQsg\nbgINL/DpgWCLPRXjfG+dNmKzEjAQEOSODEs9IfucUPOoaTp0jDFWtFddHRRQywXf\nB4bIG2VJ1QKBgCB3d1JAZMUTtDuvaea9U1wfkQ1QLdFAMdNnxPR4eTybDGzf3CU8\nU6GGMGG2f0tOPFufAYyXbjXn70Comq5EgbuBwL6L8giEWP8nXl9vh/mNGo2fYTXW\nmJYH/rwP64Ep956qJ2ICfHZ1It7uUvvqMfpIr8HP6Ktlcnl/At4mpXgBAoGAeU4O\n3QbhlY0nx156aKHdEEuYe/qKus7t2iBmRyUWMbgKmov/qmmCNjwcXGu8dx7869R3\nhUmt7fpMw+Law1bKKoB18lTf+1L7yuVbz+uwTddFPgKvYidYeMuQIWJOWOi4YwLc\na9f06SaiHc1uUSEn2K7ZiE6jjag/orRA88tGKWUCgYEAlGLqI3A1k+a27fw1noh5\nGnjHwlLaqTVuV9V3JBNNK4QJ6tlg6b6vOjtxQsyJIHZdzCqETGL9Y1HIe9mOMUL0\n39WsFqeVJ8RmlcWzNWsADL5aiGpbCihrIv/Fl7jfRvzC5yD2lHqepDw0lzv3seuo\n26QmYHUP9NsehPQ2Bstvids=\n-----END PRIVATE KEY-----\n",
+                      "client_email": "firebase-adminsdk-1i2lu@alabaster-73af0.iam.gserviceaccount.com",
+                      "client_id": "109916481288682373386",
+                      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                      "token_uri": "https://oauth2.googleapis.com/token",
+                      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1i2lu%40alabaster-73af0.iam.gserviceaccount.com"
+                    }');
                 $messaging = $factor->createMessaging();
                 $message = CloudMessage::withTarget('token', $device_id)
                     ->withNotification(Notification::create($title, $message));
@@ -80,7 +78,7 @@ if (!function_exists('SendNotification')) {
     }
 }
 
-if (!function_exists('saveImage')) {
+if (!function_exists('saveFile')) {
 
     function saveFile($file)
     {
