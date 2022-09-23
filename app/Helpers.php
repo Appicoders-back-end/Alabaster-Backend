@@ -62,7 +62,7 @@ if (!function_exists('SendNotification')) {
                               "token_uri": "https://oauth2.googleapis.com/token",
                               "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
                               "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1i2lu%40alabaster-73af0.iam.gserviceaccount.com"
-                            }');
+                            }'); 
                 $messaging = $factor->createMessaging();
                 $message = CloudMessage::withTarget('token', $device_id)
                     ->withNotification(Notification::create($title, $message));
