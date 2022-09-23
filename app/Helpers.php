@@ -51,19 +51,18 @@ if (!function_exists('SendNotification')) {
     {
         try {
             if ($device_id) {
-                $factor = (new Factory())->withServiceAccount(
-                    '{
-                      "type": "service_account",
-                      "project_id": "alabaster-73af0",
-                      "private_key_id": "0cc6e75b8fa36e08088bd41c83da9c098ce1a007",
-                      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9c5sIqRrU88yM\nNVZdMehcvZaI+GDwTnznp9Cp7EU0hSAhtV1iU3j9sbKFQOv1N23ZOjprjUQmluMM\nuYMCR58blRxpsiz9QN0/ni+HqHVL3Bj2QHcBI+677U4mRr4YQ+dHd92zh4Abw6GX\nIwO4q4g1amt1x1u+F1IyZYz3FdTUKip1dZeSGOrbnYeb6RZcKR8P0+nbmz6TnNKb\nTFAg6/DEdMPr5vZTM2ivE4HYcUejMebsSjwjYZTe+eHKNk4JN9Nsy8n0m9tquhQP\nOx/+OgWBhdqb7y3GrSq8ayVQ5bsLGP5hnpml+KVMutk+7DrgsYc9NgOSLIuAnRtM\nPs8GqxYbAgMBAAECggEAGEPYVZGjOCdJyaODPkiIJGi8ASse72h+IwWhekIi0wlC\nBk8+eLuMQaIi5WJdVnkU/r+wf9oGIpMs3ZJdL0uRG21LyFXj4UQPknhmSg/PhjnY\nkKHNHD5H85X/bnOdIWqBEuxNXxM521SBO+RmM570wTKyNNGl9ID0LDRJi9QmAE51\ny5ZqlFIe1snTt/JSZkVZ7TgHyGhoGbV3L4cqeWLqhOv/pyYuDqbc76NwKcDwMpSX\njWz+xJyFXIh+6OVlPtcg4mON0xJUlvz36FdBw37ge4l8JfvS5BSJkvZpaY8oLvlJ\ntVZ9QjVjax9Ua5Z09zYaEj83rtGhqhOnO4uOV6r68QKBgQDm4KkoqKO1H9Btb0Qr\nwZ0mv3ois2uYY6QZmZDI0UUHrLH/c85dH81GDPEbvyObCuEppiTEP9sJgQg9G20U\nbAAAGMjlr5JYnyc1V+5pRm2V6zmhm/ezU/TLklrHhKeV7gWSt0dy8NixYLQc7A2e\nJNSRoSr1UvUz8puGtTt6CsRoLwKBgQDSEPrYmG8TLqLgqYBuJ2TdlIukYDxSIaaY\nSFrpMVsI0M6Fq1Z4+DRvp+rmCDDitouYrQeiqK+oEFyGcoNCJXi7zGdoEBaDbQsg\nbgINL/DpgWCLPRXjfG+dNmKzEjAQEOSODEs9IfucUPOoaTp0jDFWtFddHRRQywXf\nB4bIG2VJ1QKBgCB3d1JAZMUTtDuvaea9U1wfkQ1QLdFAMdNnxPR4eTybDGzf3CU8\nU6GGMGG2f0tOPFufAYyXbjXn70Comq5EgbuBwL6L8giEWP8nXl9vh/mNGo2fYTXW\nmJYH/rwP64Ep956qJ2ICfHZ1It7uUvvqMfpIr8HP6Ktlcnl/At4mpXgBAoGAeU4O\n3QbhlY0nx156aKHdEEuYe/qKus7t2iBmRyUWMbgKmov/qmmCNjwcXGu8dx7869R3\nhUmt7fpMw+Law1bKKoB18lTf+1L7yuVbz+uwTddFPgKvYidYeMuQIWJOWOi4YwLc\na9f06SaiHc1uUSEn2K7ZiE6jjag/orRA88tGKWUCgYEAlGLqI3A1k+a27fw1noh5\nGnjHwlLaqTVuV9V3JBNNK4QJ6tlg6b6vOjtxQsyJIHZdzCqETGL9Y1HIe9mOMUL0\n39WsFqeVJ8RmlcWzNWsADL5aiGpbCihrIv/Fl7jfRvzC5yD2lHqepDw0lzv3seuo\n26QmYHUP9NsehPQ2Bstvids=\n-----END PRIVATE KEY-----\n",
-                      "client_email": "firebase-adminsdk-1i2lu@alabaster-73af0.iam.gserviceaccount.com",
-                      "client_id": "109916481288682373386",
-                      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                      "token_uri": "https://oauth2.googleapis.com/token",
-                      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-                      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1i2lu%40alabaster-73af0.iam.gserviceaccount.com"
-                    }');
+                $factor = (new Factory())->withServiceAccount('{
+                              "type": "service_account",
+                              "project_id": "alabaster-73af0",
+                              "private_key_id": "84e3a695d35144b65871de5ae8887adbf276a615",
+                              "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC86yLTq80rtcsd\nXcjRWF67ud5cFWP8tKlvfKWd9Dm0aqF3uz/rrMF/fo2WB5NpWAlaTZ/YcgiVCTBc\nTTF2deQllqlHtr/2fRfKKDgiOU/L2krXJ3eeZrfbvpJ5MEknY09y9+JyTxXoovyC\nks3QB1vEMKwHPR5yqEIvsH3qfr1SEp8KVhcIj7hmiyPgUxVPo23a2UX5Vdm1D8iU\nxpf+ZsrL/5836xvdNuqhQTaAsOOq8JANjgmAQ8WSTv0DmNnNbTqGGvS7kBmxEkkj\nR37RCTARYrpNXz0+LCC+jzNgTJS6yJXE9lBOnB8hYwdDR9oYx0lnnxAm1qvTm5b/\nhOZJOWwdAgMBAAECggEABjWCy14T/0BS/AGM1XQrOueSa0h1scTJsjhKMWPC1yi1\n0VuJYu7M3KqbyMcYQ6fva/UgqfDt6/rYrzPtsMte05OjasMfuIam46lIo2rqsgdY\nGqdGRNTyubY5lkhgvLqeGugSqUSecpF5+jWmerrL+8NiWz0mQfwnOFRVGYIPj8Hh\njzghXFNVyztwBjr1EhLxu1XsD0qlEhpdPjHYYnCwxKyl4G6rWM5cD4QKxN/yIm9I\nBtPD7y2uwi8yhS3PZyJMMz/xDH6qmu++QGYYR/1H9M3KQb7RqHzgTFq2VC+Dc/rr\ngqbr304C5sfb/LKvhyvB2TzwLupj+AwKkD9C8KRD2QKBgQDhOZGfH1TjzyQiVAFE\nXvba8MP9JbDZsCNkNiiER4lfBKktqBwhSJv6G83TAC/rPYf8kuiQZ8afvywH1Nrq\njTnxdGwT6eegXRTVdBXi/4ilmODU9bTPi6jkrQCFIVlO70V4U2BPinu5ubQFKBnr\n5bshLpo+DAuVxYfWhrHqZfaZlQKBgQDWu49EVzovs2r4DkMUF+lAtpQTYjHCofs8\nsijYLWwTzZZbFtwezao+4IOt124Q5S9go65HTz3fcF1IlVxOZeHSE0ng4UkGPOvS\nWzzRmDVVDgRYjYOlmShVMjLaI1L9sEZOSfyg2A9UDDbb9b6U2Jv4kFo4B/t0Xvpk\nxgbt8jM2aQKBgQDNf66L5pWZKoZIwCdLz+4jBG1/DCXZ6inQpM3BLFh+Fw2Z9/p6\nr/qJcVcSf+g5FrJ+VTjXkaicV10AZEm+m09ULSrz3IcYPfXlcP8LWKbAmcYC6ZGp\nkT9wLx37WttW92CGkmSdDrknU/aageVs5PciJphbprfnVw1DQzEQsyoXJQKBgQDH\ndSLnvQpMQqEK1tyR7n/4X199/cjw3FstDuQHoXFxl5ag98PxTOJlU1CdCq2vPeNb\nJc79Z+q2AH51rF84Z0RySP5nx3t4MuBt3dfJbFOltMZupsxw5qnjMSSxIPy2rqUv\nlWP215qtXEcc29ByHB4MrbFPuIJmns6BCrxnC4FseQKBgFYhqHX5WrvL1/X1/aA4\ntNCiA1z1shoomxv5HVVGOFyVQjRaetdhbfaK2gTnii75swuqRZKP9UKd9d0vXXK4\nItRKPbCxlaCl5dEBptZkgIpEoKj8/tq2IeYskToJ7tBYTeUvGwB3nhiXpXKq6I4L\nTGWoiDOa1TGEOinEpyFmeWwD\n-----END PRIVATE KEY-----\n",
+                              "client_email": "firebase-adminsdk-1i2lu@alabaster-73af0.iam.gserviceaccount.com",
+                              "client_id": "109916481288682373386",
+                              "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                              "token_uri": "https://oauth2.googleapis.com/token",
+                              "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                              "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1i2lu%40alabaster-73af0.iam.gserviceaccount.com"
+                            }');
                 $messaging = $factor->createMessaging();
                 $message = CloudMessage::withTarget('token', $device_id)
                     ->withNotification(Notification::create($title, $message));
