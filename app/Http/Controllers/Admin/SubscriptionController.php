@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Stripe\Plan;
+use Stripe\Product;
 
 class SubscriptionController extends Controller
 {
@@ -39,11 +41,26 @@ class SubscriptionController extends Controller
         }
 
         try {
+
+            $product = Product::create([
+                'name' => $request->package_name,
+                'description' => $request->description
+            ]);
+
+            $plan = Plan::create([
+                'amount' => $request->price * 100,
+                'currency' => 'usd',
+                'interval' => $request->interval_time,
+                'product' => $product->id,
+            ]);
+
             $subs = new Subscription();
             $subs->package_name = $request->package_name;
             $subs->price = $request->price;
             $subs->interval_time = $request->interval_time;
             $subs->description = $request->description;
+            $subs->product_id = $product->id;
+            $subs->plan_id = $plan->id;
             $subs->save();
 
             return redirect()->to('admin/subscriptions')->with('success', __('Plan has been created successfully!'));
