@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('viewMembersList', [MembersController::class, 'viewMembersList']);
     Route::get('updateGetStartedStatus', [GeneralController::class, 'updateGetStartedStatus']);
     Route::post('updateOnlineStatus', [AuthController::class, 'updateOnlineStatus']);
+    Route::post('deleteAccount', [AuthController::class, 'deleteAccount']);
 
     /*notifications*/
     Route::get('getUserNotifications', [NotificationsController::class, 'getUserNotifications']);
