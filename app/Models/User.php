@@ -31,6 +31,7 @@ class User extends Authenticatable
         'is_online',
         'stripe_customer_id',
         'device_id',
+        'status'
     ];
 
     /**

@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Stripe\StripeClient;
+use Stripe\Stripe;
 
 class SubscriptionController extends Controller
 {
@@ -72,20 +73,20 @@ class SubscriptionController extends Controller
         }
 
         try {
-//            $subscribe = $this->stripe->subscriptions->create([
-//                'customer' => $user->stripe_customer_id,
-//                'items' => [
-//                    ['price' => $plan->price],
-//                ],
-//            ]);
-
-            $payment = $this->stripe->charges->create([
-                "amount" => 100 * ($plan->price),
-                "currency" => "USD",
-                "source" => $paymentMethod->stripe_source_id,
-                "customer" => getStripeCustomerId($user),
-                "description" => "Membership Booking."
+            $subscribe = $this->stripe->subscriptions->create([
+                'customer' => getStripeCustomerId($user),
+                'items' => [
+                    ['price' => $plan->plan_id],
+                ],
             ]);
+
+//            $payment = $this->stripe->charges->create([
+//                "amount" => 100 * ($plan->price),
+//                "currency" => "USD",
+//                "source" => $paymentMethod->stripe_source_id,
+//                "customer" => getStripeCustomerId($user),
+//                "description" => "Membership Booking."
+//            ]);
 
             $packages = UserSubscription::create([
                 'user_id' => $user->id,

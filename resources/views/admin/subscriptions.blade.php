@@ -32,9 +32,9 @@
                                                 <div class="md-form mr-3 ml-3 mt-2">
                                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Select Plan</label>
                                                     <select name="interval_time" class="form-control border-dark" id="interval_time">
-                                                        <option value="monthly">Monthly Plan</option>
-                                                        <option value="quarterly">Quarterly Plan</option>
-                                                        <option value="yearly">Yearly Plan</option>
+                                                        <option value="week">Weekly Plan</option>
+                                                        <option value="month">Monthly Plan</option>
+                                                        <option value="year">Yearly Plan</option>
                                                     </select>
                                                 </div>
                                                 <div class="md-form mr-3 ml-3 mt-2">
@@ -79,9 +79,9 @@
                                                 <div class="md-form mr-3 ml-3 mt-2">
                                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Select Plan</label>
                                                     <select name="interval_time" id="edit_interval_time" class="form-control border-dark">
-                                                        <option value="monthly">Monthly Plan</option>
-                                                        <option value="quarterly">Quarterly Plan</option>
-                                                        <option value="yearly">Yearly Plan</option>
+                                                        <option value="week">Weekly Plan</option>
+                                                        <option value="month">Monthly Plan</option>
+                                                        <option value="year">Yearly Plan</option>
                                                     </select>
                                                 </div>
                                                 <div class="md-form mr-3 ml-3 mt-2">

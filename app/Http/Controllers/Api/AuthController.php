@@ -200,16 +200,16 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'old_password'          =>          'required_with:password|min:8',
-            'new_password'          =>          'min:8|required_with:confirm_password|same:confirm_password|different:old_password',
+            'old_password' => 'required_with:password|min:8',
+            'new_password' => 'min:8|required_with:confirm_password|same:confirm_password|different:old_password',
         ]);
         if ($validator->fails()) {
             return apiresponse(false, implode("\n", $validator->errors()->all()));
         }
         try {
-            $old_password   =   Hash::check($request->old_password, Auth::User()->password);
+            $old_password = Hash::check($request->old_password, Auth::User()->password);
             if ($old_password) {
-                $data['password']       =   Hash::make($request->new_password);
+                $data['password'] = Hash::make($request->new_password);
                 $user = User::findOrFail(auth()->user()->id)->update($data);
                 if ($user) {
                     return apiresponse(true, 'Password has been updated successfully', $data);
@@ -253,5 +253,16 @@ class AuthController extends Controller
         $user->save();
 
         return apiresponse(true, __('Status has been changed successfully'));
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function deleteAccount()
+    {
+        $user = auth()->user();
+        $user->update(['status' => User::InActive]);
+
+        return apiResponse(false, __("Your account has been deleted successfully"));
     }
 }
