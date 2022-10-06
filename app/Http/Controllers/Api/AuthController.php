@@ -263,6 +263,6 @@ class AuthController extends Controller
         $user = auth()->user();
         $user->update(['status' => User::InActive]);
 
-        return apiResponse(false, __("Your account has been deleted successfully"));
+        return apiResponse(true, __("Your account has been deleted successfully"));
     }
 }

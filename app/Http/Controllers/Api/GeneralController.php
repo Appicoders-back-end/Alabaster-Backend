@@ -31,7 +31,7 @@ class GeneralController extends Controller
         $categories = $baseCategories->get();
         $categories = CategoriesListResource::collection($categories);
 
-        return apiResponse(true, 'Data loaded succesfully', $categories);
+        return apiResponse(true, 'Data loaded successfully', $categories);
     }
 
     /**
