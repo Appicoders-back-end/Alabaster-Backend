@@ -81,7 +81,7 @@ class AuthController extends Controller
         $checkUser = User::where('email', $request->email)->where('status', User::Active)->first();
 
         if (!$checkUser) {
-            return apiResponse(false, __('Your account is inactive, contact to admin.'));
+            return apiResponse(false, __('Your account has been deleted, contact to admin.'));
         }
 
         if ($checkUser->email_verified_at == null) {
