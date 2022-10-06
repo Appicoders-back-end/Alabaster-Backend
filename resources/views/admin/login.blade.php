@@ -33,9 +33,6 @@
                         </span>
                     @endif
                     <div class="form-group">
-                        <label class="form-label">
-                            <a href="forgot-password.html" class="mb-2 text-white float-right small">I forgot
-                                password</a></label>
                         <input name="password" type="password" class="form-control"
                                placeholder="Password">
                     </div>
