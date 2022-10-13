@@ -41,6 +41,11 @@ class CustomerController extends Controller
         }
 
         try {
+
+            if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
+                return apiResponse(false, __('You have to buy membership'));
+            }
+
             $code = rand(1111, 9999);
             $user = new User();
             $user->name = $request->name;
@@ -103,7 +108,7 @@ class CustomerController extends Controller
 
         try {
             $data = $request->except(['profile_image', 'street', 'state', 'zipcode', 'addresses']);
-            if($request->user()->role == User::Contractor || $request->user()->role == User::Customer){
+            if ($request->user()->role == User::Contractor || $request->user()->role == User::Customer) {
                 unset($data['working_start_time']);
                 unset($data['working_end_time']);
                 unset($data['category_id']);
@@ -121,11 +126,11 @@ class CustomerController extends Controller
             if (isset($request->addresses) && count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
                     $newAddress = null;
-                    if(isset($address['address_id'])){
-                        $newAddress =  UserAddress::where('id', $address['address_id'])->first();
+                    if (isset($address['address_id'])) {
+                        $newAddress = UserAddress::where('id', $address['address_id'])->first();
                     }
 
-                    if($newAddress == null){
+                    if ($newAddress == null) {
                         $newAddress = new UserAddress();
                     }
 
