@@ -68,4 +68,17 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    public function membership()
+    {
+        return $this->hasOne(UserSubscription::class, 'user_id', 'id');
+    }
+
+    public function hasMembership()
+    {
+        if (!$this->membership()) {
+            return false;
+        }
+        return true;
+    }
 }

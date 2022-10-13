@@ -62,8 +62,12 @@ class CleanerController extends Controller
         }
 
         try {
-            $code = rand(1111, 9999);
 
+            if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
+                return apiResponse(false, __('You have to buy membership'));
+            }
+
+            $code = rand(1111, 9999);
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
