@@ -28,7 +28,7 @@
                                 <tbody>
                                 @foreach($jobs as $job)
                                     <tr>
-                                        <td>{{$job->id}}</td>
+                                        <td>{{$loop->iteration + $jobs->firstItem() - 1}}</td>
                                         <td>
                                             <div class="font-15">{{$job->customer != null ? $job->customer->name : '-'}}</div>
                                         </td>

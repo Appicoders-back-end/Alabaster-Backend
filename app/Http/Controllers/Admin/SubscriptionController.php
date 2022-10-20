@@ -42,12 +42,12 @@ class SubscriptionController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'package_name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric|min:1',
             'description' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->messages())->withInput();
+            return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
         try {
@@ -78,7 +78,6 @@ class SubscriptionController extends Controller
         }
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -90,7 +89,7 @@ class SubscriptionController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'package_name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric|min:1',
             'description' => 'required',
         ]);
 
@@ -112,6 +111,10 @@ class SubscriptionController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete($id)
     {
         $subs = Subscription::where('id', $id)->first();

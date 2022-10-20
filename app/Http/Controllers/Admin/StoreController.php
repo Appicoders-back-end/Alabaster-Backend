@@ -38,7 +38,10 @@ class StoreController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:stores,name',
-            'addresses' => 'required|array'
+            'addresses' => 'required|array',
+            'addresses.*.street' => 'required',
+            'addresses.*.state' => 'required',
+            'addresses.*.zipcode' => 'required',
         ]);
 
         if ($validator->fails()) {
