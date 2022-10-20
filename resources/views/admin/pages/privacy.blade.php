@@ -8,6 +8,7 @@
                     <h4 class="text-center text-dark font-weight-bold">Privacy and Policy</h4>
                 </div>
                 <form action="{{route('admin.update-page')}}" method="post" id="editForm">
+                    @csrf
                     <input type="hidden" name="id" value="{{$page->id}}">
                     <input type="hidden" name="page" value="privacy">
                     <textarea name="data" id="text-editor" class="mt-2 form-control validate" rows="10" placeholder="Edit Privacy Policy">{!! $page->privacy !!}</textarea>
