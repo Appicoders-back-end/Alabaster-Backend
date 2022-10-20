@@ -22,7 +22,7 @@
                                     <th class="text-white">Category Name</th>
                                     <th class="text-white">Urgency</th>
                                     <th class="text-white">Status</th>
-                                    <th class="text-white">Action</th>
+{{--                                    <th class="text-white">Action</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -41,11 +41,11 @@
                                         <td>{{$job->category != null ? $job->category->name : '-'}}</td>
                                         <td>{{$job->urgency}}</td>
                                         <td>{{ucfirst($job->status)}}</td>
-                                        <td>
+                                        {{--<td>
                                             <a href="#" class="btn btn-icon btn-dark">
                                                 <i class="fa fa-eye"></i>
                                             </a>
-                                        </td>
+                                        </td>--}}
                                     </tr>
                                 @endforeach
                                 </tbody>
