@@ -134,7 +134,7 @@ class InventoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'store_id' => 'required',
-            'inventories' => 'required|array',
+            'inventories' => 'required|array'
         ]);
 
         if ($validator->fails()) {

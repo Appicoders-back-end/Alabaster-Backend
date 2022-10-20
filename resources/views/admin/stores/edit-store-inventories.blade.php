@@ -19,6 +19,7 @@
                                 </thead>
                                 <tbody>
                                 <form method="post" action="{{route('admin.update_store_inventories')}}" id="inventoriesForm">
+                                    @csrf
                                     <input type="hidden" name="store_id" value="{{$store->id}}">
                                     @foreach($inventories as $key => $inventory)
                                         <tr>
@@ -27,7 +28,7 @@
                                             </td>
                                             <td>
                                                 <input type="hidden" name="inventories[{{$key}}][id]" value="{{$inventory->id}}">
-                                                <input type="number" name="inventories[{{$key}}][quantity]" class="form-control" value="{{$inventory->pivot->quantity}}">
+                                                <input type="number" name="inventories[{{$key}}][quantity]" class="form-control" value="{{$inventory->pivot->quantity}}" min="0">
                                             </td>
                                         </tr>
                                     @endforeach

@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             session()->flash('error', __('Invalid Credentials'));
-            return redirect()->back()->withInput();;//->with('error', __('Invalid Credentials'));
+            return redirect()->back()->withInput()->with('error', __('Invalid Credentials'));
         }
         Auth::loginUsingId(auth()->user()->id);
         return redirect()->route('admin.customers');

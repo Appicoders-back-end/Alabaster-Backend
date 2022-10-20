@@ -18,38 +18,39 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-center">
-                    <a class="header-brand" href="#"><img class="" src="{{asset('admin_assets')}}/images/logo.png" alt="">
+                    <a class="header-brand" href="#">
+                        <img class="" src="{{asset('admin_assets')}}/images/logo.png" alt="">
                     </a>
                     <div class="card-title mt-3 text-white">Login to your account</div>
                 </div>
                 <form action="{{route('admin.do_login')}}" method="POST">
+                    @csrf
                     <div class="form-group">
                         <input name="email" type="email" class="form-control" id="exampleInputEmail1"
                                aria-describedby="emailHelp" placeholder="Enter email">
                     </div>
                     @if (isset($errors) && $errors->has('email'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
+                        <p class="help-block">
+                            <strong class="text-danger">{{ $errors->first('email') }}</strong>
+                        </p>
                     @endif
                     <div class="form-group">
                         <input name="password" type="password" class="form-control"
                                placeholder="Password">
                     </div>
                     @if (isset($errors) && $errors->has('password'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
+                        <p class="help-block">
+                            <strong class="text-danger">{{ $errors->first('password') }}</strong>
+                        </p>
                     @endif
-                    {{--                    @if(session()->has('error'))--}}
-                    {{--                        <p class="text-danger">{{session()}}</p>--}}
-                    {{--                    @endif--}}
+                    @if(session()->has('error'))
+                        <p class="text-danger">{{ htmlentities(Session::get('error')) }}</p>
+                    @endif
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary btn-block" title="">Sign in</button>
+                        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
