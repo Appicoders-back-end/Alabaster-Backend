@@ -30,7 +30,7 @@ class SubscriptionController extends Controller
     public function getSubscriptionPackages()
     {
         $packages = Subscription::orderBy('created_at', 'DESC')->get();
-        $packages = $packages->each(function($package){
+        $packages = $packages->each(function ($package) {
             $package->is_subscribed = UserSubscription::where('plan_id', $package->id)->where('user_id', auth()->user()->id)->count() > 0 ? true : false;
         });
         return apiResponse(true, __('Subscription Packages Found'), $packages);
@@ -119,8 +119,10 @@ class SubscriptionController extends Controller
                 'user_id' => $user->id,
                 'inapp_plan_id' => $request->plan_id
             ]);
-
-            return apiresponse(true, 'Subscription plan has been subscribed successfully', $plan);
+            $user->is_subscribed = true;
+            $user->inapp_plan_id = $request->plan_id;
+            
+            return apiresponse(true, 'Subscription plan has been subscribed successfully', $user);
         } catch (\Exception $e) {
             return apiresponse(false, $e->getMessage());
         }
