@@ -98,10 +98,12 @@ class AuthController extends Controller
         $user->save();
         $user->token = $user->createToken('MyAuthToken')->accessToken;
         $user->addresses;
-        $user->is_subscribed = UserSubscription::where('user_id', $user->id)->count() > 0 ? true : false;
+        $subscription = UserSubscription::where('user_id', $user->id);
+        $user->is_subscribed = $subscription->count() > 0 ? true : false;
         if ($user->role != User::Contractor) {
             $user->contractor_no = User::find($user->created_by)->contact_no;
         }
+        $user->inapp_plan_id = $subscription->count() > 0 ? $subscription->first()->inapp_plan_id : null;
 
         broadcast(new \App\Events\OnlineStatus($user))->toOthers();
         return apiResponse(true, __('Logged in successfully'), $user);

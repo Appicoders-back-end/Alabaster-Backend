@@ -100,4 +100,29 @@ class SubscriptionController extends Controller
             return apiresponse(false, $e->getMessage());
         }
     }
+
+    public function inAppSubscribe(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'plan_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        $user = User::where("id", auth()->user()->id)->first();
+
+        try {
+
+            $packages = UserSubscription::create([
+                'user_id' => $user->id,
+                'inapp_plan_id' => $request->plan_id
+            ]);
+
+            return apiresponse(true, 'Subscription plan has been subscribed successfully', $plan);
+        } catch (\Exception $e) {
+            return apiresponse(false, $e->getMessage());
+        }
+    }
 }

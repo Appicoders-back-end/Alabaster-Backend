@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('showCards', [PaymentMethodController::class, 'showMethod']);
     Route::post('deleteCard', [PaymentMethodController::class, 'deleteCard']);
     Route::post('subscribe', [SubscriptionController::class, 'subscribe']);
+    Route::post('inAppSubscribe', [SubscriptionController::class, 'inAppSubscribe']);
     Route::get('getSubscriptionPackages', [SubscriptionController::class, 'getSubscriptionPackages']);
     Route::get('getSubscriptionHistory', [SubscriptionController::class, 'getSubscriptionHistory']);
 

@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class UserSubscription extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'plan_id', 'price', 'payment_method_id'];
+
+    protected $fillable = ['user_id', 'plan_id', 'price', 'payment_method_id', 'inapp_plan_id'];
 
     public function user()
     {
