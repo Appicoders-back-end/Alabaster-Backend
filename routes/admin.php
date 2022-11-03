@@ -45,6 +45,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         /*categories*/
         Route::get('categories', [AdminController::class, 'categories'])->name('admin.categories');
         Route::post('categories/store', [AdminController::class, 'storeCategories'])->name('admin.categories.store');
+        Route::post('categories/update', [AdminController::class, 'updateCategories'])->name('admin.categories.update');
 
         /*stores*/
         Route::get('stores', [StoreController::class, 'index'])->name('admin.stores');
