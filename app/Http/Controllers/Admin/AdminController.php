@@ -46,6 +46,10 @@ class AdminController extends Controller
         return view('admin.categories', ['categories' => $categories]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function storeCategories(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -65,6 +69,34 @@ class AdminController extends Controller
             $category->save();
 
             return redirect()->to('admin/categories')->with('success', __('Category has been created successfully!'));
+        } catch (\Exception $exception) {
+            return redirect()->to('admin/categories')->with('error', $exception->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function updateCategories(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:categories,name,'.$request->id,
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->messages())->withInput();
+        }
+
+        try {
+            $category = Category::find($request->id);
+            $category->name = $request->name;
+            if ($request->file('image')) {
+                $category->image = saveFile($request->file('image'));
+            }
+            $category->save();
+
+            return redirect()->to('admin/categories')->with('success', __('Category has been updated successfully!'));
         } catch (\Exception $exception) {
             return redirect()->to('admin/categories')->with('error', $exception->getMessage());
         }
