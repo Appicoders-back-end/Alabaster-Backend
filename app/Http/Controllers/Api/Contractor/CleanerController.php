@@ -79,7 +79,7 @@ class CleanerController extends Controller
             $user->working_start_time = $request->working_start_time;
             $user->working_end_time = $request->working_end_time;
             $user->save();
-            $user->markEmailAsVerified(true); //todo will be committed after signup process completed
+//            $user->markEmailAsVerified(true); //todo will be committed after signup process completed
             $address = new UserAddress();
             $address->user_id = $user->id;
             $address->street = $request->street;
@@ -91,7 +91,7 @@ class CleanerController extends Controller
 //                $user->categories()->attach($request->categories);
 //            }
 
-//            Mail::to($request->email)->send(new UserCreated($user, $code)); //todo will be committed after signup process completed
+            Mail::to($request->email)->send(new UserCreated($user, $code)); //todo will be committed after signup process completed
             $user->code = $code;
             return apiResponse(true, __('Cleaner has been created successfully'), $user);
         } catch (Exception $e) {
