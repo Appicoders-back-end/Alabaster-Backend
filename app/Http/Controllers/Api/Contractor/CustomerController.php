@@ -55,7 +55,7 @@ class CustomerController extends Controller
             $user->role = User::Customer;
             $user->created_by = Auth::user()->id;
             $user->save();
-            $user->markEmailAsVerified(true); //todo will be committed after signup process completed
+//            $user->markEmailAsVerified(true); //todo will be committed after signup process completed
             if (count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
                     $newAddress = new UserAddress();
@@ -66,7 +66,7 @@ class CustomerController extends Controller
                     $newAddress->save();
                 }
             }
-//            Mail::to($request->email)->send(new UserCreated($user, $code)); //todo will be committed after signup process completed
+            Mail::to($request->email)->send(new UserCreated($user, $code)); //todo will be committed after signup process completed
             $user->code = $code;
             return apiResponse(true, __('Customer has been created successfully'), $user);
         } catch (Exception $e) {

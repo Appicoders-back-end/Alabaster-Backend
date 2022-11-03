@@ -18,7 +18,7 @@
                     <ul class="sub-menu">
                         <li class="border-top border-bottom"><a href="{{route('admin.customers')}}">Customers</a></li>
                         <li class=""><a href="{{route('admin.cleaners')}}">Cleaner</a></li>
-                        <li class="border-top"><a href="{{route('admin.contractors')}}">Supervisor</a></li>
+                        <li class="border-top"><a href="{{route('admin.contractors')}}">Contractors</a></li>
                     </ul>
                 </li>
                 <li class="border-top">
