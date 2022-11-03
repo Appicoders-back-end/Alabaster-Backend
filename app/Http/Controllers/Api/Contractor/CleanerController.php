@@ -66,7 +66,7 @@ class CleanerController extends Controller
                 return apiResponse(false, __('You have to buy membership'));
             }
 
-            $code = rand(1111, 9999);
+            $code = "123456789";//rand(1111, 9999); //todo will dynamic after demo
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -79,7 +79,7 @@ class CleanerController extends Controller
             $user->working_start_time = $request->working_start_time;
             $user->working_end_time = $request->working_end_time;
             $user->save();
-//            $user->markEmailAsVerified(true); //todo will be committed after signup process completed
+            $user->markEmailAsVerified(true);
             $address = new UserAddress();
             $address->user_id = $user->id;
             $address->street = $request->street;

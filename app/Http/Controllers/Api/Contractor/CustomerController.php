@@ -45,7 +45,7 @@ class CustomerController extends Controller
                 return apiResponse(false, __('You have to buy membership'));
             }
 
-            $code = rand(1111, 9999);
+            $code = "123456789";//rand(1111, 9999); //todo will dynamic after demo
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -55,7 +55,7 @@ class CustomerController extends Controller
             $user->role = User::Customer;
             $user->created_by = Auth::user()->id;
             $user->save();
-//            $user->markEmailAsVerified(true); //todo will be committed after signup process completed
+            $user->markEmailAsVerified(true);
             if (count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
                     $newAddress = new UserAddress();
