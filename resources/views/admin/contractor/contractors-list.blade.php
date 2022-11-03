@@ -9,7 +9,7 @@
                         <div class="table-responsive">
                             <table class="table table-hover table-vcenter text-nowrap table-striped mb-0">
                                 <div class="all-users row">
-                                    <h4 class=" text-dark font-weight-bold col-9">Supervisors/Contractors</h4>
+                                    <h4 class=" text-dark font-weight-bold col-9">Contractors</h4>
                                 </div>
                                 <thead class="bg-dark">
                                 <tr>

@@ -44,7 +44,7 @@ class AuthController extends Controller
                 'name' => $request->name,
             ]);
 
-            $user = new user();
+            $user = new User();
             $user['stripe_customer_id'] = $stripeCustomer->id;
             $user->name = $request->name;
             $user->email = $request->email;

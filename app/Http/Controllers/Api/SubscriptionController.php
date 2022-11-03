@@ -117,11 +117,11 @@ class SubscriptionController extends Controller
 
             $packages = UserSubscription::create([
                 'user_id' => $user->id,
-                'inapp_plan_id' => $request->plan_id
+                'inapp_plan_id' => $request->plan_id,
             ]);
             $user->is_subscribed = true;
             $user->inapp_plan_id = $request->plan_id;
-            
+
             return apiresponse(true, 'Subscription plan has been subscribed successfully', $user);
         } catch (\Exception $e) {
             return apiresponse(false, $e->getMessage());
