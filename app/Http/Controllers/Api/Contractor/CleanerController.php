@@ -63,7 +63,7 @@ class CleanerController extends Controller
 
         try {
             if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
-                return apiResponse(false, __('You have to buy membership'));
+                return apiResponse(false, __('You have to buy membership first'));
             }
 
             $code = "123456789";//rand(1111, 9999); //todo will dynamic after demo

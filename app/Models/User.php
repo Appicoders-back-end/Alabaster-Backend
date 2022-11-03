@@ -76,7 +76,7 @@ class User extends Authenticatable
 
     public function hasMembership()
     {
-        if (!$this->membership()) {
+        if ($this->membership()->count() == 0) {
             return false;
         }
         return true;
