@@ -59,7 +59,7 @@ class WorkRequestController extends Controller
             $task->contractor_id = $user->created_by;
             $task->category_id = $request->category_id;
             $task->date = $request->date;
-            $task->start_time = date("H:i", strtotime($request->start_time));
+            $task->start_time = date("Y-m-d H:i:s", strtotime($request->date .' '. $request->start_time));
 //            $task->end_time = date("H:i", strtotime($request->end_time));
 //            $task->date_time = date('Y-m-d H:i:s', strtotime($task->date . ' ' . $task->time));
             $task->store_id = $request->store_id;
