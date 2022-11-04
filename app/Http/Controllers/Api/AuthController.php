@@ -78,10 +78,14 @@ class AuthController extends Controller
             return apiResponse(false, implode("\n", $validator->errors()->all()));
         }
 
-        $checkUser = User::where('email', $request->email)->where('status', User::Active)->first();
+        $checkUser = User::where('email', $request->email)->first();
 
-        if (!$checkUser) {
+        if ($checkUser->status == User::Delete) {
             return apiResponse(false, __('Your account has been deleted, contact to admin.'));
+        }
+
+        if ($checkUser->status == User::InActive) {
+            return apiResponse(false, __('Your account is inactive.'));
         }
 
         if ($checkUser->email_verified_at == null) {

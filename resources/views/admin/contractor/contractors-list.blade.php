@@ -36,6 +36,8 @@
                                                 </option>
                                                 <option value="inactive" {{$user->status == 'inactive' ? 'selected' : null}}>Inactive
                                                 </option>
+                                                <option value="delete" {{$user->status == 'delete' ? 'selected' : null}}>Delete
+                                                </option>
                                             </select>
                                         </td>
                                         <td>
