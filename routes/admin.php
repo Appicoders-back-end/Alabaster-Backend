@@ -56,6 +56,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::get('inventories', [InventoryController::class, 'index'])->name('admin.inventories');
         Route::post('inventories/store', [InventoryController::class, 'store'])->name('admin.inventories.store');
         Route::post('inventories/update', [InventoryController::class, 'update'])->name('admin.inventories.update');
+        Route::get('inventories/delete/{id}', [InventoryController::class, 'delete'])->name('admin.inventories.delete');
         Route::get('store_inventories/{id}', [InventoryController::class, 'getStoreInventories'])->name('admin.store_inventories');
         Route::get('edit_store_inventories/{id}', [InventoryController::class, 'editStoreInventories'])->name('admin.edit_store_inventories');
         Route::post('update_store_inventories', [InventoryController::class, 'updateStoreInventories'])->name('admin.update_store_inventories');

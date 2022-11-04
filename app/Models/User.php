@@ -18,6 +18,7 @@ class User extends Authenticatable
     public const Customer = 'customer';
     public const Active = 'active';
     public const InActive = 'inactive';
+    public const Delete = 'delete';
 
     /**
      * The attributes that are mass assignable.
