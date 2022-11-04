@@ -22,16 +22,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($inventories as $store)
+                                @foreach($inventories as $inventory)
                                     <tr>
                                         <td>
-                                            <div class="font-15">{{$store->name}}</div>
+                                            <div class="font-15">{{$inventory->name}}</div>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-icon btn-dark ml-2"
-                                                    onClick="return openEditModal({{$store}})"><i
+                                                    onClick="return openEditModal({{$inventory}})"><i
                                                     class="fas fa-edit"></i>
                                             </button>
+                                            <a href="{{route('admin.inventories.delete', $inventory->id)}}" type="button" class="btn btn-icon btn-danger ml-2"
+                                                    onClick="return confirm('Are you sure you want to delete?')"><i
+                                                    class="fas fa-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

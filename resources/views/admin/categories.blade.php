@@ -10,9 +10,9 @@
                             <table class="table table-hover table-vcenter text-nowrap table-striped mb-0">
                                 <div class="all-users row">
                                     <h4 class=" text-dark font-weight-bold col-9">Categories</h4>
-                                    {{-- <button type="button" class="btn btn-danger col-3" data-toggle="modal" data-target="#addCategoryModal">
+                                    <button type="button" class="btn btn-danger col-3" data-toggle="modal" data-target="#addCategoryModal">
                                         Add
-                                    </button> --}}
+                                    </button>
                                 </div>
                                 <thead class="bg-dark">
                                 <tr>

@@ -63,7 +63,7 @@ class InventoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'name' => 'required|unique:inventories,name,'. $request->id
+            'name' => 'required|unique:inventories,name,' . $request->id
         ]);
 
         if ($validator->fails()) {
@@ -76,6 +76,16 @@ class InventoryController extends Controller
             $inventory->save();
 
             return redirect()->to('admin/inventories')->with('success', __('Inventory has been created successfully!'));
+        } catch (\Exception $exception) {
+            return redirect()->to('admin/inventories')->with('error', $exception->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            Inventory::find($id)->delete();
+            return redirect()->to('admin/inventories')->with('success', __('Inventory has been deleted successfully!'));
         } catch (\Exception $exception) {
             return redirect()->to('admin/inventories')->with('error', $exception->getMessage());
         }
