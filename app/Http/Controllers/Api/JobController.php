@@ -212,7 +212,7 @@ class JobController extends Controller
      */
     public function getAllChecklist(Request $request)
     {
-        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->whereHas('job', function($query){
+        $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->whereHas('job', function ($query) {
             $query->where('contractor_id', auth()->user()->id);
         })->paginate(10);
         $checklist = ChecklistResource::collection($checklist)->response()->getData(true);
@@ -712,12 +712,12 @@ class JobController extends Controller
         $baseJobIds = Task::leftJoin('user_addresses as address', 'address.id', 'tasks.address_id')
             ->leftJoin('users as customers', 'customers.id', 'tasks.customer_id')
 //            ->where('tasks.contractor_id', auth()->user()->id)
-            ->where('tasks.cleaner_id', $request->cleaner_id)
+//            ->where('tasks.cleaner_id', $request->cleaner_id)
             ->where('tasks.status', Task::STATUS_COMPLETED);
 
-//        $baseJobIds->when($request->cleaner_id, function ($query) use ($request) {
-//            return $query->where('cleaner_id', $request->cleaner_id);
-//        });
+        $baseJobIds->when($request->cleaner_id, function ($query) use ($request) {
+            return $query->where('cleaner_id', $request->cleaner_id);
+        });
 
         $baseJobIds->when($request->name, function ($query) use ($request) {
             return $query->where(function ($searchQuery) use ($request) {
