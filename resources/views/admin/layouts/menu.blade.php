@@ -52,6 +52,9 @@
                 <li class="border-bottom">
                     <a class="{{ (request()->is('admin/privacy*')) ? 'active' : '' }}" href="{{route('admin.privacy')}}"><span class="ml-3">Privacy & Policy</span></a>
                 </li>
+                <li class="border-bottom">
+                    <a class="{{ (request()->is('admin/change-password*')) ? 'active' : '' }}" href="{{route('admin.changePassword')}}"><span class="ml-3">Change Password</span></a>
+                </li>
             </ul>
         </nav>
     </div>
