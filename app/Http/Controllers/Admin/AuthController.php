@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -55,5 +56,45 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('admin.login');
+    }
+
+    /**
+     * @return Application|Factory|View
+     */
+    public function changePassword()
+    {
+        return view('admin.change-password');
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => [
+                'required', function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, auth()->user()->password)) {
+                        $fail('Old Password didn\'t match');
+                    }
+                },
+            ],
+            'new_password' => ['required', 'min:8'],
+            'confirm_new_password' => 'required|same:new_password'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
+        try {
+            $user = auth()->user();
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            return redirect()->route('admin.changePassword')->with('success', __('Password has been updated successfully!'));
+        } catch (\Exception $exception) {
+            return redirect()->route('admin.changePassword')->with('error', $exception->getMessage());
+        }
     }
 }

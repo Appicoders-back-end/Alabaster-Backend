@@ -27,6 +27,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
 
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [UserController::class, 'customers']);
+        Route::get('change-password', [AuthController::class, 'changePassword'])->name('admin.changePassword');
+        Route::post('update-password', [AuthController::class, 'updatePassword'])->name('admin.updatePassword');
 
         /*users*/
         Route::get('customers', [UserController::class, 'customers'])->name('admin.customers');
