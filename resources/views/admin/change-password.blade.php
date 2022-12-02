@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-md-12 grid-margin stretch-card">
                         <div class="card-body">
-                            <h3 class="mb-3">Change Password</h3>
+                            <h4 class="text-dark font-weight-bold col-9">Change Password</h4>
                             <form method="post" action="{{route('admin.updatePassword')}}" class="forms-sample">
                                 @csrf
                                 <div class="mb-3">
