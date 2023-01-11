@@ -146,6 +146,7 @@ class CustomerController extends Controller
             $user = User::where('id', $request->user()->id)->first();
             $user->addresses;
             $user->is_subscribed = UserSubscription::where('user_id', $user->id)->count() > 0 ? true : false;
+            $user->category_name = $user->category ? $user->category->name : null;
             return apiResponse(true, 'Profile has been updated successfully', $user);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
