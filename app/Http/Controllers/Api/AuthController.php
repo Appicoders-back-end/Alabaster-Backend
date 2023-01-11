@@ -192,7 +192,7 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->first();
             $user->password = Hash::make($request->password);
             $user->remember_token = null;
-//            $user->save();
+            $user->save();
 //            $user->markEmailAsVerified(true);
 
             return apiResponse(true, __('Password has been changed successfully'));
