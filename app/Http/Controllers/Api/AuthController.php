@@ -111,6 +111,7 @@ class AuthController extends Controller
             $user->contractor_no = User::find($user->created_by)->contact_no;
         }
         $user->inapp_plan_id = $subscription->count() > 0 ? $subscription->first()->inapp_plan_id : null;
+        $user->category_name = $user->category ? $user->category->name : null;
 
         broadcast(new \App\Events\OnlineStatus($user))->toOthers();
         return apiResponse(true, __('Logged in successfully'), $user);
