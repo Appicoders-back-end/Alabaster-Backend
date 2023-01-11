@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Contractor;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Contractor\Cleaners\CleanersDetail;
 use App\Http\Resources\Contractor\Cleaners\CleanersListResource;
 use App\Mail\UserCreated;
 use App\Models\Task;
@@ -66,7 +65,7 @@ class CleanerController extends Controller
                 return apiResponse(false, __('You have to buy membership first'));
             }
 
-            $code = rand(1111, 9999);
+            $code = generateRandomString(8);
             $user = new User();
             $user->name = sprintf("%s %s", $request->first_name, $request->last_name);
             $user->first_name = $request->first_name;
