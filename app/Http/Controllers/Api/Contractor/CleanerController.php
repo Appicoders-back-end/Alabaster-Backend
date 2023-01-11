@@ -51,7 +51,7 @@ class CleanerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required'],
+            'first_name' => ['required'],
             'email' => 'required|email|unique:users,email',
             'contact_no' => 'required|numeric',
             'category_id' => 'required'
@@ -66,11 +66,13 @@ class CleanerController extends Controller
                 return apiResponse(false, __('You have to buy membership first'));
             }
 
-            $code = "123456789";//rand(1111, 9999); //todo will dynamic after demo
+            $code = rand(1111, 9999);
             $user = new User();
-            $user->name = $request->name;
+            $user->name = sprintf("%s %s", $request->first_name, $request->last_name);
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
             $user->email = $request->email;
-            $user->password = Hash::make('123456789');
+            $user->password = Hash::make($code);
             $user->remember_token = $code;
             $user->contact_no = $request->contact_no;
             $user->role = User::Cleaner;
@@ -91,7 +93,7 @@ class CleanerController extends Controller
 //                $user->categories()->attach($request->categories);
 //            }
 
-            Mail::to($request->email)->send(new UserCreated($user, $code)); //todo will be committed after signup process completed
+            Mail::to($request->email)->send(new UserCreated($user, $code));
             $user->code = $code;
             return apiResponse(true, __('Cleaner has been created successfully'), $user);
         } catch (Exception $e) {

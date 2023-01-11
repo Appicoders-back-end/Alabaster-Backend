@@ -31,7 +31,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required'],
+            'first_name' => ['required'],
             'email' => 'required|email|unique:users,email',
             'contact_no' => 'required|numeric'
         ]);
@@ -45,11 +45,13 @@ class CustomerController extends Controller
                 return apiResponse(false, __('You have to buy membership first.'));
             }
 
-            $code = "123456789";//rand(1111, 9999); //todo will dynamic after demo
+            $code = rand(1111, 9999);
             $user = new User();
-            $user->name = $request->name;
+            $user->name = sprintf("%s %s", $request->first_name, $request->last_name);
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
             $user->email = $request->email;
-            $user->password = Hash::make('123456789');
+            $user->password = Hash::make($code);
             $user->remember_token = $code;
             $user->contact_no = $request->contact_no;
             $user->role = User::Customer;
@@ -66,7 +68,7 @@ class CustomerController extends Controller
                     $newAddress->save();
                 }
             }
-            Mail::to($request->email)->send(new UserCreated($user, $code)); //todo will be committed after signup process completed
+            Mail::to($request->email)->send(new UserCreated($user, $code));
             $user->code = $code;
             return apiResponse(true, __('Customer has been created successfully'), $user);
         } catch (Exception $e) {
@@ -93,7 +95,7 @@ class CustomerController extends Controller
     public function updateProfile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required'],
+            'first_name' => ['required'],
             // 'email' => 'required|email|unique:users,email,'. $request->user()->id,
             'contact_no' => 'required|numeric'
         ], [
@@ -119,6 +121,7 @@ class CustomerController extends Controller
                 $file->move($featured_path, $fileName);
                 $data['profile_image'] = $fileName;
             }
+            $data['name'] = sprintf("%s %s", $request->first_name, $request->last_name);
             User::where('id', $request->user()->id)->update($data);
             // dd($user);
             // var_dump($data);die();

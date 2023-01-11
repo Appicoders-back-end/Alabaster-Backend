@@ -26,7 +26,8 @@ class AuthController extends Controller
     public function signUp(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'first_name' => 'required',
+//            'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => ['required', 'min:8'],
             'confirm_password' => 'required|same:password'
@@ -46,7 +47,9 @@ class AuthController extends Controller
 
             $user = new User();
             $user['stripe_customer_id'] = $stripeCustomer->id;
-            $user->name = $request->name;
+            $user->name = sprintf("%s %s", $request->first_name, $request->last_name);
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->role = User::Contractor;

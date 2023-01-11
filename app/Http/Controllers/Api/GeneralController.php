@@ -130,7 +130,7 @@ class GeneralController extends Controller
     public function testNotification()
     {
         try {
-            $token = "cQjgKud0Rj6XQ74hQYVD9y:APA91bHPeKr5F4AZpywYc226DVn6FVq7oaKzvqq4AaW4T4HFXQGfvVaK18l0AXI0BqOpnFBH5gtayuYovI1slN84k8K85V07oKEFtmOI9yygBpOYxVdQI0pM-lFPyr_ATVuxi9AYQp1y";
+            $token = "fbOJYPv2QdyO1CkseGY2Ld:APA91bF2XcJ3mgKjxOWwOE_vxAzNdDFY37PrTO16A1Ae9_voIPXb0eQ6VOtbv3-BnD9Li3bmPmyl8o1yNPXn1oSg-KxkgWw9bGizocnvgaaIRhZYNLseftRnGdqE69c1QquVWnHLmzs-";
             $title = "Hello from Alabaster";
             $message = sprintf("%s sent you work order request", "Test user");
             SendNotification($token, $title, $message);
