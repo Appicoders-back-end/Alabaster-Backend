@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Contractor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Contractor\Customers\AddressesResource;
-use App\Http\Resources\Contractor\Customers\CustomersDetail;
 use App\Http\Resources\Contractor\Customers\CustomersListResource;
 use App\Mail\UserCreated;
 use App\Models\User;
@@ -45,7 +44,7 @@ class CustomerController extends Controller
                 return apiResponse(false, __('You have to buy membership first.'));
             }
 
-            $code = rand(1111, 9999);
+            $code = generateRandomString(8);
             $user = new User();
             $user->name = sprintf("%s %s", $request->first_name, $request->last_name);
             $user->first_name = $request->first_name;
@@ -123,8 +122,7 @@ class CustomerController extends Controller
             }
             $data['name'] = sprintf("%s %s", $request->first_name, $request->last_name);
             User::where('id', $request->user()->id)->update($data);
-            // dd($user);
-            // var_dump($data);die();
+
             if (isset($request->addresses) && count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
                     $newAddress = null;

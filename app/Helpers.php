@@ -141,3 +141,20 @@ if (!function_exists('formattedDate')) {
         return date('m-d-Y', strtotime($date));
     }
 }
+
+if (!function_exists('generateRandomString')) {
+    /**
+     * @param $length
+     * @return string
+     */
+    function generateRandomString($length = 20): string
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+}
