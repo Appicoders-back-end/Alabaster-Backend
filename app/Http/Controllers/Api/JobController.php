@@ -98,6 +98,8 @@ class JobController extends Controller
             'customer_id' => 'required',
             'cleaner_id' => 'required',
             'address_id' => 'required|numeric',
+        ], [
+            'end_time.after' => "The end time must greater than start time",
         ]);
 
         if ($validator->fails()) {
