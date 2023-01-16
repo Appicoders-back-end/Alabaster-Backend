@@ -40,7 +40,7 @@ class WorkRequestController extends Controller
             'category_id' => 'required|numeric',
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required',
-            'store_id' => 'required',
+//            'store_id' => 'required',
             'urgency' => 'required',
             'address_id' => 'required',
         ]);
