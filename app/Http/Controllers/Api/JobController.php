@@ -544,10 +544,16 @@ class JobController extends Controller
     public function updateInventoryStatus(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'inventories' => 'required|array'
+            'inventories' => 'required|array',
+            'job_id' => 'required'
         ]);
         if ($validator->fails()) {
             return apiResponse(false, implode("\n", $validator->errors()->all()));
+        }
+        $job = Task::find($request->job_id);
+
+        if ($job->status != Task::STATUS_WORKING) {
+            return apiResponse(false, __("Job not started yet, please start your job then update inventory."));
         }
 
         foreach ($request->inventories as $inventory) {
