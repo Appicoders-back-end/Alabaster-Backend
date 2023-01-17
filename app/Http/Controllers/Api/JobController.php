@@ -144,7 +144,7 @@ class JobController extends Controller
 
             $cleaner = User::where('id', $request->cleaner_id)->first();
             $cleanerTitle = $user->name;
-            $cleanerMessage = sprintf("You have assigned new job from %s", $user->name);
+            $cleanerMessage = sprintf("You have been assigned new job from %s", $user->name);
             if ($cleaner->is_receive_notification == '1') {
                 SendNotification($cleaner->device_id, $cleanerTitle, $cleanerMessage);
             }
