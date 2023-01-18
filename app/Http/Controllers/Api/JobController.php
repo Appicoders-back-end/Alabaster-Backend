@@ -398,8 +398,8 @@ class JobController extends Controller
 
             /* customer notification */
             $customer = User::where('id', $job->customer_id)->first();
-            $title = auth()->user()->name;
-            $message = sprintf('%s has started job', auth()->user()->name);
+            $title = "Job started";
+            $message = sprintf('%s has started "%s" job', auth()->user()->name, $job->name);
 
             if ($customer->is_receive_notification == '1') {
                 SendNotification($customer->device_id, $title, $message);
