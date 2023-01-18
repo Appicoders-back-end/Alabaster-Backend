@@ -402,14 +402,14 @@ class JobController extends Controller
             $message = sprintf('%s has started "%s" job', auth()->user()->name, $job->name);
 
             if ($customer->is_receive_notification == '1') {
-                SendNotification($customer->device_id, $title, sprintf('You have started "%s" job', $job->name));
+                SendNotification($customer->device_id, $title, $message);
             }
 
             Notification::create([
                 'reciever_id' => $customer->id,
                 'sender_id' => auth()->user()->id,
                 'title' => $title,
-                'message' => sprintf('You have started "%s" job', $job->name),
+                'message' => $message,
                 'content_id' => $job->id,
                 'content_type' => "job_started",
                 'is_read' => 0
@@ -488,14 +488,14 @@ class JobController extends Controller
             $message = sprintf('%s has completed "%s" job', auth()->user()->name, $job->name);
 
             if ($customer->is_receive_notification == '1') {
-                SendNotification($customer->device_id, $title, sprintf('You have completed "%s" job', $job->name));
+                SendNotification($customer->device_id, $title, $message);
             }
 
             Notification::create([
                 'reciever_id' => $customer->id,
                 'sender_id' => auth()->user()->id,
                 'title' => $title,
-                'message' => sprintf('You have completed "%s" job', $job->name),
+                'message' => $message,
                 'content_id' => $job->id,
                 'content_type' => "job_completed",
                 'is_read' => 0
