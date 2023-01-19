@@ -114,7 +114,7 @@ class JobController extends Controller
 
         try {
             $jobStartTime = date("H:i:s", strtotime($request->start_time));
-            $checkCleanerAvailability = Task::where('cleaner_id', $request->cleaner_id)->whereDate('date', $request->date)->whereRaw('"' . $jobStartTime . '" between `start_time` and `end_time`')->exists();
+            $checkCleanerAvailability = Task::where('cleaner_id', $request->cleaner_id)->where('status', '!=', Task::STATUS_COMPLETED)->whereDate('date', $request->date)->whereRaw('"' . $jobStartTime . '" between `start_time` and `end_time`')->exists();
 
             if ($checkCleanerAvailability) {
                 return apiResponse(false, __("Cleaner not available"));
