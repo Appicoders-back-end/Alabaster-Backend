@@ -15,7 +15,7 @@
                                 <tr>
                                     <th class="text-white">S.No.</th>
                                     <th class="text-white">Username</th>
-                                    <th class="text-white">User Role</th>
+                                    <th class="text-white">Email</th>
                                     <th class="text-white">Query Title</th>
                                     <th class="text-white">Message Box</th>
                                 </tr>
@@ -25,7 +25,11 @@
                                     <tr>
                                         <td>{{$query->id}}</td>
                                         <td>{{$query->user ? $query->user->name : null}}</td>
-                                        <td>{{$query->user ? ucfirst($query->user->role) : null}}</td>
+                                        <td>
+                                            @if($query->user)
+                                                <a href="mailto:{{$query->user->email}}">{{$query->user->email}}</a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="font-15">{{$query->title}}</div>
                                         </td>
