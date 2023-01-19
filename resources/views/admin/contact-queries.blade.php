@@ -14,6 +14,8 @@
                                 <thead class="bg-dark">
                                 <tr>
                                     <th class="text-white">S.No.</th>
+                                    <th class="text-white">Username</th>
+                                    <th class="text-white">User Role</th>
                                     <th class="text-white">Query Title</th>
                                     <th class="text-white">Message Box</th>
                                 </tr>
@@ -22,6 +24,8 @@
                                 @foreach($queries as $query)
                                     <tr>
                                         <td>{{$query->id}}</td>
+                                        <td>{{$query->user ? $query->user->name : null}}</td>
+                                        <td>{{$query->user ? ucfirst($query->user->role) : null}}</td>
                                         <td>
                                             <div class="font-15">{{$query->title}}</div>
                                         </td>
