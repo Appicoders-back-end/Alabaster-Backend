@@ -24,7 +24,9 @@ class AdminController extends Controller
     {
         $baseQueries = ContactUs::with('user');
         $baseQueries->when($request->search, function ($query) use ($request) {
-            return $query->where('title', 'like', '%' . $request->search . '%')->orWhere('message', 'like', '%' . $request->search . '%');
+            return $query->where('title', 'like', '%' . $request->search . '%')->orWhere('message', 'like', '%' . $request->search . '%')->orWhereHas('user', function ($userQuery) use ($request) {
+                $userQuery->where('name', 'like', '%' . $request->search . '%')->orWhere('role', 'like', '%' . $request->search . '%');
+            });
         });
 
         $queries = $baseQueries->paginate(10);
@@ -81,7 +83,7 @@ class AdminController extends Controller
     public function updateCategories(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories,name,'.$request->id,
+            'name' => 'required|unique:categories,name,' . $request->id,
         ]);
 
         if ($validator->fails()) {
