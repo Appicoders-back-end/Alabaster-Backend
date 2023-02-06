@@ -57,9 +57,9 @@
                             <p>A viable platform to get connected with expert service providers in your area!
                             </p>
                             <div class="tm-buttongroup">
-                                <a href="#" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
+                                <a href="https://play.google.com/store/apps/details?id=com.app.alabaster&hl=en_IN" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
                                         class="zmdi zmdi-android"></i><span>Google Play</span></a>
-                                <a href="#" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
+                                <a href="https://apps.apple.com/pk/app/alabaster/id6443721925" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
                                         class="zmdi zmdi-apple"></i><span>IOS App Store</span></a>
                             </div>
                             <a href="#tm-area-features" class="tm-heroslider-scrolldown">
