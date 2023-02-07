@@ -50,7 +50,9 @@ class CleanerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => ['required'],
+            //todo
+            'name' => ['required'],
+//            'first_name' => ['required'],
             'email' => 'required|email|unique:users,email',
             'contact_no' => 'required|numeric',
             'category_id' => 'required'
@@ -67,9 +69,11 @@ class CleanerController extends Controller
 
             $code = generateRandomString(8);
             $user = new User();
-            $user->name = sprintf("%s %s", $request->first_name, $request->last_name);
+            //todo
+            $user->name = $request->name;
+            /*$user->name = sprintf("%s %s", $request->first_name, $request->last_name);
             $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
+            $user->last_name = $request->last_name;*/
             $user->email = $request->email;
             $user->password = Hash::make($code);
             $user->remember_token = $code;
