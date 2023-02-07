@@ -125,7 +125,9 @@ class CustomerController extends Controller
                 $file->move($featured_path, $fileName);
                 $data['profile_image'] = $fileName;
             }
-            $data['name'] = sprintf("%s %s", $request->first_name, $request->last_name);
+            //todo
+//            $data['name'] = sprintf("%s %s", $request->first_name, $request->last_name);
+            $data['name'] = $request->name;
             User::where('id', $request->user()->id)->update($data);
 
             if (isset($request->addresses) && count($request->addresses) > 0) {
