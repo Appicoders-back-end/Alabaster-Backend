@@ -48,6 +48,7 @@ class AuthController extends Controller
 
             $user = new User();
             $user['stripe_customer_id'] = $stripeCustomer->id;
+            //todo
             $user->name = $request->name;
             /*$user->name = sprintf("%s %s", $request->first_name, $request->last_name);
             $user->first_name = $request->first_name;
