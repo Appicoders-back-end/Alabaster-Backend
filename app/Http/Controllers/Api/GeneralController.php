@@ -153,4 +153,22 @@ class GeneralController extends Controller
 
         return apiResponse(true, __('Status has been changed successfully'));
     }
+
+    public function updateUserNames()
+    {
+        try {
+            $users = User::get();
+            foreach ($users as $user) {
+                $name = explode(' ', $user->name, 2);
+                $user->update([
+                    'first_name' => $name[0],
+                    'last_name' => isset($name[1]) ? $name[1] : null,
+                ]);
+            }
+
+            return apiResponse(true, "User has been updated successfully");
+        } catch (\Exception $exception) {
+            return apiResponse(false, $exception->getMessage());
+        }
+    }
 }

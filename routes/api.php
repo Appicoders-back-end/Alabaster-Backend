@@ -41,6 +41,7 @@ Route::get('inventories', [GeneralController::class, 'getInventories']);
 Route::get('customerLocations/{id}', [ContractorCustomerController::class, 'getLocations']);
 Route::get('test-notification', [GeneralController::class, 'testNotification']);
 Route::get('pages', [GeneralController::class, 'pages']);
+Route::get('updateUserNames', [GeneralController::class, 'updateUserNames']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     /*auth*/
