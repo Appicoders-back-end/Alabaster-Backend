@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -41,7 +42,7 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator->messages())->withInput();
         }
 
-        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => User::Admin])) {
             session()->flash('error', __('Invalid Credentials'));
             return redirect()->back()->withInput()->with('error', __('Invalid Credentials'));
         }
