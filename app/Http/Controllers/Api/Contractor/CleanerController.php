@@ -52,7 +52,7 @@ class CleanerController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => ['required'],
             'email' => 'required|email|unique:users,email',
-            'contact_no' => 'required|numeric',
+            'contact_no' => 'required',
             'category_id' => 'required'
         ]);
 
