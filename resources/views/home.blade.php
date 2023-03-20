@@ -57,10 +57,17 @@
                             <p>A viable platform to get connected with expert service providers in your area!
                             </p>
                             <div class="tm-buttongroup">
-                                <a href="https://play.google.com/store/apps/details?id=com.app.alabaster&hl=en_IN" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
+{{--                                <a href="https://play.google.com/store/apps/details?id=com.app.alabaster&hl=en_IN" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
                                         class="zmdi zmdi-android"></i><span>Google Play</span></a>
                                 <a href="https://apps.apple.com/pk/app/alabaster/id6443721925" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
-                                        class="zmdi zmdi-apple"></i><span>IOS App Store</span></a>
+                                        class="zmdi zmdi-apple"></i><span>IOS App Store</span></a> --}}
+
+                                <a href="https://play.google.com/store/apps/details?id=com.app.alabaster&hl=en_IN">
+                                    <img src="assets/images/google.png" alt="Playstore logo" style="max-width: 90% !important;">
+                                </a>
+                                <a href="https://apps.apple.com/pk/app/alabaster/id6443721925">
+                                    <img src="assets/images/apple.png" alt="Appstore logo" style="max-width: 90% !important;">
+                                </a>
                             </div>
                             <a href="#tm-area-features" class="tm-heroslider-scrolldown">
                                 <i class="zmdi zmdi-square-down"></i>
@@ -279,11 +286,18 @@
                     <div class="tm-download-content text-center">
                         <h4>Get The App</h4>
                         <h3>It’s Free to Download for Everyone</h3>
-                        <div class="tm-buttongroup">
-                            <a href="#" class="tm-button tm-button-lg tm-button-white"><i class="zmdi zmdi-android"></i><span>Google
+                        <div class="tm-buttongroup" style="display: block;">
+
+                            {{-- <a href="#" class="tm-button tm-button-lg tm-button-white"><i class="zmdi zmdi-android"></i><span>Google
                                     Play</span></a>
                             <a href="#" class="tm-button tm-button-lg tm-button-white tm-button-transparent"><i
-                                    class="zmdi zmdi-apple"></i><span>IOS App Store</span></a>
+                                    class="zmdi zmdi-apple"></i><span>IOS App Store</span></a> --}}
+                            <a href="https://play.google.com/store/apps/details?id=com.app.alabaster&hl=en_IN">
+                                <img src="assets/images/google.png" alt="Playstore logo" style="max-width: 20% !important; margin:10px;">
+                            </a>
+                            <a href="https://apps.apple.com/pk/app/alabaster/id6443721925">
+                                <img src="assets/images/apple.png" alt="Appstore logo" style="max-width: 20% !important; margin:10px">
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -301,7 +315,7 @@
                         <p class="tm-footer-copyright"><a href="{{route('privacy-policy')}}">Privacy Policy</a> | <a href="{{route('terms-conditions')}}">Terms & Conditions</a></p>
                     </div>
                     <div class="col-md-4">
-                        <p class="tm-footer-copyright text-center">Copyright 2022 Alabaster. All Rights Reserves.</p>
+                        <p class="tm-footer-copyright text-center">Copyright {{date('Y')}} Alabaster. All Rights Reserves.</p>
                     </div>
                     <div class="col-md-4">
                         <ul class="tm-footer-social">
