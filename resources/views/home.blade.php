@@ -63,10 +63,10 @@
                                         class="zmdi zmdi-apple"></i><span>IOS App Store</span></a> --}}
 
                                 <a href="https://play.google.com/store/apps/details?id=com.app.alabaster&hl=en_IN">
-                                    <img src="assets/images/google.png" alt="Playstore logo" style="max-width: 90% !important;">
+                                    <img src="assets/images/google.png" alt="Playstore logo" class="mobile-btn-size">
                                 </a>
                                 <a href="https://apps.apple.com/pk/app/alabaster/id6443721925">
-                                    <img src="assets/images/apple.png" alt="Appstore logo" style="max-width: 90% !important;">
+                                    <img src="assets/images/apple.png" alt="Appstore logo"  class="mobile-btn-size">
                                 </a>
                             </div>
                             <a href="#tm-area-features" class="tm-heroslider-scrolldown">
