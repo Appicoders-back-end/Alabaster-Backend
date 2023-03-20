@@ -6263,4 +6263,14 @@ button.tm-videobutton.tm-videobutton-lg span i {
   }
 }
 
+.mobile-btn-size{
+    max-width: 80% !important;
+}
+
+@media screen and (max-width: 450px){
+    .mobile-btn-size{
+        max-width: 70% !important;
+    }
+}
+
 /*# sourceMappingURL=style.css.map */
