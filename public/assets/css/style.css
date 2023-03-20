@@ -1997,9 +1997,10 @@ button.tm-button.tm-button-dark.tm-button-transparent:hover {
 }
 
 .tm-buttongroup {
-  margin-left: -25px;
-  margin-top: -10px;
-  font-size: 0;
+    /*margin-left: -25px;*/
+    display: flex;
+    margin-top: -10px;
+    font-size: 0;
 }
 
 .tm-buttongroup .tm-button {
