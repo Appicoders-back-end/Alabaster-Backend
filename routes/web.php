@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('home-mobile', function () {
+    return view('home-mini');
+})->name('home-mobile');
+
 Route::get('privacy-policy', function () {
     return view('privacy-policy');
 })->name('privacy-policy');
