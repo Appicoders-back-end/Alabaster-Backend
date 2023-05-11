@@ -20,6 +20,7 @@ class JobsDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'request_no' => $this->request_no,
             'date' => $this->date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,

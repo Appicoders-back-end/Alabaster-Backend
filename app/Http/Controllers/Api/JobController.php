@@ -175,6 +175,7 @@ class JobController extends Controller
                 $workRequest->save();
 
                 $job->work_request_id = $request->work_request_id;
+                $job->request_no = $workRequest->request_no;
                 $job->save();
 
                 $customer = User::where('id', $request->customer_id)->first();
