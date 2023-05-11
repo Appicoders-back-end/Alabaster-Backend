@@ -71,6 +71,7 @@ class WorkRequestController extends Controller
             if ($request->inventories != null && count($request->inventories) > 0) {
                 $task->inventories = json_encode($request->inventories);
             }
+            $task->request_no = generateRandomString(4);
             $task->save();
 
             $user = auth()->user();

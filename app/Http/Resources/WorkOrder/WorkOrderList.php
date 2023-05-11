@@ -17,6 +17,7 @@ class WorkOrderList extends JsonResource
     {
         return [
             'id' => $this->id,
+            'request_no' => $this->request_no,
             'date' => $this->date,
             'time' => $this->time,
             'datetime' => $this->date_time,

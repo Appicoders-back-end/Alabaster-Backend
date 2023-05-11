@@ -16,6 +16,7 @@ class AttendanceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'request_no' => $this->request_no,
             'customer_id' => $this->customer ? $this->customer->id : null,
             'customer_name' => $this->customer ? $this->customer->name : null,
             'customer_image' => $this->customer ? $this->customer->profile_image : null,
