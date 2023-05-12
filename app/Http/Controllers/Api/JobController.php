@@ -868,7 +868,7 @@ class JobController extends Controller
             $checklist->name = $request->name;
             $checklist->save();
 
-//            Checklist::where('parent_id', $checklist->id)->delete();
+            Checklist::where('parent_id', $checklist->id)->delete();
             if (count($request->items) > 0) {
                 foreach ($request->items as $item) {
                     $newItem = isset($item['id']) && $item['id'] != null ? Checklist::find($item['id']) : new Checklist();
@@ -891,7 +891,7 @@ class JobController extends Controller
                     $newItem->save();
                 }
             }
-            return apiResponse(true, __('Record has been saved successfully'), $request->all());
+            return apiResponse(true, __('Record has been saved successfully'));
         } catch (Exception $exception) {
             return apiResponse(false, $exception->getMessage());
         }
