@@ -891,7 +891,7 @@ class JobController extends Controller
                     $newItem->save();
                 }
             }
-            return apiResponse(true, __('Record has been saved successfully'));
+            return apiResponse(true, __('Record has been saved successfully'), $request->all());
         } catch (Exception $exception) {
             return apiResponse(false, $exception->getMessage());
         }
