@@ -73,7 +73,7 @@ class JobController extends Controller
             }
         }
         if (isset($request->date) && $request->date != null) {
-//            $baseJobs = $baseJobs->whereDate('start_time', $request->date)->orWhereDate('time_in', $request->date);
+            $baseJobs = $baseJobs->whereDate('date', $request->date)->orWhereDate('time_in', $request->date);
         }
         $jobs = $baseJobs->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
@@ -659,7 +659,7 @@ class JobController extends Controller
         if ((isset($request->location_id) && $request->location_id != null)) {
             $baseAttendance = $baseAttendance->where('address_id', $request->location_id);
         }
-        $attendance = $baseAttendance->paginate(2);
+        $attendance = $baseAttendance->paginate(10);
         $attendance = AttendanceResource::collection($attendance)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $attendance);
@@ -680,7 +680,7 @@ class JobController extends Controller
             $baseJobs = $baseJobs->where('address_id', $request->location_id);
         }
 
-        $jobs = ProblemReportingResource::collection($baseJobs->paginate(2))->response()->getData(true);
+        $jobs = ProblemReportingResource::collection($baseJobs->paginate(10))->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 
