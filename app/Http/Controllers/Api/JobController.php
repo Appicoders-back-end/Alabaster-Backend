@@ -326,7 +326,7 @@ class JobController extends Controller
             $jobs = $baseJobs->get();
             $jobs = JobsDetailResource::collection($jobs);
         } else {
-            $jobs = $baseJobs->paginate(1);
+            $jobs = $baseJobs->paginate(10);
             $jobs = JobsDetailResource::collection($jobs)->response()->getData(true);
         }
 
