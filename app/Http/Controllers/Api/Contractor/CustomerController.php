@@ -96,7 +96,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => ['required'],
             // 'email' => 'required|email|unique:users,email,'. $request->user()->id,
-            'contact_no' => 'required|numeric'
+            'contact_no' => 'required'
         ], [
             'contact_no.required' => 'Enter Contact Number',
             'contact_no.numeric' => 'Enter Valid Number'
