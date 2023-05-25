@@ -33,7 +33,7 @@ class ProblemReportingResource extends JsonResource
             'sign_out_time' => $this->time_out,
             'total_hours' => $this->getCalculatedTotalTime(), //todo will dynamic
             'status' => $this->status,
-            'report_problem' => $this->status
+            'report_problem' => $this->report_problem
         ];
     }
 }
