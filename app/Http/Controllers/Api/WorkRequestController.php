@@ -22,7 +22,7 @@ class WorkRequestController extends Controller
     {
         $baseTasks = WorkRequest::where('customer_id', $id);
         $baseTasks->when(request('name'), function ($query) use ($request) {
-            return $query->where('id', 'like', '%' . $request->name . '%');
+            return $query->where('request_no', 'like', '%' . $request->name . '%');
         });
         $tasks = $baseTasks->orderBy('id', 'DESC')->get();
         $tasks = WorkRequestList::collection($tasks);
