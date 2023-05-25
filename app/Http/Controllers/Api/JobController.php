@@ -538,7 +538,7 @@ class JobController extends Controller
         });
 
         $baseJobs->when(request('status'), function ($query) use ($request) {
-            return $query->whereStatus($request);
+            return $query->whereStatus($request->status);
         });
 
         $jobs = $baseJobs->paginate(10);
