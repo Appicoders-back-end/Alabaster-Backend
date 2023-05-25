@@ -834,7 +834,7 @@ class JobController extends Controller
             return $query->where('category_id', $request->category_id);
         });
 
-        $jobs = $baseJobs->paginate(1);
+        $jobs = $baseJobs->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
 
         return apiResponse(true, __('Record found'), $jobs);
