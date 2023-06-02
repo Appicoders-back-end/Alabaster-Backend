@@ -42,7 +42,7 @@ class SubscriptionController extends Controller
     public function getSubscriptionHistory()
     {
         $user = request()->user();
-        $package = UserSubscription::where('user_id', $user->id)->with('plan')->orderBy('created_at', 'DESC')->simplePaginate(1);
+        $package = UserSubscription::where('user_id', $user->id)->with('plan')->orderBy('created_at', 'DESC')->simplePaginate(10);
         return apiResponse(true, 'User Subscription Packages Found', $package);
     }
 
