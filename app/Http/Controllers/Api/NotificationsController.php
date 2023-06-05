@@ -16,6 +16,9 @@ class NotificationsController extends Controller
     public function getUserNotifications()
     {
         $user = request()->user();
+        Notification::where('reciever_id', $user->id)->update([
+            'is_read' => 0
+        ]);
         $notification = Notification::where('reciever_id', $user->id)->orderBy('created_at', 'DESC')->simplePaginate(10);
 
         return apiResponse(true, 'User Notifications', $notification);
@@ -36,17 +39,5 @@ class NotificationsController extends Controller
         $user->save();
 
         return apiResponse(true, __('Notification settings updated successfully'), $user);
-    }
-
-    public function readAllNotifications(Request $request)
-    {
-        try {
-            Notification::where('reciever_id', auth()->user()->id)->update([
-                'is_read' => 0
-            ]);
-            return apiResponse(true, __('Notification settings updated successfully'));
-        } catch (\Exception $exception){
-            return apiResponse(false, $exception->getMessage());
-        }
     }
 }
