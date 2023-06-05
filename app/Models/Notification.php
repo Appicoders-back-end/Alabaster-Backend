@@ -10,15 +10,17 @@ class Notification extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['sender_id', 'reciever_id', 'title', 'message', 'content_id', 'content_type', 'deleted_at'];
+    protected $fillable = ['sender_id', 'reciever_id', 'title', 'message', 'content_id', 'content_type', 'is_read', 'deleted_at'];
 
 
-    public function sender(){
+    public function sender()
+    {
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 
 
-    public function reciever(){
+    public function reciever()
+    {
         return $this->belongsTo(User::class, 'reciever_id', 'id');
     }
 }

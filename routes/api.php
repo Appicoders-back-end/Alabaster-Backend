@@ -58,7 +58,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     /*notifications*/
     Route::get('getUserNotifications', [NotificationsController::class, 'getUserNotifications']);
     Route::get('updateNotificationSetting', [NotificationsController::class, 'updateNotificationSetting']);
-    Route::get('readAllNotifications', [NotificationsController::class, 'readAllNotifications']);
 
     /*payments*/
     Route::post('storeCard', [PaymentMethodController::class, 'storeCard']);
