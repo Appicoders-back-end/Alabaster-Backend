@@ -175,3 +175,12 @@ if (!function_exists('generateRandomNumber')) {
         return $randomString;
     }
 }
+
+if (!function_exists('triggerUnreadNotificationEvent')) {
+
+    function triggerUnreadNotificationEvent()
+    {
+        $unreadNotifications = \App\Models\Notification::where('reciever_id', auth()->user()->id)->count();
+        broadcast(new \App\Events\UnreadNotifications($unreadNotifications))->toOthers();
+    }
+}

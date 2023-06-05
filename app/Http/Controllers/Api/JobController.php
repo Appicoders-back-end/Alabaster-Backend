@@ -195,6 +195,7 @@ class JobController extends Controller
                     'is_read' => 0
                 ]);
             }
+            triggerUnreadNotificationEvent();
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
@@ -432,6 +433,8 @@ class JobController extends Controller
                 'is_read' => 0
             ]);
 
+            triggerUnreadNotificationEvent();
+
         } catch (Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());
         }
@@ -517,6 +520,7 @@ class JobController extends Controller
                 'content_type' => "job_completed",
                 'is_read' => 0
             ]);
+            triggerUnreadNotificationEvent();
         } catch (Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());
         }
