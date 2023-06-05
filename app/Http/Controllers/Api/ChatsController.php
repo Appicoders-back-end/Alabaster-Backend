@@ -134,11 +134,10 @@ class ChatsController extends Controller
             'sender_id' => $message->sent_from_id,
             'title' => $title,
             'message' => $message->message,
-            'type' => 'msg',
-            'resource_type' => 'App\Models\Message',
-            'resource_id' => $message->id,
             'is_read' => 0
         ]);
+
+        triggerUnreadNotificationEvent();
 
         return apiresponse(true, 'Message Sent', $message);
     }
