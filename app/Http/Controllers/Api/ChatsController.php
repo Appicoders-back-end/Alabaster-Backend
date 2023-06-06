@@ -48,7 +48,9 @@ class ChatsController extends Controller
 
         if ($validator->fails())
             return apiresponse(false, implode("\n", $validator->errors()->all()), null, 400);
-
+        
+        try {
+            
         $user_id = $request->user_id;
         $chatlist = Chatlist::where(function ($q) use ($user_id, $user) {
             $q->where('from_user_type', 'App\Models\User')
@@ -140,6 +142,10 @@ class ChatsController extends Controller
         triggerUnreadNotificationEvent();
 
         return apiresponse(true, 'Message Sent', $message);
+        
+        } catch(\Exception $exception){
+            return apiresponse(false, $exception->getMessage());
+        }
     }
 
     /**

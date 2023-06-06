@@ -17,10 +17,11 @@ class NotificationsController extends Controller
     {
         $user = request()->user();
         Notification::where('reciever_id', $user->id)->update([
-            'is_read' => 0
+            'is_read' => '0'
         ]);
         $notification = Notification::where('reciever_id', $user->id)->orderBy('created_at', 'DESC')->simplePaginate(10);
-
+        triggerUnreadNotificationEvent();
+        
         return apiResponse(true, 'User Notifications', $notification);
     }
 

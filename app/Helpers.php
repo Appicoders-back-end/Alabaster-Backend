@@ -180,7 +180,7 @@ if (!function_exists('triggerUnreadNotificationEvent')) {
 
     function triggerUnreadNotificationEvent()
     {
-        $unreadNotifications = \App\Models\Notification::where('reciever_id', auth()->user()->id)->count();
-        broadcast(new \App\Events\UnreadNotifications($unreadNotifications))->toOthers();
+        $unreadNotifications = \App\Models\Notification::where('reciever_id', auth()->user()->id)->where('is_read', 0)->count();
+        broadcast(new \App\Events\UnreadNotifications(json_decode(json_encode($unreadNotifications))))->toOthers();
     }
 }

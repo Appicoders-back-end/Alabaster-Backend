@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UnreadNotifications
+class UnreadNotifications implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -29,6 +29,12 @@ class UnreadNotifications
      */
     public function broadcastOn()
     {
-        return new Channel($this->unreadNotifications);
+        return new Channel('unread_notifications');
+    }
+    
+    public function broadcastWith () {
+        return [
+            'unread_notifications' => $this->unreadNotifications
+        ];
     }
 }
