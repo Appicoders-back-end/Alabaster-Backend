@@ -178,9 +178,13 @@ if (!function_exists('generateRandomNumber')) {
 
 if (!function_exists('triggerUnreadNotificationEvent')) {
 
-    function triggerUnreadNotificationEvent()
+    function triggerUnreadNotificationEvent($receiver_id = null)
     {
-        $unreadNotifications = \App\Models\Notification::where('reciever_id', auth()->user()->id)->where('is_read', 0)->count();
+        if (!$receiver_id) {
+            $receiver_id = auth()->user()->id;
+        }
+
+        $unreadNotifications = \App\Models\Notification::where('reciever_id', $receiver_id)->where('is_read', 0)->count();
         broadcast(new \App\Events\UnreadNotifications(json_decode(json_encode($unreadNotifications))))->toOthers();
     }
 }
