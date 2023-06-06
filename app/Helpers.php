@@ -185,6 +185,6 @@ if (!function_exists('triggerUnreadNotificationEvent')) {
         }
 
         $unreadNotifications = \App\Models\Notification::where('reciever_id', $receiver_id)->where('is_read', 0)->count();
-        broadcast(new \App\Events\UnreadNotifications(json_decode(json_encode($unreadNotifications))))->toOthers();
+        broadcast(new \App\Events\UnreadNotifications($unreadNotifications))->toOthers();
     }
 }
