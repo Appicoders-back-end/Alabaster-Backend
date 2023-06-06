@@ -14,8 +14,7 @@ class UnreadNotifications implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
-    private $unreadNotifications = 0;
+    public $unreadNotifications = 0;
 
     public function __construct($unreadNotifications)
     {
@@ -31,8 +30,9 @@ class UnreadNotifications implements ShouldBroadcast
     {
         return new Channel('unread_notifications');
     }
-    
-    public function broadcastWith () {
+
+    public function broadcastWith()
+    {
         return [
             'unread_notifications' => $this->unreadNotifications
         ];
