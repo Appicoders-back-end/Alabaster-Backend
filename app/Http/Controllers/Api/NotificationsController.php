@@ -17,7 +17,7 @@ class NotificationsController extends Controller
     public function getUserNotifications()
     {
         try {
-            $user = request()->user();
+            $user = auth()->user();
             Notification::where('reciever_id', $user->id)->update([
                 'is_read' => 1
             ]);

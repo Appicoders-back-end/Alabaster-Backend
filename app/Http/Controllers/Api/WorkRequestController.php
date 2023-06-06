@@ -89,7 +89,7 @@ class WorkRequestController extends Controller
                 'content_type' => "work_order_request",
                 'is_read' => 0
             ]);
-            triggerUnreadNotificationEvent();
+            triggerUnreadNotificationEvent($user->created_by);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
@@ -151,7 +151,7 @@ class WorkRequestController extends Controller
                 'content_type' => "declined_work_request",
                 'is_read' => 0
             ]);
-            triggerUnreadNotificationEvent();
+            triggerUnreadNotificationEvent($workRequest->customer_id);
 
             return apiResponse(true, __('Request has been declined successfully'));
         } catch (\Exception $e) {

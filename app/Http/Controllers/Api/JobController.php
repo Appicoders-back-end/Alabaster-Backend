@@ -165,6 +165,7 @@ class JobController extends Controller
                 'content_type' => "job",
                 'is_read' => 0
             ]);
+            triggerUnreadNotificationEvent($job->cleaner_id);
 
             if (isset($request->work_request_id) && $request->work_request_id != null) {
                 $workRequest = WorkRequest::find($request->work_request_id);
@@ -195,7 +196,7 @@ class JobController extends Controller
                     'is_read' => 0
                 ]);
             }
-            triggerUnreadNotificationEvent();
+            triggerUnreadNotificationEvent($job->customer_id);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
@@ -433,7 +434,7 @@ class JobController extends Controller
                 'is_read' => 0
             ]);
 
-            triggerUnreadNotificationEvent();
+            triggerUnreadNotificationEvent($contractor->id);
 
         } catch (Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());
@@ -520,7 +521,7 @@ class JobController extends Controller
                 'content_type' => "job_completed",
                 'is_read' => 0
             ]);
-            triggerUnreadNotificationEvent();
+            triggerUnreadNotificationEvent($contractor->id);
         } catch (Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());
         }
