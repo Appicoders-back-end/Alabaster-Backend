@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Exception;
 
 class NotificationsController extends Controller
 {
@@ -15,14 +16,18 @@ class NotificationsController extends Controller
      */
     public function getUserNotifications()
     {
-        $user = request()->user();
-        Notification::where('reciever_id', $user->id)->update([
-            'is_read' => '0'
-        ]);
-        $notification = Notification::where('reciever_id', $user->id)->orderBy('created_at', 'DESC')->simplePaginate(10);
-        triggerUnreadNotificationEvent();
-        
-        return apiResponse(true, 'User Notifications', $notification);
+        try {
+            $user = request()->user();
+            Notification::where('reciever_id', $user->id)->update([
+                'is_read' => 1
+            ]);
+            $notification = Notification::where('reciever_id', $user->id)->orderBy('created_at', 'DESC')->simplePaginate(10);
+            triggerUnreadNotificationEvent();
+
+            return apiResponse(true, 'User Notifications', $notification);
+        } catch (Exception $exception) {
+            return apiResponse(false, $exception->getMessage());
+        }
     }
 
     /**
