@@ -19,7 +19,7 @@ class NotificationsController extends Controller
         try {
             $user = auth()->user();
             Notification::where('reciever_id', $user->id)->update([
-                'is_read' => 1
+                'is_read' => '1'
             ]);
             $notification = Notification::where('reciever_id', $user->id)->orderBy('created_at', 'DESC')->simplePaginate(10);
             triggerUnreadNotificationEvent();
