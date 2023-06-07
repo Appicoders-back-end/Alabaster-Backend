@@ -180,7 +180,7 @@ if (!function_exists('triggerUnreadNotificationEvent')) {
 
     function triggerUnreadNotificationEvent($receiver_id = null)
     {
-        if (!$receiver_id) {
+        if ($receiver_id == null) {
             $receiver_id = auth()->user()->id;
         }
 
