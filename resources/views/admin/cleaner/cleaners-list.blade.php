@@ -30,7 +30,7 @@
                                             <div class="font-15">{{$user->name}}</div>
                                         </td>
                                         <td>
-                                            <div class="font-15">{{$user->contact_no}}</div>
+                                            <div class="font-15">{{formattedNumber($user->contact_no)}}</div>
                                         </td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->category ? $user->category->name : null}}</td>
