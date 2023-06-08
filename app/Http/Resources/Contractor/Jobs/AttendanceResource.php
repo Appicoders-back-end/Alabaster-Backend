@@ -30,8 +30,8 @@ class AttendanceResource extends JsonResource
             'date' => $this->date,
             'time_in' => $this->time_in,
             'time_out' => $this->time_out,
-            'job_time' => "2 hours",
-            'break_time' => "3 days 45 minutes",
+            'job_time' => $this->getCalculatedTotalTime(),
+            'break_time' => $this->getCalculatedBreakTime(),
             'status' => $this->status,
         ];
     }
