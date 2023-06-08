@@ -193,6 +193,8 @@ if (!function_exists('formattedNumber')) {
 
     function formattedNumber($number)
     {
-        return $number != null ? "+1 (" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6) : '-';
+        return $number;
+//        return $number != null ? "+1 (" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6) : '-';
+//        return $number != null ? substr($number, 0, 2). " (" . substr($number, 3, 6) . ") " . substr($number, 6, 6) . "-" . substr($number, 9) : '-';
     }
 }
