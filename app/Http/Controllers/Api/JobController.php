@@ -369,8 +369,8 @@ class JobController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'job_id' => 'required|numeric',
-            'latitude' => 'required',
-            'longitude' => 'required',
+//            'latitude' => 'required',
+//            'longitude' => 'required',
             'before_attachment' => 'required'
         ]);
 
