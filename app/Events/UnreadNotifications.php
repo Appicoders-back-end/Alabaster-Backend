@@ -15,10 +15,12 @@ class UnreadNotifications implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $unreadNotifications = 0;
+    public $receiver_id = null;
 
-    public function __construct($unreadNotifications)
+    public function __construct($unreadNotifications, $receiverId)
     {
         $this->unreadNotifications = $unreadNotifications;
+        $this->receiver_id = $receiverId;
     }
 
     /**
@@ -34,7 +36,8 @@ class UnreadNotifications implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'unread_notifications' => $this->unreadNotifications
+            'unread_notifications' => $this->unreadNotifications,
+            'receiver_id' => $this->receiver_id
         ];
     }
 }
