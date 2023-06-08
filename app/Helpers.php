@@ -188,3 +188,11 @@ if (!function_exists('triggerUnreadNotificationEvent')) {
         broadcast(new \App\Events\UnreadNotifications($unreadNotifications, $receiver_id))->toOthers();
     }
 }
+
+if (!function_exists('formattedNumber')) {
+
+    function formattedNumber($number)
+    {
+        return $number != null ? "+1 (" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6) : '-';
+    }
+}
