@@ -38,6 +38,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
 
         /*contact queries*/
         Route::get('contact-queries', [AdminController::class, 'contactQueries'])->name('admin.contact-queries');
+        Route::get('delete-contact-queries/{id}', [AdminController::class, 'deleteContactQueries'])->name('admin.delete-contact-queries');
 
         /*subscriptions*/
         Route::resource('subscriptions', SubscriptionController::class);
