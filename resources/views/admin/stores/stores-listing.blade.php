@@ -164,6 +164,7 @@
 @section('script')
     <script>
         function AddAddressRow() {
+            let addressesIndex = 0;
             console.log(addressesIndex);
             $('.locations').append(`<div class="md-form col-md-4">
                                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Street</label>

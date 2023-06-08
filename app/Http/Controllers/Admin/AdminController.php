@@ -35,6 +35,16 @@ class AdminController extends Controller
     }
 
     /**
+     * @param $id
+     * @return void
+     */
+    public function deleteContactQueries($id)
+    {
+        ContactUs::where('id', $id)->delete();
+        return redirect()->back()->with('success', "Query has been deleted successfully");
+    }
+
+    /**
      * @param Request $request
      * @return Application|Factory|View
      */
