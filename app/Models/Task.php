@@ -73,6 +73,9 @@ class Task extends Model
     public function getEstimatedTime()
     {
         $timeString = null;
+        if ($this->start_time == null || $this->end_time == null) {
+            return $timeString;
+        }
 
         $datetime1 = new DateTime($this->start_time);
         $datetime2 = new DateTime($this->end_time);
@@ -94,6 +97,9 @@ class Task extends Model
     public function getCalculatedTotalTime()
     {
         $timeString = null;
+        if ($this->time_in == null || $this->time_out == null) {
+            return $timeString;
+        }
 
         $datetime1 = new DateTime($this->time_in);
         $datetime2 = new DateTime($this->time_out);
@@ -115,6 +121,9 @@ class Task extends Model
     public function getEstimatedBreakTime()
     {
         $timeString = null;
+        if ($this->lunch_start_time == null || $this->lunch_end_time == null) {
+            return $timeString;
+        }
 
         $datetime1 = new DateTime($this->lunch_start_time);
         $datetime2 = new DateTime($this->lunch_end_time);
@@ -136,6 +145,9 @@ class Task extends Model
     public function getCalculatedBreakTime()
     {
         $timeString = null;
+        if ($this->break_in == null || $this->break_out == null) {
+            return $timeString;
+        }
 
         $datetime1 = new DateTime($this->break_in);
         $datetime2 = new DateTime($this->break_out);
