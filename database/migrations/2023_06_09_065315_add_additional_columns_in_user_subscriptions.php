@@ -31,7 +31,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('user_subscriptions', function (Blueprint $table) {
-            //
+            $table->dropColumn('stripe_charge_id');
+            $table->dropColumn('start_date');
+            $table->dropColumn('end_date');
+            $table->dropColumn('is_expired');
         });
     }
 };
