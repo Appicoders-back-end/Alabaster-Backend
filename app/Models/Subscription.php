@@ -10,5 +10,15 @@ class Subscription extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['package_name', 'plan_id', 'price', 'interval_time', 'description'];
+    public const DURATION_WEEK = 'week';
+    public const DURATION_MONTH = 'month';
+    public const DURATION_YEAR = 'year';
+
+    protected $fillable = [
+        'package_name',
+        'plan_id',
+        'price',
+        'interval_time',
+        'description'
+    ];
 }
