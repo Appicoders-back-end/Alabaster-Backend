@@ -14,6 +14,7 @@
                                 <thead class="bg-dark">
                                 <tr>
                                     <th class="text-white">id</th>
+                                    <th class="text-white">Order No</th>
                                     <th class="text-white">Customer Name</th>
                                     <th class="text-white">Contractor Name</th>
                                     <th class="text-white">Customer Location</th>
@@ -29,6 +30,7 @@
                                 @foreach($jobs as $job)
                                     <tr>
                                         <td>{{$loop->iteration + $jobs->firstItem() - 1}}</td>
+                                        <td>{{$job->request_no ?? '-'}}</td>
                                         <td>
                                             <div class="font-15">{{$job->customer != null ? $job->customer->name : '-'}}</div>
                                         </td>
