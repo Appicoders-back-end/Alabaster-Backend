@@ -29,6 +29,7 @@ class JobsListResource extends JsonResource
             'cleaner_image' => $this->cleaner ? $this->cleaner->profile_image : null,
             'cleaner_email' => $this->cleaner ? $this->cleaner->email : null,
             'cleaner_contact' => $this->cleaner ? $this->cleaner->contact_no : null,
+            'service_name' => $this->service_name,
             'service_type' => $this->category ? $this->category->name : null,
             'location' => $this->location ? new AddressesResource($this->location) : null,
             'date' => $this->date,
