@@ -131,6 +131,7 @@ class JobController extends Controller
             $job->store_id = $request->store_id;
             $job->store_address_id = $request->store_address_id;
             $job->status = Task::STATUS_PENDING;
+            $job->service_name = $request->service_name;
             $job->details = $request->details;
             $job->urgency = $request->urgency;
             $job->lunch_start_time = date("Y-m-d H:i:s", strtotime($job->date . ' ' . $request->lunch_start_time));
