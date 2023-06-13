@@ -26,6 +26,7 @@ class AttendanceResource extends JsonResource
             'cleaner_name' => $this->cleaner ? $this->cleaner->name : null,
             'cleaner_image' => $this->cleaner ? $this->cleaner->profile_image : null,
             'service_type' => $this->category ? $this->category->name : null,
+            'service_name' => $this->service_name,
             'location' => $this->location ? new AddressesResource($this->location) : null,
             'date' => $this->date,
             'time_in' => $this->time_in,
