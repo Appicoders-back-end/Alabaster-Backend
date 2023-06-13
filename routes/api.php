@@ -40,6 +40,7 @@ Route::post('stores', [GeneralController::class, 'getStores']);
 Route::get('inventories', [GeneralController::class, 'getInventories']);
 Route::get('customerLocations/{id}', [ContractorCustomerController::class, 'getLocations']);
 Route::get('test-notification', [GeneralController::class, 'testNotification']);
+Route::get('test-email', [GeneralController::class, 'testEmail']);
 Route::get('pages', [GeneralController::class, 'pages']);
 Route::get('updateUserNames', [GeneralController::class, 'updateUserNames']);
 
