@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Categories\CategoriesListResource;
 use App\Http\Resources\InventoryResource;
 use App\Http\Resources\StoreResource;
+use App\Mail\TestEmail;
 use App\Models\Category;
 use App\Models\ContactUs;
 use App\Models\Inventory;
@@ -14,6 +15,7 @@ use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class GeneralController extends Controller
@@ -168,6 +170,17 @@ class GeneralController extends Controller
 
             return apiResponse(true, "User has been updated successfully");
         } catch (\Exception $exception) {
+            return apiResponse(false, $exception->getMessage());
+        }
+    }
+
+    public function testEmail(Request $request)
+    {
+        try {
+            Mail::to('irfan.haider@appicoders.com')->send(new TestEmail());
+
+            return apiResponse(true, "Email has been sent");
+        } catch (Exception $exception) {
             return apiResponse(false, $exception->getMessage());
         }
     }
