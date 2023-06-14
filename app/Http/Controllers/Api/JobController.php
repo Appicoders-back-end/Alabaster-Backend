@@ -202,7 +202,7 @@ class JobController extends Controller
             return apiResponse(false, $e->getMessage());
         }
 
-        return apiResponse(true, 'Job has been created successfully. Don\'t forget to add checklist.');
+        return apiResponse(true, 'Job has been created successfully. Don\'t forget to add checklist.', new JobsListResource($job));
     }
 
     /**
