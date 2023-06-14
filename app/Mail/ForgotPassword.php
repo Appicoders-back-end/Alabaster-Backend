@@ -11,7 +11,7 @@ class ForgotPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $name;
+    public $user;
     public $code;
 
     /**
@@ -19,9 +19,9 @@ class ForgotPassword extends Mailable
      *
      * @return void
      */
-    public function __construct($name, $code)
+    public function __construct($user, $code)
     {
-        $this->name = $name;
+        $this->user = $user;
         $this->code = $code;
     }
 
@@ -32,6 +32,6 @@ class ForgotPassword extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.test-email', ['name' => $this->name, 'code' => $this->code]);
+        return $this->markdown('mail.forgot-password', ['user' => $this->user, 'code' => $this->code]);
     }
 }
