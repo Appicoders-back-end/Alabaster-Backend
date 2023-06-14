@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
 use App\Mail\TestEmail;
+use App\Mail\UserCreated;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\UserSubscription;
@@ -139,7 +140,8 @@ class AuthController extends Controller
             $user->remember_token = $code;
             $user->save();
 
-            Mail::to($user->email)->send(new ForgotPassword($user, $code));
+//            Mail::to($user->email)->send(new ForgotPassword($user, $code));
+            Mail::to($user->email)->send(new UserCreated($user, $code));
 //            Mail::to($request->email)->send(new TestEmail());
 
             $data = [
