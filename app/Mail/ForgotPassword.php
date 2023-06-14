@@ -32,6 +32,6 @@ class ForgotPassword extends Mailable
      */
     public function build()
     {
-        return $this->subject("Forgot Password")->markdown('mail.forgot-password', ['name' => $this->name, 'code' => $this->code]);
+        return $this->markdown('mail.test-email', ['name' => $this->name, 'code' => $this->code]);
     }
 }
