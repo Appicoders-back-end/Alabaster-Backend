@@ -75,7 +75,7 @@ class JobController extends Controller
         if (isset($request->date) && $request->date != null) {
             $baseJobs = $baseJobs->whereDate('date', $request->date)->orWhereDate('time_in', $request->date);
         }
-        $jobs = $baseJobs->paginate(10);
+        $jobs = $baseJobs->orderByDesc('id')->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $jobs);
