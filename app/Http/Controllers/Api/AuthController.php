@@ -139,8 +139,8 @@ class AuthController extends Controller
             $code = rand(1111, 9999);
             $user->remember_token = $code;
             $user->save();
-//            Mail::to($request->email)->send(new PasswordForgot($user->name, $code));
-            Mail::to($request->email)->send(new TestEmail());
+            Mail::to($request->email)->send(new ForgotPassword($user->name, $code));
+//            Mail::to($request->email)->send(new TestEmail());
 
             $data = [
                 'email' => $user->email,
