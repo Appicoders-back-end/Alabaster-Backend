@@ -132,19 +132,23 @@ class AuthController extends Controller
             return apiResponse(false, implode("\n", $validator->errors()->all()));
         }
 
-        $user = User::where('email', $request->email)->first();
+        try {
+            $user = User::where('email', $request->email)->first();
 
-        $code = rand(1111, 9999);
-        $user->remember_token = $code;
-        $user->save();
-        Mail::to($request->email)->send(new PasswordForgot($user->name, $code));
+            $code = rand(1111, 9999);
+            $user->remember_token = $code;
+            $user->save();
+            Mail::to($request->email)->send(new PasswordForgot($user->name, $code));
 
-        $data = [
-            'email' => $user->email,
-            'code' => $code
-        ];
+            $data = [
+                'email' => $user->email,
+                'code' => $code
+            ];
 
-        return apiresponse(true, __('Email sent successfully'), $data);
+            return apiresponse(true, __('Email sent successfully'), $data);
+        } catch (Exception $exception) {
+            return apiresponse(false, $exception->getMessage());
+        }
     }
 
     /**
