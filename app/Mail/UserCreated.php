@@ -13,16 +13,18 @@ class UserCreated extends Mailable
 
     public $user;
     public $code;
-    
+    public $isForgotPassword;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $code)
+    public function __construct($user, $code, $isForgotPassword = null)
     {
         $this->user = $user;
         $this->code = $code;
+        $this->isForgotPassword = $isForgotPassword;
     }
 
     /**
@@ -32,6 +34,9 @@ class UserCreated extends Mailable
      */
     public function build()
     {
+        if($this->isForgotPassword != null){
+            return $this->subject("Forgot Password")->markdown('mail.forgot-password', ['user' => $this->user, 'code' => $this->code]);
+        }
         return $this->markdown('mail.user-created', ['user' => $this->user, 'code' => $this->code]);
     }
 }
