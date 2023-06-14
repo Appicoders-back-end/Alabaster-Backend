@@ -1,7 +1,7 @@
 @component('mail::message')
     # Forget Password Email
 
-    Dear {{ $name }},
+    Dear {{ $user->name }},
 
     Please use the below code to reset your password.
 
