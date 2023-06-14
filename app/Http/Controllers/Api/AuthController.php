@@ -140,8 +140,8 @@ class AuthController extends Controller
             $user->remember_token = $code;
             $user->save();
 
-//            Mail::to($user->email)->send(new ForgotPassword($user, $code));
-            Mail::to($user->email)->send(new UserCreated($user, $code, true));
+            Mail::to($user->email)->send(new ForgotPassword($user, $code));
+//            Mail::to($user->email)->send(new UserCreated($user, $code, true));
 //            Mail::to($request->email)->send(new TestEmail());
 
             $data = [
