@@ -35,7 +35,8 @@ class UserCreated extends Mailable
     public function build()
     {
         if ($this->isForgotPassword) {
-            return $this->subject("Forgot Password")->markdown('mail.forgot-password', ['user' => $this->user, 'code' => $this->code]);
+            return $this->markdown('mail.user-created', ['user' => $this->user, 'code' => $this->code]);
+//            return $this->subject("Forgot Password")->markdown('mail.forgot-password', ['user' => $this->user, 'code' => $this->code]);
         }
         return $this->markdown('mail.user-created', ['user' => $this->user, 'code' => $this->code]);
     }
