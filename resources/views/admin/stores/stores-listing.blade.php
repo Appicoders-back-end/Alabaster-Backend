@@ -119,6 +119,7 @@
             </div>
         </div>
     </div>
+
     <!-- The Modal Edit -->
     <div class="modal fade" id="editModal" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable modal-lg">
@@ -160,11 +161,12 @@
             </div>
         </div>
     </div>
+
 @endsection
 @section('script')
     <script>
         function AddAddressRow() {
-            let addressesIndex = 0;
+            // let addressesIndex = 0;
             console.log(addressesIndex);
             $('.locations').append(`<div class="md-form col-md-4">
                                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Street</label>
