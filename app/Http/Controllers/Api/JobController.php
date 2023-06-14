@@ -227,7 +227,7 @@ class JobController extends Controller
     {
         $checklist = Checklist::with('items', 'job')->whereNull('parent_id')->whereHas('job', function ($query) {
             $query->where('contractor_id', auth()->user()->id);
-        })->paginate(10);
+        })->orderByDesc('id')->paginate(10);
         $checklist = ChecklistResource::collection($checklist)->response()->getData(true);
         return apiResponse(true, __('Data loaded successfully'), $checklist);
     }
