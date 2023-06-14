@@ -96,6 +96,15 @@ class StoreController extends Controller
             $store->save();
 
             foreach ($request->addresses as $row) {
+                if (isset($row['address_id'])) {
+                    $storeAddress = StoreAddress::find($row['address_id']);
+
+                    if ($row['street'] == null && $row['state'] == null && $row['zipcode'] == null) {
+                        $storeAddress->delete();
+                        continue;
+                    }
+                }
+
                 $address = isset($row['address_id']) ? StoreAddress::find($row['address_id']) : new StoreAddress();
                 $address->store_id = $store->id;
                 $address->street = $row['street'];

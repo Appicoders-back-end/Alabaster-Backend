@@ -24,7 +24,7 @@
                                 <tbody>
                                 @foreach($queries as $query)
                                     <tr>
-                                        <td>{{$query->id}}</td>
+                                        <td>{{$loop->iteration}}</td>
                                         <td>{{$query->user ? $query->user->name : null}}</td>
                                         <td>
                                             @if($query->user)

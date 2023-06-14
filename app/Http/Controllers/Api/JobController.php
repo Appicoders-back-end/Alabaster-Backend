@@ -196,8 +196,8 @@ class JobController extends Controller
                     'content_type' => "approved_work_request",
                     'is_read' => 0
                 ]);
+                triggerUnreadNotificationEvent($job->customer_id);
             }
-            triggerUnreadNotificationEvent($job->customer_id);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
         }
