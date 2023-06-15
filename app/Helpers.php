@@ -194,7 +194,7 @@ if (!function_exists('formattedNumber')) {
     function formattedNumber($number)
     {
         $starting = "+1";
-        if (substr($number, 0, 1) != "+1") {
+        if (substr($number, 0, 1) == "+1") {
             $number = str_replace("+1","", $number);
             $starting = null;
         }
