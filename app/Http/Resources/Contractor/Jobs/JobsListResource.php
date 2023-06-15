@@ -47,6 +47,13 @@ class JobsListResource extends JsonResource
             'details' => $this->details,
             'status' => $this->status,
             'inventories' => TaskInventoryResource::collection($this->inventories),
+            'lunch_start_time' => $this->lunch_start_time,
+            'lunch_end_time' => $this->lunch_end_time,
+            'after_lunch_image' => $this->after_lunch_attachment,
+            'lunch_in_latitude' => $this->lunch_in_latitude,
+            'lunch_in_longitude' => $this->lunch_in_longitude,
+            'lunch_out_latitude' => $this->lunch_out_latitude,
+            'lunch_out_longitude' => $this->lunch_out_longitude,
         ];
     }
 }

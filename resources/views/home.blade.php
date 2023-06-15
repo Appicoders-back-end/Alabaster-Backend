@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/custom.css">
 </head>
+<style>
+.btn-web-app:hover{
+    text-decoration: none;
+}
+</style>
 <body>
 <!-- Wrapper -->
 <div id="wrapper" class="wrapper">
@@ -37,6 +42,7 @@
                             <li><a href="#tm-area-features">Feature</a></li>
                             <li><a href="#tm-area-screenshots">Screenshot</a></li>
                             <li><a href="#tm-area-download">Download</a></li>
+                            <li><a class="btn btn-warning py-2 px-4 btn-web-app" href="#">Web Application</a></li>
                         </ul>
                     </nav>
                 </div>
