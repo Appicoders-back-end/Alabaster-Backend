@@ -193,11 +193,12 @@ if (!function_exists('formattedNumber')) {
 
     function formattedNumber($number)
     {
-        /*$starting = "+1";
-        if (substr($number, 0, 1) != "1") {
+        $starting = "+1";
+        if (substr($number, 0, 1) != "+1") {
+            $number = str_replace("+1","", $number);
             $starting = null;
-        }*/
-        return $number != null ? " (" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6) : '-';
+        }
+        return $number != null ? $starting." (" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6) : '-';
 //        return $number != null ? substr($number, 0, 2). " (" . substr($number, 3, 6) . ") " . substr($number, 6, 6) . "-" . substr($number, 9) : '-';
     }
 }
