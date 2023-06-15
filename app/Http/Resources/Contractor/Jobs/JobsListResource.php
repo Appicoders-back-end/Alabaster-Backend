@@ -43,6 +43,8 @@ class JobsListResource extends JsonResource
             'working_hours' => $this->getCalculatedTotalTime(),
             'time_in_latitude' => $this->time_in_latitude,
             'time_in_longitude' => $this->time_in_longitude,
+            'time_out_latitude' => $this->time_out_latitude,
+            'time_out_longitude' => $this->time_out_longitude,
             'urgency' => $this->urgency,
             'details' => $this->details,
             'status' => $this->status,
