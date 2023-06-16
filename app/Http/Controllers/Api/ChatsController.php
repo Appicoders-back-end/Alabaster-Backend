@@ -34,9 +34,9 @@ class ChatsController extends Controller
         if (isset($request->search) && $request->search != null) {
             $search = $request->search;
             $baseChatlist = $baseChatlist->whereHas('to_user', function ($toUser) use ($search) {
-                $toUser->where('name', 'like', '%' . $search . '%');
+                $toUser->where('name', 'like', '%' . $search . '%')->where('id', '!=', auth()->user()->id);
             })->orWherehas('from_user', function ($fromUser) use ($search) {
-                $fromUser->where('name', 'like', '%' . $search . '%');
+                $fromUser->where('name', 'like', '%' . $search . '%')->where('id', '!=', auth()->user()->id);
             });
         }
 
