@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     /*chats*/
     Route::get('chatIndex', [ChatsController::class, 'index']);
+    Route::post('chatIndex', [ChatsController::class, 'index']);
     Route::get('viewChatlist/{id}', [ChatsController::class, 'show']);
     Route::post('chatlistCheck', [ChatsController::class, 'checkSessionBeforeMessage']);
     Route::post('sendMessage', [ChatsController::class, 'sendMessage']);
