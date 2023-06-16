@@ -31,12 +31,12 @@ class ChatsController extends Controller
                     ->where('to_user_id', $user->id);
             });
 
-        if (isset($request->keyword) && $request->keyword != null) {
-            $keyword = $request->keyword;
-            $baseChatlist = $baseChatlist->whereHas('to_user', function ($toUser) use ($keyword) {
-                $toUser->where('name', 'like', '%' . $keyword . '%');
-            })->orWherehas('from_user', function ($fromUser) use ($keyword) {
-                $fromUser->where('name', 'like', '%' . $keyword . '%');
+        if (isset($request->search) && $request->search != null) {
+            $search = $request->search;
+            $baseChatlist = $baseChatlist->whereHas('to_user', function ($toUser) use ($search) {
+                $toUser->where('name', 'like', '%' . $search . '%');
+            })->orWherehas('from_user', function ($fromUser) use ($search) {
+                $fromUser->where('name', 'like', '%' . $search . '%');
             });
         }
 
