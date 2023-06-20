@@ -26,9 +26,6 @@ class ChatsController extends Controller
             ->where(function ($q) use ($user) {
                 $q->where('from_user_id', $user->id)->orWhere('to_user_id', $user->id);
             });
-            // ->orWhere(function ($q) use ($user) {
-            //     $q->where('to_user_id', $user->id);
-            // });
 
         if (isset($request->search) && $request->search != null) {
             $search = $request->search;
