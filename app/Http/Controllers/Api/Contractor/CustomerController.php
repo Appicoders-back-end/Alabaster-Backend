@@ -125,6 +125,11 @@ class CustomerController extends Controller
 
             if (isset($request->addresses) && count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
+
+                    if ($address['street'] === null && $address['state'] === null && $address['zipcode'] === null) {
+                        continue;
+                    }
+
                     $newAddress = null;
                     if (isset($address['address_id'])) {
                         $newAddress = UserAddress::where('id', $address['address_id'])->first();
