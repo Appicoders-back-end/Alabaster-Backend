@@ -22,12 +22,14 @@ class Chatlist extends Model
 
     public function from_user()
     {
-        return $this->morphTo();
+//        return $this->morphTo();
+        return $this->belongsTo(User::class);
     }
 
     public function to_user()
     {
-        return $this->morphTo();
+        //        return $this->morphTo();
+        return $this->belongsTo(User::class);
     }
 
     public function messages()
