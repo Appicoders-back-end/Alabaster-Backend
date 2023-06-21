@@ -31,9 +31,9 @@ class ChatsController extends Controller
             $search = $request->search;
             $baseChatlist = $baseChatlist->whereHas('to_user', function ($toUser) use ($search) {
                 $toUser->where('name', 'like', '%' . $search . '%')->where('id', '!=', auth()->user()->id);
-            })->orWherehas('from_user', function ($fromUser) use ($search) {
+            })/*->orWherehas('from_user', function ($fromUser) use ($search) {
                 $fromUser->where('name', 'like', '%' . $search . '%')->where('id', '!=', auth()->user()->id);
-            });
+            })*/;
         }
 
 //         dd($baseChatlist->toSql());
