@@ -20,7 +20,7 @@ class ChatsController extends Controller
      */
     public function index(Request $request)
     {
-        // \DB::enableQueryLog();
+//         \DB::enableQueryLog();
         $user = request()->user();
         $baseChatlist = Chatlist::with(['to_user', 'from_user'])
             ->where(function ($q) use ($user) {
@@ -35,8 +35,8 @@ class ChatsController extends Controller
                 $fromUser->where('name', 'like', '%' . $search . '%')->where('id', '!=', auth()->user()->id);
             });
         }
-        
-        // dd($baseChatlist->toSql());
+
+//         dd($baseChatlist->toSql());
         $chatlist = $baseChatlist->orderBy('created_at', 'DESC')->simplePaginate(10);
         return apiresponse(true, 'Chatlist', $chatlist);
     }
