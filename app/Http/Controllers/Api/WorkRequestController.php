@@ -78,7 +78,9 @@ class WorkRequestController extends Controller
             $contractor = User::find($user->created_by);
             $title = $user->name;
             $message = sprintf("%s sent you work order request", $user->name);
-            SendNotification($contractor->device_id, $title, $message);
+            if ($contractor->is_receive_notification == '1') {
+                SendNotification($contractor->device_id, $title, $message);
+            }
 
             Notification::create([
                 'reciever_id' => $user->created_by,
