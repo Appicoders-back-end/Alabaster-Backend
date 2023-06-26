@@ -140,7 +140,7 @@ class ChatsController extends Controller
 
             $receiver = User::find($message->sent_to_id);
             if ($receiver->is_receive_notification == '1') {
-                SendNotification($receiver->device_id, $title, $message);
+                SendNotification($receiver->device_id, $title, $message->message);
             }
 
             Notification::create([
