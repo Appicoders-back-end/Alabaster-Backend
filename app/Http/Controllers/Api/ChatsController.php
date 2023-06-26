@@ -138,7 +138,10 @@ class ChatsController extends Controller
             $title = "You have a message from " . $request->user()->name;
             // $message   =   $message->message;
 
-            SendNotification($message->sender_id, $title, $message);
+            $receiver = User::find($message->sent_to_id);
+            if ($receiver->is_receive_notification == '1') {
+                SendNotification($receiver->device_id, $title, $message);
+            }
 
             Notification::create([
                 'send_to_type' => $message->sent_to_type,

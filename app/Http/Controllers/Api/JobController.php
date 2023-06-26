@@ -73,7 +73,7 @@ class JobController extends Controller
             }
         }
         if (isset($request->date) && $request->date != null) {
-            $baseJobs = $baseJobs->whereDate('date', $request->date)->orWhereDate('time_in', $request->date);
+            $baseJobs = $baseJobs->whereDate('date', $request->date)/*->orWhereDate('time_in', $request->date)*/;
         }
         $jobs = $baseJobs->orderByDesc('id')->paginate(10);
         $jobs = JobsListResource::collection($jobs)->response()->getData(true);
