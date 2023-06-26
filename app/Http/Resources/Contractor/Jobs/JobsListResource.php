@@ -56,6 +56,7 @@ class JobsListResource extends JsonResource
             'lunch_in_longitude' => $this->lunch_in_longitude,
             'lunch_out_latitude' => $this->lunch_out_latitude,
             'lunch_out_longitude' => $this->lunch_out_longitude,
+            'dates' => $this->dates,
         ];
     }
 }
