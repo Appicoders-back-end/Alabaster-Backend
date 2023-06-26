@@ -55,6 +55,8 @@ class JobController extends Controller
             return $query->where('customer_id', $request->customer_id);
         });
 
+        $dates = $baseJobs->count() > 0 ? $baseJobs->pluck('date')->toArray() : [];
+
         $baseJobs->when(request('name'), function ($query) use ($request) {
             return $query->whereHas('customer', function ($customerQuery) use ($request) {
                 $customerQuery->where('name', 'like', '%' . $request->name . '%');
@@ -77,7 +79,6 @@ class JobController extends Controller
             ;
         }
         $jobs = $baseJobs->orderByDesc('id')->paginate(10);
-        $dates = $jobs->count() > 0 ? $jobs->pluck('date')->toArray() : [];
 
         $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : null;
 
