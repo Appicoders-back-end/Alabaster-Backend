@@ -77,13 +77,11 @@ class JobController extends Controller
             ;
         }
         $jobs = $baseJobs->orderByDesc('id')->paginate(10);
-        if ($jobs->count() > 0) {
-            foreach ($jobs as $job) {
-                $job->dates = $jobs->pluck('date')->toArray();
-            }
-        }
+        $dates = $jobs->count() > 0 ? $jobs->pluck('date')->toArray() : [];
+
         $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : null;
 
+        $jobs['dates'] = $dates;
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 
