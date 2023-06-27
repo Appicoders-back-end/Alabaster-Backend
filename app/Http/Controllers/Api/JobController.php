@@ -80,7 +80,7 @@ class JobController extends Controller
         }
         $jobs = $baseJobs->orderByDesc('id')->paginate(10);
 
-        $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : null;
+        $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : [];
 
         $jobs['dates'] = $dates;
         return apiResponse(true, __('Data loaded successfully'), $jobs);
