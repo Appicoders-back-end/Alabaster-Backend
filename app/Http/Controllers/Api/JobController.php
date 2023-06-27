@@ -55,8 +55,6 @@ class JobController extends Controller
             return $query->where('customer_id', $request->customer_id);
         });
 
-        $dates = $baseJobs->count() > 0 ? $baseJobs->pluck('date')->toArray() : [];
-
         $baseJobs->when(request('name'), function ($query) use ($request) {
             return $query->whereHas('customer', function ($customerQuery) use ($request) {
                 $customerQuery->where('name', 'like', '%' . $request->name . '%');
@@ -79,10 +77,8 @@ class JobController extends Controller
             ;
         }
         $jobs = $baseJobs->orderByDesc('id')->paginate(10);
-
         $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : [];
 
-        $jobs['dates'] = $dates;
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 
@@ -988,5 +984,41 @@ class JobController extends Controller
         } catch (Exception $e) {
             return apiResponse(false, __('Something went wrong'), $e->getMessage());
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getJobDates(Request $request)
+    {
+        $baseJobs = Task::query();
+        /* contractors jobs */
+        $baseJobs->when(auth()->user()->role == User::Contractor, function ($query) {
+            return $query->where('contractor_id', auth()->user()->id);
+        });
+        $baseJobs->when($request->contractor_id, function ($query) use ($request) {
+            return $query->where('contractor_id', $request->contractor_id);
+        });
+        /* cleaners jobs */
+        $baseJobs->when(auth()->user()->role == User::Cleaner, function ($query) {
+            return $query->where('cleaner_id', auth()->user()->id);
+        });
+        $baseJobs->when($request->cleaner_id, function ($query) use ($request) {
+            return $query->where('cleaner_id', $request->cleaner_id);
+        });
+        /* customers jobs */
+        $baseJobs->when(auth()->user()->role == User::Customer, function ($query) {
+            return $query->where('customer_id', auth()->user()->id);
+        });
+        $baseJobs->when($request->customer_id, function ($query) use ($request) {
+            return $query->where('customer_id', $request->customer_id);
+        });
+
+        $jobs = $baseJobs->orderByDesc('id')->get();
+
+        $jobs = $jobs->count() > 0 ? $jobs->pluck('date')->toArray() : [];
+
+        return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
 }

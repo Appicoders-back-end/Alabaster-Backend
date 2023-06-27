@@ -128,4 +128,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('deleteChecklist', [JobController::class, 'deleteChecklist']);
     Route::post('contractorComment', [JobController::class, 'contractorComment']);
     Route::post('sendJobReportToCustomer', [JobController::class, 'sendReportToCustomer']);
+    Route::get('getJobDates', [JobController::class, 'getJobDates']);
 });
