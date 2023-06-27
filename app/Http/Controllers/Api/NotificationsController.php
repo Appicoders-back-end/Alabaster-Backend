@@ -21,7 +21,7 @@ class NotificationsController extends Controller
             Notification::where('reciever_id', $user->id)->update([
                 'is_read' => '1'
             ]);
-            $notification = Notification::where('reciever_id', $user->id)->orderBy('created_at', 'DESC')->simplePaginate(10);
+            $notification = Notification::where('reciever_id', $user->id)->orderBy('created_at', 'DESC')->simplePaginate(1000);
             triggerUnreadNotificationEvent();
 
             return apiResponse(true, 'User Notifications', $notification);
