@@ -77,7 +77,7 @@ class JobController extends Controller
             ;
         }
         $jobs = $baseJobs->orderByDesc('id')->paginate(10);
-        $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : [];
+        $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : null;
 
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
