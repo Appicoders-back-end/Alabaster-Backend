@@ -76,8 +76,9 @@ class JobController extends Controller
             $baseJobs = $baseJobs->whereDate('date', $request->date)/*->orWhereDate('time_in', $request->date)*/
             ;
         }
+
         $jobs = $baseJobs->orderByDesc('id')->paginate(10);
-        $jobs = $jobs->count() > 0 ? JobsListResource::collection($jobs)->response()->getData(true) : [];
+        $jobs = JobsListResource::collection($jobs)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $jobs);
     }
