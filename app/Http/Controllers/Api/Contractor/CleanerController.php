@@ -113,4 +113,44 @@ class CleanerController extends Controller
 
         return apiResponse(true, __('Data loaded successfully'), $cleaners);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'first_name' => ['required'],
+            'contact_no' => 'required',
+            'category_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return apiresponse(false, implode("\n", $validator->errors()->all()));
+        }
+
+        try {
+            $user = User::find($request->id);
+            $user->name = sprintf("%s %s", $request->first_name, $request->last_name);
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->contact_no = $request->contact_no;
+            $user->category_id = $request->category_id;
+            $user->working_start_time = $request->working_start_time;
+            $user->working_end_time = $request->working_end_time;
+            $user->save();
+            $address = UserAddress::find($request->address_id);
+            $address->user_id = $user->id;
+            $address->street = $request->street;
+            $address->state = $request->state;
+            $address->zipcode = $request->zipcode;
+            $address->save();
+
+            return apiResponse(true, __('Cleaner has been updated successfully'), $user);
+        } catch (Exception $e) {
+            return apiResponse(false, $e->getMessage());
+        }
+    }
 }

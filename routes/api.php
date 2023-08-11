@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('customersCreate', [ContractorCustomerController::class, 'store']);
     Route::post('cleaners', [ContractorCleanerController::class, 'index']);
     Route::post('cleanersCreate', [ContractorCleanerController::class, 'store']);
+    Route::post('cleanersUpdate', [ContractorCleanerController::class, 'update']);
     Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
 
     /*members*/
