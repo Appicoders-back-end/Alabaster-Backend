@@ -283,8 +283,26 @@ class AuthController extends Controller
 
         return apiResponse(true, __("Your account has been deleted successfully"));
     }
-    public function getUserInfo(){
-        $user = User::where('id', auth()->user()->id)->first();
-        return apiResponse(true, __('User loaded successfully'), $user);
+
+    /**
+     * @return JsonResponse
+     */
+    public function getUserInfo()
+    {
+        try {
+            $user = User::where('id', auth()->user()->id)->first();
+            $user->addresses;
+            $subscription = UserSubscription::where('user_id', $user->id);
+            $user->is_subscribed = $subscription->count() > 0 ? true : false;
+            if ($user->role != User::Contractor) {
+                $user->contractor_no = User::find($user->created_by)->contact_no;
+            }
+            $user->inapp_plan_id = $subscription->count() > 0 ? $subscription->first()->inapp_plan_id : null;
+            $user->category_name = $user->category ? $user->category->name : null;
+
+            return apiResponse(true, __('User loaded successfully'), $user);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+        }
     }
 }
