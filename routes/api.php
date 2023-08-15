@@ -35,6 +35,7 @@ Route::post('signup', [AuthController::class, 'signUp']); //only contractor can 
 Route::post('forgot_password', [AuthController::class, 'forgotPassword']);
 Route::post('verify_forgot_code', [AuthController::class, 'verifyForgotCode']);
 Route::post('change_password', [AuthController::class, 'changePassword']);
+Route::get('getUserInfo', [AuthController::class, 'getUserInfo']);
 Route::get('categories', [GeneralController::class, 'getCategories']);
 Route::post('stores', [GeneralController::class, 'getStores']);
 Route::get('inventories', [GeneralController::class, 'getInventories']);

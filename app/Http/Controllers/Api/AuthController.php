@@ -283,4 +283,8 @@ class AuthController extends Controller
 
         return apiResponse(true, __("Your account has been deleted successfully"));
     }
+    public function getUserInfo(){
+        $user = User::where('id', auth()->user()->id)->first();
+        return apiResponse(true, __('User loaded successfully'), $user);
+    }
 }
