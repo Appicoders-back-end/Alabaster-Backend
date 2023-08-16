@@ -238,7 +238,7 @@ class AuthController extends Controller
                 return apiresponse(false, "Old password is incorrect");
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+            return apiResponse(false, $e->getMessage());
         }
     }
 
@@ -302,7 +302,7 @@ class AuthController extends Controller
 
             return apiResponse(true, __('User loaded successfully'), $user);
         } catch (Exception $e) {
-            return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+            return apiResponse(false, $e->getMessage());
         }
     }
 }
