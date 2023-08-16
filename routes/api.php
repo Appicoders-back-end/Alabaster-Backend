@@ -35,7 +35,6 @@ Route::post('signup', [AuthController::class, 'signUp']); //only contractor can 
 Route::post('forgot_password', [AuthController::class, 'forgotPassword']);
 Route::post('verify_forgot_code', [AuthController::class, 'verifyForgotCode']);
 Route::post('change_password', [AuthController::class, 'changePassword']);
-Route::get('getUserInfo', [AuthController::class, 'getUserInfo']);
 Route::get('categories', [GeneralController::class, 'getCategories']);
 Route::post('stores', [GeneralController::class, 'getStores']);
 Route::get('inventories', [GeneralController::class, 'getInventories']);
@@ -56,6 +55,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('updateGetStartedStatus', [GeneralController::class, 'updateGetStartedStatus']);
     Route::post('updateOnlineStatus', [AuthController::class, 'updateOnlineStatus']);
     Route::post('deleteAccount', [AuthController::class, 'deleteAccount']);
+    Route::get('getUserInfo', [AuthController::class, 'getUserInfo']);
 
     /*notifications*/
     Route::get('getUserNotifications', [NotificationsController::class, 'getUserNotifications']);
