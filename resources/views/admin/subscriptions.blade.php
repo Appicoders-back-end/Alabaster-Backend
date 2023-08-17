@@ -86,23 +86,6 @@
                                                     <input name="package_name" id="edit_package_name" type="text"
                                                            class=" mb-2 border-dark form-control validate" required>
                                                 </div>
-                                                <div class="md-form mr-3 ml-3 mt-2">
-                                                    <label data-error="wrong" data-success="right"
-                                                           for="defaultForm-pass">Select Plan</label>
-                                                    <select name="interval_time" id="edit_interval_time"
-                                                            class="form-control border-dark">
-                                                        <option value="week">Weekly Plan</option>
-                                                        <option value="month">Monthly Plan</option>
-                                                        <option value="year">Yearly Plan</option>
-                                                    </select>
-                                                </div>
-                                                <div class="md-form mr-3 ml-3 mt-2">
-                                                    <label data-error="wrong" data-success="right"
-                                                           for="defaultForm-pass">Amount</label>
-                                                    <input name="price" id="edit_price" type="number"
-                                                           class=" mb-2 border-dark form-control validate" required>
-                                                </div>
-
                                                 <div class="md-form mr-3 ml-3 mt-2 mb-3">
                                                     <label data-error="wrong" data-success="right"
                                                            for="defaultForm-pass">Description</label>
