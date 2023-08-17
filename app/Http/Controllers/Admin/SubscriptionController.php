@@ -89,7 +89,6 @@ class SubscriptionController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'package_name' => 'required',
-            'price' => 'required|numeric|min:1',
             'description' => 'required',
         ]);
 
@@ -100,8 +99,8 @@ class SubscriptionController extends Controller
         try {
             $subs = Subscription::find($request->id);
             $subs->package_name = $request->package_name;
-            $subs->price = $request->price;
-            $subs->interval_time = $request->interval_time;
+            /*$subs->price = $request->price;
+            $subs->interval_time = $request->interval_time;*/
             $subs->description = $request->description;
             $subs->save();
 
