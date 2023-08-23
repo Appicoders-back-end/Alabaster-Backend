@@ -25,12 +25,15 @@
                                 </thead>
                                 <tbody>
                                 @foreach($users as $user)
+                                    @php
+                                        $contactNo = $user->contact_no != null ? formattedNumber($user->contact_no) : "-";
+                                    @endphp
                                     <tr>
                                         <td>
                                             <div class="font-15">{{$user->name}}</div>
                                         </td>
                                         <td>
-                                            <div class="font-15">{{formattedNumber($user->contact_no)}}</div>
+                                            <div class="font-15" id="{{$user->id}}_contact_no">{{$contactNo}}</div>
                                         </td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->company ? $user->company->name : '-'}}</td>
@@ -155,9 +158,9 @@
     <script>
         function viewDetail(user) {
             console.log(user);
-            let imageUrl = {!! json_encode(url('/storage/uploads')) !!}
+            let imageUrl = {!! json_encode(url('/storage/uploads')) !!};
             $('#name').text(user.name);
-            $('#contact_no').text(user.contact_no ?? '-');
+            $('#contact_no').text($('#'+user.id + '_contact_no').text());
             $('#email').text(user.email);
             if (user.company != null) {
                 $('#customer_company').text(user.company.name);
