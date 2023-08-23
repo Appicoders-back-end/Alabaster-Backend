@@ -16,6 +16,7 @@
                                     <th class="text-white">id</th>
                                     <th class="text-white">Order No</th>
                                     <th class="text-white">Customer Name</th>
+                                    <th class="text-white">Customer Company Name</th>
                                     <th class="text-white">Contractor Name</th>
                                     <th class="text-white">Customer Location</th>
                                     <th class="text-white">Date</th>
@@ -33,6 +34,9 @@
                                         <td>{{$job->request_no ?? '-'}}</td>
                                         <td>
                                             <div class="font-15">{{$job->customer != null ? $job->customer->name : '-'}}</div>
+                                        </td>
+                                        <td>
+                                            <div class="font-15">{{$job->customer != null ? $job->customer->company != null ? $job->customer->company->name  : '-' : '-'}}</div>
                                         </td>
                                         <td>
                                             <div class="font-15">{{$job->contractor != null ? $job->contractor->name : '-'}}</div>
