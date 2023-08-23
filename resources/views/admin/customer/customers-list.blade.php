@@ -18,6 +18,7 @@
                                     <th class="text-white">Name</th>
                                     <th class="text-white">Phone No</th>
                                     <th class="text-white">Email Address</th>
+                                    <th class="text-white">Company</th>
                                     <th class="text-white">Status</th>
                                     <th class="text-white">Action</th>
                                 </tr>
@@ -32,19 +33,28 @@
                                             <div class="font-15">{{formattedNumber($user->contact_no)}}</div>
                                         </td>
                                         <td>{{$user->email}}</td>
+                                        <td>{{$user->company ? $user->company->name : '-'}}</td>
                                         <td>
-                                            <select class="form-control" name="status" onchange="return saveStatus(this.value, {{$user->id}})">
-                                                <option value="active" {{$user->status == 'active' ? 'selected' : null}}>Active
+                                            <select class="form-control" name="status"
+                                                    onchange="return saveStatus(this.value, {{$user->id}})">
+                                                <option
+                                                    value="active" {{$user->status == 'active' ? 'selected' : null}}>
+                                                    Active
                                                 </option>
-                                                <option value="inactive" {{$user->status == 'inactive' ? 'selected' : null}}>Inactive
+                                                <option
+                                                    value="inactive" {{$user->status == 'inactive' ? 'selected' : null}}>
+                                                    Inactive
                                                 </option>
-                                                <option value="delete" {{$user->status == 'delete' ? 'selected' : null}}>Delete
+                                                <option
+                                                    value="delete" {{$user->status == 'delete' ? 'selected' : null}}>
+                                                    Delete
                                                 </option>
                                             </select>
                                         </td>
                                         <td>
                                             <!-- Button to Open the Modal -->
-                                            <button type="button" class="btn btn-icon btn-dark" onClick="return viewDetail({{$user}})">
+                                            <button type="button" class="btn btn-icon btn-dark"
+                                                    onClick="return viewDetail({{$user}})">
                                                 <i class="fa fa-eye"></i>
                                             </button>
                                         </td>
@@ -74,12 +84,14 @@
                                         <!-- Modal body -->
                                         <div class="modal-body ">
 
-                                            <table class="table table-hover table-vcenter text-nowrap table-striped mb-0">
+                                            <table
+                                                class="table table-hover table-vcenter text-nowrap table-striped mb-0">
 
                                                 <tbody id="viewDetailTable">
                                                 <tr>
                                                     <td colspan="2">
-                                                        <div class="font-15 text-center"><img id="image" src="" width="300"></div>
+                                                        <div class="font-15 text-center"><img id="image" src=""
+                                                                                              width="300"></div>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -133,8 +145,7 @@
 @endsection
 @section('script')
     <script>
-        function viewDetail(user)
-        {
+        function viewDetail(user) {
             console.log(user);
             let imageUrl = {!! json_encode(url('/storage/uploads')) !!}
             $('#name').text(user.name);
@@ -142,15 +153,15 @@
             $('#email').text(user.email);
             $('#status').text(user.status).css('textTransform', 'capitalize');
 
-            if(user.profile_image != null){
-                $('#image').removeClass('d-none').attr('src', imageUrl+'/'+user.profile_image);
+            if (user.profile_image != null) {
+                $('#image').removeClass('d-none').attr('src', imageUrl + '/' + user.profile_image);
             } else {
                 $('#image').addClass('d-none');
             }
 
-            if(user.addresses.length > 0){
+            if (user.addresses.length > 0) {
                 $('.address-row').remove();
-                user.addresses.forEach(function(address, key) {
+                user.addresses.forEach(function (address, key) {
                     $('#viewDetailTable').append(`<tr class="address-row"><td width="50%"><div class="font-15">Address ${key + 1}</div></td><td width="50%"><div class="font-15 font-weight-bold">${address.street}, ${address.state}, ${address.zipcode}</div></td> </tr>`);
                 });
             } else {
@@ -160,11 +171,10 @@
             $('#viewDetailModal').modal('show');
         }
 
-        function saveStatus(status,id)
-        {
-            var url = "{{ url('admin/updateUserStatus') }}/"+id;
-            var csrf ="{{csrf_token()}}"
-            $.post(url,{_token:csrf,status:status},function(e){
+        function saveStatus(status, id) {
+            var url = "{{ url('admin/updateUserStatus') }}/" + id;
+            var csrf = "{{csrf_token()}}"
+            $.post(url, {_token: csrf, status: status}, function (e) {
                 if (e.success) {
                     alert(e.message);
                 } else {

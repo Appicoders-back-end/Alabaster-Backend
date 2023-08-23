@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompanyResource;
 use App\Mail\ForgotPassword;
 use App\Mail\TestEmail;
 use App\Mail\UserCreated;
@@ -114,6 +115,7 @@ class AuthController extends Controller
         }
         $user->inapp_plan_id = $subscription->count() > 0 ? $subscription->first()->inapp_plan_id : null;
         $user->category_name = $user->category ? $user->category->name : null;
+        $user->company;
 
         broadcast(new \App\Events\OnlineStatus($user))->toOthers();
         return apiResponse(true, __('Logged in successfully'), $user);
@@ -299,6 +301,7 @@ class AuthController extends Controller
             }
             $user->inapp_plan_id = $subscription->count() > 0 ? $subscription->first()->inapp_plan_id : null;
             $user->category_name = $user->category ? $user->category->name : null;
+            $user->company;
 
             return apiResponse(true, __('User loaded successfully'), $user);
         } catch (Exception $e) {
