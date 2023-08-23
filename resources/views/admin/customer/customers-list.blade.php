@@ -120,6 +120,14 @@
                                                 </tr>
                                                 <tr>
                                                     <td width="50%">
+                                                        <div class="font-15">Company</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold" id="customer_company"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%">
                                                         <div class="font-15">Status</div>
                                                     </td>
                                                     <td width="50%">
@@ -151,6 +159,11 @@
             $('#name').text(user.name);
             $('#contact_no').text(user.contact_no ?? '-');
             $('#email').text(user.email);
+            if (user.company != null) {
+                $('#customer_company').text(user.company.name);
+            } else {
+                $('#customer_company').text('-');
+            }
             $('#status').text(user.status).css('textTransform', 'capitalize');
 
             if (user.profile_image != null) {

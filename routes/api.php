@@ -100,6 +100,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     /*companies*/
     Route::post('companies', [CompanyController::class, 'index']);
+    Route::post('companies_list', [CompanyController::class, 'getCompaniesList']);
     Route::post('createCompany', [CompanyController::class, 'store']);
     Route::post('updateCompany', [CompanyController::class, 'update']);
 

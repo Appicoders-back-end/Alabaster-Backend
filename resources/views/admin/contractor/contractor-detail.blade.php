@@ -92,11 +92,11 @@
                                         </td>
                                         <td>
                                             <div
-                                                class="font-15">{{$company->contact_no}}
+                                                class="font-15">{{$company->contact_no ? formattedNumber($company->contact_no) : '-'}}
                                             </div>
                                         </td>
                                         <td>{{$company->address}}</td>
-                                        <td>{{$company->website}}</td>
+                                        <td><a target="_blank" href="{{$company->website}}">{{$company->website}}</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
