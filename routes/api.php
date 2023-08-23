@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('cleanersCreate', [ContractorCleanerController::class, 'store']);
     Route::post('cleanersUpdate', [ContractorCleanerController::class, 'update']);
     Route::get('activeCleaners', [ContractorCleanerController::class, 'getActiveCleaners']);
+
+    /*companies*/
+    Route::post('companies', [CompanyController::class, 'index']);
+    Route::post('createCompany', [CompanyController::class, 'store']);
+    Route::post('updateCompany', [CompanyController::class, 'update']);
 
     /*members*/
     Route::get('getUsers', [MembersController::class, 'getUsers']);

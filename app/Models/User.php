@@ -30,11 +30,20 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'role',
         'password',
+        'contact_no',
+        'profile_image',
         'is_online',
         'stripe_customer_id',
         'device_id',
-        'status'
+        'status',
+        'category_id',
+        'working_start_time',
+        'working_end_time',
+        'is_receive_notification',
+        'get_started',
+        'company_id',
     ];
 
     /**
@@ -83,5 +92,15 @@ class User extends Authenticatable
             return false;
         }
         return true;
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
+    }
+
+    public function contractorCompanies()
+    {
+        return $this->hasMany(Company::class, 'contractor_id', 'id');
     }
 }

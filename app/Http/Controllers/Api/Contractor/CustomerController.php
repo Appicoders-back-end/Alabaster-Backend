@@ -20,8 +20,16 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $baseCustomers = User::where('role', User::Customer)->where('created_by', auth::user()->id);
-        $customers = $baseCustomers->paginate(5);
+        $baseCustomers = User::with('company')->where('role', User::Customer)->where('created_by', auth::user()->id);
+        $baseCustomers->when(request('name'), function ($query) use ($request) {
+            return $query->where(function ($where) use($request) {
+                $where->whereHas('company', function ($whereCompany) use ($request) {
+                    $whereCompany->where('name', 'like', '%' . $request->name . '%');
+                })->orWhere('name', 'like', '%' . $request->name . '%');
+            });
+            //return $query->where('name', 'like', '%' . $request->name . '%');
+        });
+        $customers = $baseCustomers->orderByDesc('id')->paginate(10);
         $customers = CustomersListResource::collection($customers)->response()->getData(true);
 
         return apiResponse(true, __('Data loaded successfully'), $customers);
@@ -54,6 +62,7 @@ class CustomerController extends Controller
             $user->remember_token = $code;
             $user->contact_no = $request->contact_no;
             $user->role = User::Customer;
+            $user->company_id = $request->company_id;
             $user->created_by = Auth::user()->id;
             $user->save();
             $user->markEmailAsVerified(true);
@@ -152,6 +161,8 @@ class CustomerController extends Controller
             $user->addresses;
             $user->is_subscribed = UserSubscription::where('user_id', $user->id)->count() > 0 ? true : false;
             $user->category_name = $user->category ? $user->category->name : null;
+            $user->company;
+
             return apiResponse(true, 'Profile has been updated successfully', $user);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());

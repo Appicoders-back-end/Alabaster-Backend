@@ -34,6 +34,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::get('customers', [UserController::class, 'customers'])->name('admin.customers');
         Route::get('cleaners', [UserController::class, 'cleaners'])->name('admin.cleaners');
         Route::get('contractors', [UserController::class, 'contractors'])->name('admin.contractors');
+        Route::get('contractors/{id}', [UserController::class, 'contractorDetail'])->name('admin.contractorDetail');
         Route::post('updateUserStatus/{id}', [UserController::class, 'updateStatus'])->name('admin.updateUserStatus');
 
         /*contact queries*/

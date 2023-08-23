@@ -17,10 +17,15 @@ class UserController extends Controller
      */
     public function customers(Request $request)
     {
-        $baseUsers = User::with('addresses')->where('role', User::Customer);
-        $baseUsers->when($request->search, function ($query) use ($request) {
-            return $query->where('name', 'like', '%' . $request->search . '%');
+        $baseUsers = User::with('addresses', 'company')->where('role', User::Customer);
+        $baseUsers->when(request('search'), function ($query) use ($request) {
+            return $query->where(function ($where) use ($request) {
+                $where->whereHas('company', function ($whereCompany) use ($request) {
+                    $whereCompany->where('name', 'like', '%' . $request->search . '%');
+                })->orWhere('name', 'like', '%' . $request->search . '%');
+            });
         });
+
         $users = $baseUsers->paginate(10);
 
         return view('admin.customer.customers-list', ['users' => $users]);
@@ -63,5 +68,12 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['success' => true, 'message' => __("User status has been updated successfully")]);
+    }
+
+    public function contractorDetail($id)
+    {
+        $contractor = User::with('addresses', 'contractorCompanies')->find($id);
+
+        return view('admin.contractor.contractor-detail', compact('contractor'));
     }
 }
