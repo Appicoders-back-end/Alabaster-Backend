@@ -81,6 +81,7 @@
                                     <th class="text-white">Name</th>
                                     <th class="text-white">Phone No</th>
                                     <th class="text-white">Address</th>
+                                    <th class="text-white">Website</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -95,6 +96,7 @@
                                             </div>
                                         </td>
                                         <td>{{$company->address}}</td>
+                                        <td>{{$company->website}}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
