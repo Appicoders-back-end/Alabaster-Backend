@@ -111,4 +111,17 @@ class CompanyController extends Controller
         }
     }
 
+    public function getCompaniesList()
+    {
+        try {
+            $baseCompany = Company::where('contractor_id', auth()->user()->id);
+            $company = $baseCompany->orderByDesc('id')->get();
+            $company = CompanyResource::collection($company);
+
+            return apiResponse(true, __('Data loaded successfully'), $company);
+        } catch (Exception $e) {
+            return apiResponse(false, $e->getMessage());
+        }
+    }
+
 }
