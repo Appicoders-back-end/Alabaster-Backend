@@ -28,6 +28,8 @@ class CleanersListResource extends JsonResource
             'contact_no' => $this->contact_no,
             'working_start_time' => $this->working_start_time,
             'working_end_time' => $this->working_end_time,
+            'break_time_in' => $this->break_time_in,
+            'break_time_out' => $this->break_time_out,
             'address' => AddressesResource::collection($this->addresses),
             'is_idle' => Task::where('cleaner_id', $this->id)->where('status', '!=', Task::STATUS_COMPLETED)->count() > 0 ? false : true,
         ];

@@ -31,7 +31,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-//            'name' => 'required',
+            // 'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => ['required', 'min:8'],
             'confirm_password' => 'required|same:password'
@@ -142,9 +142,9 @@ class AuthController extends Controller
             $user->remember_token = $code;
             $user->save();
 
-//            Mail::to($user->email)->send(new ForgotPassword($user, $code));
+            // Mail::to($user->email)->send(new ForgotPassword($user, $code));
             Mail::to($user->email)->send(new UserCreated($user, $code, true));
-//            Mail::to($request->email)->send(new TestEmail());
+            // Mail::to($request->email)->send(new TestEmail());
 
             $data = [
                 'email' => $user->email,
@@ -179,7 +179,7 @@ class AuthController extends Controller
 
         $user->remember_token = null;
         $user->save();
-//        $user->markEmailAsVerified(true);
+        // $user->markEmailAsVerified(true);
 
         return apiResponse(true, 'Code matched successfully', $user);
     }
@@ -205,7 +205,7 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
             $user->remember_token = null;
             $user->save();
-//            $user->markEmailAsVerified(true);
+            // $user->markEmailAsVerified(true);
 
             return apiResponse(true, __('Password has been changed successfully'));
         } catch (Exception $e) {
