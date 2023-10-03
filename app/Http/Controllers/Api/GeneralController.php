@@ -84,7 +84,7 @@ class GeneralController extends Controller
         if ($user->role == User::Contractor) {
             $baseUsers = $baseUsers->where('created_by', $user->id);
         }
-        $users = $baseUsers->select('id', 'name', 'role', 'email')->get();
+        $users = $baseUsers->select('id', 'name', 'role', 'email','working_start_time', 'working_end_time', 'break_time_in', 'break_time_out')->get();
 
         return apiResponse(true, __('Data loaded successfully'), $users);
     }

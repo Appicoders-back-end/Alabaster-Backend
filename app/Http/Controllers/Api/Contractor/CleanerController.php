@@ -79,18 +79,20 @@ class CleanerController extends Controller
             $user->category_id = $request->category_id;
             $user->working_start_time = $request->working_start_time;
             $user->working_end_time = $request->working_end_time;
+            $user->break_time_in = $request->break_time_in;
+            $user->break_time_out = $request->break_time_out;
             $user->save();
             $user->markEmailAsVerified(true);
             $address = new UserAddress();
             $address->user_id = $user->id;
-            $address->street = $request->street;
-            $address->state = $request->state;
-            $address->zipcode = $request->zipcode;
+            $address->address = $request->address;
+            $address->lat = $request->lat;
+            $address->lng = $request->lng;
             $address->save();
 
-//            if (count($request->categories) > 0) {
-//                $user->categories()->attach($request->categories);
-//            }
+            // if (count($request->categories) > 0) {
+            //   $user->categories()->attach($request->categories);
+            // }
 
             Mail::to($request->email)->send(new UserCreated($user, $code));
             $user->code = $code;
@@ -140,12 +142,14 @@ class CleanerController extends Controller
             $user->category_id = $request->category_id;
             $user->working_start_time = $request->working_start_time;
             $user->working_end_time = $request->working_end_time;
+            $user->break_time_in = $request->break_time_in;
+            $user->break_time_out = $request->break_time_out;
             $user->save();
             $address = UserAddress::find($request->address_id);
             $address->user_id = $user->id;
-            $address->street = $request->street;
-            $address->state = $request->state;
-            $address->zipcode = $request->zipcode;
+            $address->address = $request->address;
+            $address->lat = $request->lat;
+            $address->lng = $request->lng;
             $address->save();
 
             return apiResponse(true, __('Cleaner has been updated successfully'), $user);

@@ -66,18 +66,28 @@ class CustomerController extends Controller
             $user->created_by = Auth::user()->id;
             $user->save();
             $user->markEmailAsVerified(true);
-            if (count($request->addresses) > 0) {
-                foreach ($request->addresses as $address) {
-                    $newAddress = new UserAddress();
-                    $newAddress->user_id = $user->id;
-                    $newAddress->street = $address['street'];
-                    $newAddress->state = $address['state'];
-                    $newAddress->zipcode = $address['zipcode'];
-                    $newAddress->save();
-                }
-            }
+            
+            // if (count($request->addresses) > 0) {
+            //     foreach ($request->addresses as $address) {
+            //         $newAddress = new UserAddress();
+            //         $newAddress->user_id = $user->id;
+            //         $newAddress->street = $address['street'];
+            //         $newAddress->state = $address['state'];
+            //         $newAddress->zipcode = $address['zipcode'];
+            //         $newAddress->save();
+            //     }
+            // }
+
+            $address = new UserAddress();
+            $address->user_id = $user->id;
+            $address->address = $request->address;
+            $address->lat = $request->lat;
+            $address->lng = $request->lng;
+            $address->save();
+            
             Mail::to($request->email)->send(new UserCreated($user, $code));
             $user->code = $code;
+
             return apiResponse(true, __('Customer has been created successfully'), $user);
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
@@ -135,7 +145,7 @@ class CustomerController extends Controller
             if (isset($request->addresses) && count($request->addresses) > 0) {
                 foreach ($request->addresses as $address) {
 
-                    if ($address['street'] === null && $address['state'] === null && $address['zipcode'] === null) {
+                    if ($address['address'] === null && $address['lat'] === null && $address['lng'] === null) {
                         continue;
                     }
 
@@ -150,10 +160,10 @@ class CustomerController extends Controller
 
                     // $newAddress = isset($address['address_id']) ? UserAddress::where('id', $address['address_id'])->first() : new UserAddress();
                     // dd($newAddress);
-                    $newAddress->street = $address['street'];
                     $newAddress->user_id = $request->user()->id;
-                    $newAddress->state = $address['state'];
-                    $newAddress->zipcode = $address['zipcode'];
+                    $newAddress->address = $address['address'];
+                    $newAddress->lat = $address['lat'];
+                    $newAddress->lng = $address['lng'];
                     $newAddress->save();
                 }
             }

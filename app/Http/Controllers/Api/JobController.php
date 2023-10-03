@@ -94,8 +94,8 @@ class JobController extends Controller
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required',
             'end_time' => 'required|after:start_time',
-//            'store_id' => 'required|numeric',
-//            'store_address_id' => 'required|numeric',
+            //            'store_id' => 'required|numeric',
+            //            'store_address_id' => 'required|numeric',
             'urgency' => 'required',
             'customer_id' => 'required',
             'cleaner_id' => 'required',
@@ -257,7 +257,7 @@ class JobController extends Controller
             $checklist = new Checklist();
             $checklist->task_id = $request->job_id;
             $checklist->name = $request->name;
-//            $checklist->description = $request->description;
+            //            $checklist->description = $request->description;
             $checklist->status = Checklist::STATUS_UNASSIGNED;
             $checklist->save();
 
@@ -372,8 +372,8 @@ class JobController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'job_id' => 'required|numeric',
-//            'latitude' => 'required',
-//            'longitude' => 'required',
+            //            'latitude' => 'required',
+            //            'longitude' => 'required',
             'before_attachment' => 'required'
         ]);
 
@@ -735,8 +735,8 @@ class JobController extends Controller
     {
         $baseJobIds = Task::leftJoin('user_addresses as address', 'address.id', 'tasks.address_id')
             ->leftJoin('users as customers', 'customers.id', 'tasks.customer_id')
-//            ->where('tasks.contractor_id', auth()->user()->id)
-//            ->where('tasks.cleaner_id', $request->cleaner_id)
+            //            ->where('tasks.contractor_id', auth()->user()->id)
+            //            ->where('tasks.cleaner_id', $request->cleaner_id)
             ->where('tasks.status', Task::STATUS_COMPLETED);
 
         $baseJobIds->when($request->cleaner_id, function ($query) use ($request) {
@@ -745,16 +745,16 @@ class JobController extends Controller
 
         $baseJobIds->when($request->name, function ($query) use ($request) {
             return $query->where(function ($searchQuery) use ($request) {
-                $searchQuery->orWhere('address.street', 'like', '%' . $request->name . '%')->orWhere('address.state', 'like', '%' . $request->name . '%')->orWhere('address.zipcode', 'like', '%' . $request->name . '%');
+                $searchQuery->orWhere('address.address', 'like', '%' . $request->name . '%')->orWhere('address.lat', 'like', '%' . $request->name . '%')->orWhere('address.lng', 'like', '%' . $request->name . '%');
             });
         });
 
         $locations = $baseJobIds->select('tasks.id as job_id',
             'address.id',
-            'address.street',
-            'address.state',
-            'address.zipcode',
-            DB::raw("CONCAT(address.street, ', ', address.state, ', ', address.zipcode) AS formated_address"))->get();
+            'address.address',
+            'address.lat',
+            'address.lng',
+            DB::raw("CONCAT(address.address, ', ', address.lat, ', ', address.lng) AS formated_address"))->get();
 
         return apiResponse(true, __('Data loaded successfully'), $locations);
     }
@@ -876,7 +876,7 @@ class JobController extends Controller
             $checklist->name = $request->name;
             $checklist->save();
 
-//            Checklist::where('parent_id', $checklist->id)->delete();
+            //            Checklist::where('parent_id', $checklist->id)->delete();
             if (count($request->items) > 0) {
                 $itemIds = array_column($request->items, 'id');
                 Checklist::where('parent_id', $checklist->id)->whereNotIn('id', $itemIds)->delete();

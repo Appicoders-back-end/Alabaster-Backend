@@ -16,10 +16,10 @@ class AddressesResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'street' => $this->street,
-            'state' => $this->state,
-            'zipcode' => $this->zipcode,
-            'formated_address' => sprintf("%s, %s, %s", $this->street, $this->state, $this->zipcode),
+            'address' => $this->address,
+            'lat' => $this->lat,
+            'lng' => $this->lng,
+            'formated_address' => sprintf("%s, %s, %s", $this->address, $this->lat, $this->lng),
         ];
     }
 }

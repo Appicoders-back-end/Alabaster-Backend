@@ -41,6 +41,8 @@ class User extends Authenticatable
         'category_id',
         'working_start_time',
         'working_end_time',
+        'break_time_in',
+        'break_time_out',
         'is_receive_notification',
         'get_started',
         'company_id',

@@ -9,6 +9,7 @@ use App\Mail\TestEmail;
 use App\Mail\UserCreated;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\UserAddress;
 use App\Models\UserSubscription;
 use Carbon\Carbon;
 use Exception;
@@ -31,7 +32,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-//            'name' => 'required',
+            // 'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => ['required', 'min:8'],
             'confirm_password' => 'required|same:password'
@@ -62,6 +63,17 @@ class AuthController extends Controller
             }
             $user->markEmailAsVerified(true); //todo will be committed after signup process completed
             $user->token = $user->createToken('MyAuthToken')->accessToken;
+
+            if (count($request->addresses) > 0) {
+                foreach ($request->addresses as $address) {
+                    $newAddress = new UserAddress();
+                    $newAddress->user_id = $user->id;
+                    $newAddress->address = $address['address'];
+                    $newAddress->lat = $address['lat'];
+                    $newAddress->lng = $address['lng'];
+                    $newAddress->save();
+                }
+            }
 
             return apiResponse(true, __('User has been created successfully'), $user);
         } catch (Exception $e) {
@@ -142,9 +154,9 @@ class AuthController extends Controller
             $user->remember_token = $code;
             $user->save();
 
-//            Mail::to($user->email)->send(new ForgotPassword($user, $code));
+            // Mail::to($user->email)->send(new ForgotPassword($user, $code));
             Mail::to($user->email)->send(new UserCreated($user, $code, true));
-//            Mail::to($request->email)->send(new TestEmail());
+            // Mail::to($request->email)->send(new TestEmail());
 
             $data = [
                 'email' => $user->email,
@@ -179,7 +191,7 @@ class AuthController extends Controller
 
         $user->remember_token = null;
         $user->save();
-//        $user->markEmailAsVerified(true);
+        // $user->markEmailAsVerified(true);
 
         return apiResponse(true, 'Code matched successfully', $user);
     }
@@ -205,7 +217,7 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
             $user->remember_token = null;
             $user->save();
-//            $user->markEmailAsVerified(true);
+            // $user->markEmailAsVerified(true);
 
             return apiResponse(true, __('Password has been changed successfully'));
         } catch (Exception $e) {
@@ -292,6 +304,7 @@ class AuthController extends Controller
     public function getUserInfo()
     {
         try {
+
             $user = User::where('id', auth()->user()->id)->first();
             $user->addresses;
             $subscription = UserSubscription::where('user_id', $user->id);
@@ -308,4 +321,32 @@ class AuthController extends Controller
             return apiResponse(false, $e->getMessage());
         }
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteAddress(Request $request)
+    {
+        try {
+
+            $deleteaddress = UserAddress::where('id', $request->id)->delete();
+
+            $user = User::where('id', auth()->user()->id)->first();
+            $user->addresses;
+            $subscription = UserSubscription::where('user_id', $user->id);
+            $user->is_subscribed = $subscription->count() > 0 ? true : false;
+            if ($user->role != User::Contractor) {
+                $user->contractor_no = User::find($user->created_by)->contact_no;
+            }
+            $user->inapp_plan_id = $subscription->count() > 0 ? $subscription->first()->inapp_plan_id : null;
+            $user->category_name = $user->category ? $user->category->name : null;
+            $user->company;
+
+            return apiResponse(true, __('Address has been deleted successfully'), $user);
+        } catch (Exception $e) {
+            return apiResponse(false, $e->getMessage());
+        }
+    }
 }
+    
