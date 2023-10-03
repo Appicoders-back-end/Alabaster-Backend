@@ -87,7 +87,7 @@ if (!function_exists('getTimeString')) {
 
     function getTimeString($interval)
     {
-//        return $interval;
+        // return $interval;
         $timeString = null;
         if ($interval->format('%d') > 0) {
             $timeString .= $interval->format('%d') . ' Days ';
@@ -101,7 +101,7 @@ if (!function_exists('getTimeString')) {
             $timeString .= $interval->format('%i') . ' Minutes ';
         }
 
-//        $formattedDate = $interval->format('%h')." Hours ".$interval->format('%i')." Minutes";
+        // $formattedDate = $interval->format('%h')." Hours ".$interval->format('%i')." Minutes";
         return $timeString;
     }
 }
@@ -121,7 +121,7 @@ if (!function_exists('getStripeCustomerId')) {
 
         $stripe_customer_id = $stripeCustomer->id;
         $user->update(['stripe_customer_id' => $stripe_customer_id]);
-//        $stripeCustomer = $this->stripe->customers->retrieve($stripe_customer_id);
+        // $stripeCustomer = $this->stripe->customers->retrieve($stripe_customer_id);
 
         return $user->stripe_customer_id;
     }
@@ -199,6 +199,6 @@ if (!function_exists('formattedNumber')) {
             $starting = null;
         }
         return $number != null ? $starting." (" . substr($number, 0, 3) . ") " . substr($number, 3, 3) . "-" . substr($number, 6) : '-';
-//        return $number != null ? substr($number, 0, 2). " (" . substr($number, 3, 6) . ") " . substr($number, 6, 6) . "-" . substr($number, 9) : '-';
+        // return $number != null ? substr($number, 0, 2). " (" . substr($number, 3, 6) . ") " . substr($number, 6, 6) . "-" . substr($number, 9) : '-';
     }
 }

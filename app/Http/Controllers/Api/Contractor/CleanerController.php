@@ -85,9 +85,9 @@ class CleanerController extends Controller
             $user->markEmailAsVerified(true);
             $address = new UserAddress();
             $address->user_id = $user->id;
-            $address->street = $request->street;
-            $address->state = $request->state;
-            $address->zipcode = $request->zipcode;
+            $address->address = $request->address;
+            $address->lat = $request->lat;
+            $address->lng = $request->lng;
             $address->save();
 
             // if (count($request->categories) > 0) {
@@ -147,9 +147,9 @@ class CleanerController extends Controller
             $user->save();
             $address = UserAddress::find($request->address_id);
             $address->user_id = $user->id;
-            $address->street = $request->street;
-            $address->state = $request->state;
-            $address->zipcode = $request->zipcode;
+            $address->address = $request->address;
+            $address->lat = $request->lat;
+            $address->lng = $request->lng;
             $address->save();
 
             return apiResponse(true, __('Cleaner has been updated successfully'), $user);

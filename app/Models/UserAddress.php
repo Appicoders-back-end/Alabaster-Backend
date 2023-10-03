@@ -9,10 +9,10 @@ class UserAddress extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'street', 'state', 'zipcode'];
+    protected $fillable = ['user_id', 'street', 'state', 'zipcode', 'address', 'lat', 'long'];
 
     public function getFormattedAddress()
     {
-        return sprintf("%s, %s, %s", $this['street'], $this['state'], $this['zipcode']);
+        return sprintf("%s, %s, %s", $this['address'], $this['lat'], $this['lng']);
     }
 }

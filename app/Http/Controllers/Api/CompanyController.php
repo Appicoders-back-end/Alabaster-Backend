@@ -61,6 +61,8 @@ class CompanyController extends Controller
             $company = new Company();
             $company->name = $request->name;
             $company->address = $request->address;
+            $company->lat = $request->lat;
+            $company->lng = $request->lng;
             $company->contact_no = $request->contact_no;
             $company->website = $request->website;
             $company->contractor_id = auth()->user()->id;
@@ -101,10 +103,12 @@ class CompanyController extends Controller
             $company = Company::findOrFail($request->id);
             $company->name = $request->name;
             $company->address = $request->address;
+            $company->lat = $request->lat;
+            $company->lng = $request->lng;
             $company->contact_no = $request->contact_no;
             $company->website = $request->website;
             $company->save();
-
+            
             return apiResponse(true, __('Company has been updated successfully'), new CompanyResource($company));
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
