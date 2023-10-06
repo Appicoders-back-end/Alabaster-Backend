@@ -48,9 +48,9 @@ class CustomerController extends Controller
         }
 
         try {
-            if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
+            /*if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
                 return apiResponse(false, __('You have to buy membership first.'));
-            }
+            }*/
 
             $code = generateRandomString(8);
             $user = new User();
@@ -66,7 +66,7 @@ class CustomerController extends Controller
             $user->created_by = Auth::user()->id;
             $user->save();
             $user->markEmailAsVerified(true);
-            
+
             // if (count($request->addresses) > 0) {
             //     foreach ($request->addresses as $address) {
             //         $newAddress = new UserAddress();
@@ -84,7 +84,7 @@ class CustomerController extends Controller
             $address->lat = $request->lat;
             $address->lng = $request->lng;
             $address->save();
-            
+
             Mail::to($request->email)->send(new UserCreated($user, $code));
             $user->code = $code;
 

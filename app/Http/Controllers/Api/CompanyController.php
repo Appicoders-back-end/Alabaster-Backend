@@ -54,9 +54,9 @@ class CompanyController extends Controller
                 return apiResponse(false, __('This api is only accessible for contractor.'));
             }
 
-            if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
+            /*if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
                 return apiResponse(false, __('You have to buy membership first.'));
-            }
+            }*/
 
             $company = new Company();
             $company->name = $request->name;
@@ -108,7 +108,7 @@ class CompanyController extends Controller
             $company->contact_no = $request->contact_no;
             $company->website = $request->website;
             $company->save();
-            
+
             return apiResponse(true, __('Company has been updated successfully'), new CompanyResource($company));
         } catch (Exception $e) {
             return apiResponse(false, $e->getMessage());
