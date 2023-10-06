@@ -121,18 +121,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td width="50%">
-                                                        <div class="font-15">Start Time</div>
+                                                        <div class="font-15">Work Hours</div>
                                                     </td>
                                                     <td width="50%">
-                                                        <div class="font-15 font-weight-bold" id="start_time"></div>
+                                                        <div class="font-15 font-weight-bold" id="work_time"></div>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td width="50%">
-                                                        <div class="font-15">End Time</div>
+                                                        <div class="font-15">Break Hours</div>
                                                     </td>
                                                     <td width="50%">
-                                                        <div class="font-15 font-weight-bold" id="end_time"></div>
+                                                        <div class="font-15 font-weight-bold" id="break_time"></div>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -167,13 +167,30 @@
             console.log(user);
             let imageUrl = {!! json_encode(url('/storage/uploads')) !!}
 
+            // Original time in 24-hour format
+            const startoriginalTime = user.working_start_time;
+            const starttwelveHourTime = new Date(`2000-01-01T${startoriginalTime}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            console.log(starttwelveHourTime); // Output: "05:33 PM"
+
+            const endoriginalTime = user.working_end_time;
+            const endtwelveHourTime = new Date(`2000-01-01T${endoriginalTime}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            console.log(endtwelveHourTime); // Output: "05:33 PM"
+
+            const breakstartoriginalTime = user.break_time_in;
+            const breakstarttwelveHourTime = new Date(`2000-01-01T${breakstartoriginalTime}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            console.log(breakstarttwelveHourTime); // Output: "05:33 PM"
+
+            const breakendoriginalTime = user.break_time_out;
+            const breakendtwelveHourTime = new Date(`2000-01-01T${breakendoriginalTime}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            console.log(breakendtwelveHourTime); // Output: "05:33 PM"
+
             $('#name').text(user.name);
             $('#contact_no').text($('#'+user.id + '_contact_no').text());
             $('#email').text(user.email);
             $('#category').text(user.category != null ? user.category.name : '-');
             $('#status').text(user.status).css('textTransform', 'capitalize');
-            $('#start_time').text(user.working_start_time ? user.working_start_time : '-');
-            $('#end_time').text(user.working_end_time ? user.working_end_time : '-');
+            $('#work_time').text(starttwelveHourTime + ' To ' + endtwelveHourTime ? starttwelveHourTime + ' To ' + endtwelveHourTime : '-');
+            $('#break_time').text(breakstarttwelveHourTime + ' To ' + breakendtwelveHourTime ? breakstarttwelveHourTime + ' To ' + breakendtwelveHourTime : '-');
             if(user.profile_image != null){
                 $('#image').removeClass('d-none').attr('src', imageUrl+'/'+user.profile_image);
             } else {
