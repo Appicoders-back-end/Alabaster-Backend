@@ -54,9 +54,9 @@ class CompanyController extends Controller
                 return apiResponse(false, __('This api is only accessible for contractor.'));
             }
 
-            /*if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
+            if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
                 return apiResponse(false, __('You have to buy membership first.'));
-            }*/
+            }
 
             $company = new Company();
             $company->name = $request->name;
