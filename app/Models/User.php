@@ -90,7 +90,7 @@ class User extends Authenticatable
 
     public function hasMembership()
     {
-        if ($this->membership()->where('is_expired', 0)->count() == 0) {
+        if ($this->membership()->count() == 0) {
             return false;
         }
         return true;
