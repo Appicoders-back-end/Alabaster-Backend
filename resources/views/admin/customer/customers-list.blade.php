@@ -121,20 +121,52 @@
                                                         <div class="font-15 font-weight-bold" id="email"></div>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td width="50%">
                                                         <div class="font-15">Company</div>
                                                     </td>
                                                     <td width="50%">
                                                         <div class="font-15 font-weight-bold" id="customer_company"></div>
                                                     </td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <td width="50%">
                                                         <div class="font-15">Status</div>
                                                     </td>
                                                     <td width="50%">
                                                         <div class="font-15 font-weight-bold" id="status"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%">
+                                                        <div class="font-15">Company Name</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold" id="company"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%">
+                                                        <div class="font-15">Company Phone Number</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold" id="phone"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%">
+                                                        <div class="font-15">Company Address</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold" id="address"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%">
+                                                        <div class="font-15">Company Website</div>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <div class="font-15 font-weight-bold" id="website"></div>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -162,11 +194,11 @@
             $('#name').text(user.name);
             $('#contact_no').text($('#'+user.id + '_contact_no').text());
             $('#email').text(user.email);
-            if (user.company != null) {
-                $('#customer_company').text(user.company.name);
-            } else {
-                $('#customer_company').text('-');
-            }
+            // if (user.company != null) {
+            //     $('#customer_company').text(user.company.name);
+            // } else {
+            //     $('#customer_company').text('-');
+            // }
             $('#status').text(user.status).css('textTransform', 'capitalize');
 
             if (user.profile_image != null) {
@@ -175,14 +207,19 @@
                 $('#image').addClass('d-none');
             }
 
-            if (user.addresses.length > 0) {
-                $('.address-row').remove();
-                user.addresses.forEach(function (address, key) {
-                    $('#viewDetailTable').append(`<tr class="address-row"><td width="50%"><div class="font-15">Address ${key + 1}</div></td><td width="50%"><div class="font-15 font-weight-bold">${address.street}, ${address.state}, ${address.zipcode}</div></td> </tr>`);
-                });
-            } else {
-                $('.address-row').remove();
-            }
+            $('#company').text(user.company.name).css('textTransform', 'capitalize');
+            $('#phone').text($('#'+user.id + '_contact_no').text());
+            $('#address').text(user.company.address).css('textTransform', 'capitalize');
+            $('#website').text(user.company.website).css('textTransform', 'capitalize');
+
+            // if (user.addresses.length > 0) {
+            //     $('.address-row').remove();
+            //     user.addresses.forEach(function (address, key) {
+            //         $('#viewDetailTable').append(`<tr class="address-row"><td width="50%"><div class="font-15">Address ${key + 1}</div></td><td width="50%"><div class="font-15 font-weight-bold">${address.street}, ${address.state}, ${address.zipcode}</div></td> </tr>`);
+            //     });
+            // } else {
+            //     $('.address-row').remove();
+            // }
 
             $('#viewDetailModal').modal('show');
         }

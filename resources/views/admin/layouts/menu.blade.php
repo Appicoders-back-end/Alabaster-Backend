@@ -38,7 +38,8 @@
                     <a class="{{ (request()->is('admin/payments*')) ? 'active' : '' }}" href="{{route('admin.payments')}}"><span class="ml-3">Payments</span></a>
                 </li>
                 <li class="border-bottom">
-                    <a href="{{route('admin.work-orders')}}"><span class="ml-3">Work Order</span></a>
+                    {{-- <a href="{{route('admin.work-orders')}}"><span class="ml-3">Work Order</span></a> --}}
+                    <a class="{{ (request()->is('admin/work-orders*')) ? 'active' : '' }}" href="{{route('admin.work-orders')}}"><span class="ml-3">Work Order</span></a>
                 </li>
                 <li class="border-bottom">
                     <a class="{{ (request()->is('admin/categories*')) ? 'active' : '' }}" href="{{route('admin.categories')}}"><span class="ml-3 ">Category</span></a>

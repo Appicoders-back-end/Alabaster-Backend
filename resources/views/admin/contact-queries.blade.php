@@ -18,6 +18,7 @@
                                     <th class="text-white">Email</th>
                                     <th class="text-white">Query Title</th>
                                     <th class="text-white">Message Box</th>
+                                    <th class="text-white">Date</th>
                                     <th class="text-white">Action</th>
                                 </tr>
                                 </thead>
@@ -41,6 +42,9 @@
                                                 {{ (strlen($query->message) > 20)?substr($query->message, 0, 20)." ... Read More
                                                 ":$query->message??'-' }}
                                             </p>
+                                        </td>
+                                        <td>
+                                            <div class="font-15">{{date('d-M-Y', strtotime($query->created_at))}}</div>
                                         </td>
                                         <td>
                                             <a href="{{route('admin.delete-contact-queries', ['id' => $query->id])}}" class="btn btn-danger delete-confirm">Delete</a>

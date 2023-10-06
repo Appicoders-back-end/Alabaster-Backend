@@ -65,7 +65,7 @@
                                         </td>
                                         <td width="50%">
                                             <div
-                                                class="font-15 font-weight-bold">{{sprintf("%s, %s, %s.", $address->street, $address->state, $address->zipcode)}}</div>
+                                                class="font-15 font-weight-bold">{{sprintf("%s.", $address->address)}}</div>
                                         </td>
                                     </tr>
                                 @endforeach

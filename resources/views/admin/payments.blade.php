@@ -14,21 +14,30 @@
                                 <thead class="bg-dark text-center">
                                 <tr>
                                     <th class="text-white">Sr. No.</th>
-                                    <th class="text-white">Host Name</th>
+                                    <th class="text-white">Contractor Name</th>
+                                    <th class="text-white">Contractor Email</th>
                                     <th class="text-white">Payment</th>
                                     <th class="text-white">Subscription Type</th>
+                                    <th class="text-white">Date</th>
                                     <th class="text-white">Status</th>
                                 </tr>
                                 </thead>
                                 <tbody class="text-center">
+                                <?php $count = 1 ?>
                                 @foreach($payments as $payment)
                                     <tr>
-                                        <td><div class="font-15">{{$payment->id}}</div> </td>
+                                        <td><div class="font-15">{{$count++ }}</div> </td>
                                         <td>
                                             <div class="font-15">{{$payment->user->name}}</div>
                                         </td>
+                                        <td>
+                                            <div class="font-15">{{$payment->user->email}}</div>
+                                        </td>
                                         <td>${{$payment->price}}</td>
                                         <td>{{$payment->plan ? ucfirst($payment->plan->interval_time) : '-'}}</td>
+                                        <td>
+                                            <div class="font-15">{{date('d-M-Y', strtotime($payment->user->created_at))}}</div>
+                                        </td>
                                         <td>{{$payment->user ? ucfirst($payment->user->status) : '-'}}</td>
                                     </tr>
                                 @endforeach
