@@ -48,9 +48,9 @@ class CustomerController extends Controller
         }
 
         try {
-            /*if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
+            if (auth()->user()->role == User::Contractor && !auth()->user()->hasMembership()) {
                 return apiResponse(false, __('You have to buy membership first.'));
-            }*/
+            }
 
             $code = generateRandomString(8);
             $user = new User();
