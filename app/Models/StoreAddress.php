@@ -11,6 +11,7 @@ class StoreAddress extends Model
 
     public function getFormattedAddress()
     {
-        return sprintf("%s, %s, %s", $this['street'], $this['state'], $this['zipcode']);
+        // return sprintf("%s, %s, %s", $this['street'], $this['state'], $this['zipcode']);
+        return sprintf("%s", $this['address']);
     }
 }

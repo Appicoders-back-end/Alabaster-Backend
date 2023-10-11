@@ -10,9 +10,8 @@
                             <table class="table table-hover table-vcenter text-nowrap table-striped mb-0">
                                 <div class="all-users row">
                                     <h4 class=" text-dark font-weight-bold col-9">Stores</h4>
-                                    <button type="button" class="btn btn-danger col-3" onClick="return openAddModal()">
-                                        Add
-                                    </button>
+                                    {{-- <button type="button" class="btn btn-danger col-3" onClick="return openAddModal()">Add</button> --}}
+                                    <a href="{{ route('admin.create.stores') }}" type="button" class="btn btn-danger col-3">Add</a>
                                 </div>
                                 <thead class="bg-dark">
                                 <tr>
@@ -40,13 +39,17 @@
                                         <td><img width="60" src="{{$store->getImageUrl()}}"></td>
                                         <td>
                                             <!-- Button to Open the Modal -->
-                                            <a href="{{route('admin.store_inventories', $store->id)}}" type="button"
+                                            <a hidden href="{{route('admin.store_inventories', $store->id)}}" type="button"
                                                class="btn btn-icon btn-dark"> <i class="fa fa-eye"></i></a>
 
-                                            <button type="button" class="btn btn-icon btn-dark ml-2"
-                                                    onClick="return openEditModal({{$store}})"><i
-                                                    class="fas fa-edit"></i>
-                                            </button>
+                                            <button type="button" class="btn btn-icon btn-dark ml-2" onClick="return openEditModal({{$store}})"><i class="fas fa-edit"></i></button>
+                                            {{-- <a href="{{route('admin.edit.stores', $store->id)}}" type="button"
+                                                class="btn btn-icon btn-dark"> <i class="fas fa-edit"></i></a> --}}
+
+                                            <a href="{{route('admin.stores.delete', $store->id)}}" type="button" class="btn btn-icon btn-danger ml-2"
+                                                onClick="return confirm('Are you sure you want to delete?')"><i
+                                                class="fas fa-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -215,4 +218,6 @@
             $('#addStoreModal').modal('show');
         }
     </script>
+
+
 @endsection

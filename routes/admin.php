@@ -53,8 +53,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
 
         /*stores*/
         Route::get('stores', [StoreController::class, 'index'])->name('admin.stores');
+        Route::get('create-store', [StoreController::class, 'create'])->name('admin.create.stores');
         Route::post('stores/store', [StoreController::class, 'store'])->name('admin.stores.store');
+        Route::get('edit-store/{id}', [StoreController::class, 'edit'])->name('admin.edit.stores');
         Route::post('stores/update', [StoreController::class, 'update'])->name('admin.stores.update');
+        Route::get('stores/delete/{id}', [StoreController::class, 'delete'])->name('admin.stores.delete');
 
         /*inventories*/
         Route::get('inventories', [InventoryController::class, 'index'])->name('admin.inventories');
