@@ -8,8 +8,8 @@
                 <div class="row">
                     <div class="col-md-12 grid-margin stretch-card">
                         <div class="card-body">
-                            <h4 class="text-dark font-weight-bold col-9">Create Store</h4>
-                            <form method="post" action="{{route('admin.stores.store')}}"  method="post" enctype="multipart/form-data">
+                            <h4 class="text-dark font-weight-bold col-9">Edit Store</h4>
+                            <form method="post" action="{{route('admin.stores.update')}}"  method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="md-form mr-3 ml-2 mt-3">
                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Store Name</label>

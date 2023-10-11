@@ -40,7 +40,6 @@ class StoreController extends Controller
         return view('admin.stores.create-store');
     }
 
-
     /**
      * @param Request $request
      * @return RedirectResponse
@@ -80,6 +79,11 @@ class StoreController extends Controller
         } catch (\Exception $exception) {
             return redirect()->to('admin/stores')->with('error', $exception->getMessage());
         }
+    }
+
+    public function edit(Request $request)
+    {
+        return view('admin.stores.edit-store');
     }
 
     /**

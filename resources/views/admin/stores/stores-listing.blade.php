@@ -39,13 +39,12 @@
                                         <td><img width="60" src="{{$store->getImageUrl()}}"></td>
                                         <td>
                                             <!-- Button to Open the Modal -->
-                                            <a href="{{route('admin.store_inventories', $store->id)}}" type="button"
+                                            <a hidden href="{{route('admin.store_inventories', $store->id)}}" type="button"
                                                class="btn btn-icon btn-dark"> <i class="fa fa-eye"></i></a>
 
-                                            <button type="button" class="btn btn-icon btn-dark ml-2"
-                                                    onClick="return openEditModal({{$store}})"><i
-                                                    class="fas fa-edit"></i>
-                                            </button>
+                                            <button type="button" class="btn btn-icon btn-dark ml-2" onClick="return openEditModal({{$store}})"><i class="fas fa-edit"></i></button>
+                                            {{-- <a href="{{route('admin.edit.stores', $store->id)}}" type="button"
+                                                class="btn btn-icon btn-dark"> <i class="fas fa-edit"></i></a> --}}
                                         </td>
                                     </tr>
                                 @endforeach
