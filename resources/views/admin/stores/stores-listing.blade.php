@@ -45,6 +45,11 @@
                                             <button type="button" class="btn btn-icon btn-dark ml-2" onClick="return openEditModal({{$store}})"><i class="fas fa-edit"></i></button>
                                             {{-- <a href="{{route('admin.edit.stores', $store->id)}}" type="button"
                                                 class="btn btn-icon btn-dark"> <i class="fas fa-edit"></i></a> --}}
+
+                                            <a href="{{route('admin.stores.delete', $store->id)}}" type="button" class="btn btn-icon btn-danger ml-2"
+                                                onClick="return confirm('Are you sure you want to delete?')"><i
+                                                class="fas fa-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

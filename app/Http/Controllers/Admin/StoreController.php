@@ -133,4 +133,16 @@ class StoreController extends Controller
             return redirect()->to('admin/stores')->with('error', $exception->getMessage());
         }
     }
+
+    public function delete($id)
+    {
+        try {
+
+            StoreAddress::where('store_id', $id)->delete();
+            Store::find($id)->delete();
+            return redirect()->to('admin/stores')->with('success', __('Store has been deleted successfully!'));
+        } catch (\Exception $exception) {
+            return redirect()->to('admin/stores')->with('error', $exception->getMessage());
+        }
+    }
 }
