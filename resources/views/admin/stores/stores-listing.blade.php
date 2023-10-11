@@ -10,9 +10,8 @@
                             <table class="table table-hover table-vcenter text-nowrap table-striped mb-0">
                                 <div class="all-users row">
                                     <h4 class=" text-dark font-weight-bold col-9">Stores</h4>
-                                    <button type="button" class="btn btn-danger col-3" onClick="return openAddModal()">
-                                        Add
-                                    </button>
+                                    {{-- <button type="button" class="btn btn-danger col-3" onClick="return openAddModal()">Add</button> --}}
+                                    <a href="{{ route('admin.create.stores') }}" type="button" class="btn btn-danger col-3">Add</a>
                                 </div>
                                 <thead class="bg-dark">
                                 <tr>
@@ -215,4 +214,6 @@
             $('#addStoreModal').modal('show');
         }
     </script>
+
+
 @endsection

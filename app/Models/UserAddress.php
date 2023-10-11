@@ -13,6 +13,7 @@ class UserAddress extends Model
 
     public function getFormattedAddress()
     {
-        return sprintf("%s, %s, %s", $this['address'], $this['lat'], $this['lng']);
+        // return sprintf("%s, %s, %s", $this['address'], $this['lat'], $this['lng']);
+        return sprintf("%s", $this['address']);
     }
 }

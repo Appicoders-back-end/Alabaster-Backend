@@ -32,6 +32,17 @@ class StoreController extends Controller
 
     /**
      * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function create(Request $request)
+    {
+        
+        return view('admin.stores.create-store');
+    }
+
+
+    /**
+     * @param Request $request
      * @return RedirectResponse
      */
     public function store(Request $request)
@@ -39,9 +50,9 @@ class StoreController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:stores,name',
             'addresses' => 'required|array',
-            'addresses.*.street' => 'required',
-            'addresses.*.state' => 'required',
-            'addresses.*.zipcode' => 'required',
+            'addresses.*.address' => 'required',
+            // 'addresses.*.latitude' => 'required',
+            // 'addresses.*.longitude' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -59,9 +70,9 @@ class StoreController extends Controller
             foreach ($request->addresses as $row) {
                 $address = new StoreAddress();
                 $address->store_id = $store->id;
-                $address->street = $row['street'];
-                $address->state = $row['state'];
-                $address->zipcode = $row['zipcode'];
+                $address->address = $row['address'];
+                $address->lat = $row['latitude'];
+                $address->lng = $row['longitude'];
                 $address->save();
             }
 
