@@ -19,7 +19,7 @@
                                 <div class="row row mr-2 ml-2">
                                     <h5 class="mt-3">Locations</h5>
                                 </div>
-                                <div class="row mr-2 ml-1 locations">
+                                <div class="row mr-2 ml-1">
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="address" class="form-label">{{__('Address')}}</label>
@@ -31,9 +31,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row mr-2 ml-1" id="items">
+                                </div>
                                 <div class="col-md-12">
                                     <a class="btn btn-success mr-2" href="javascript:;" onClick="return AddAddressRow()"
-                                       style="float: right;">+</a>
+                                    style="float: right;">+</a>
+                                    <a class="btn btn-success mr-2" href="javascript:;" onClick="return RemAddressRow()"
+                                       style="float: right;">-</a>
                                 </div>
                                 <div class="md-form mr-3 ml-2 mt-3">
                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Upload Image</label>
@@ -53,10 +57,14 @@
 @section('script')
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3NUxL1BZ3S4v69vZExUtXdbFRAQEiMcE&callback=initAutocomplete&libraries=places" defer></script>
     <script>
+        
         var addressesIndex = 1;
+        
         function AddAddressRow() {
-            $('.locations').append(`
-            <div class="col-md-12 mb-3">
+            addressesIndex++;
+
+            $('#items').append(`
+            <div class="col-md-12 mb-3" id="location_${addressesIndex}">
                 <input id="address[${addressesIndex}]" name="addresses[${addressesIndex}][address]" type="text" class="form-control"
                 value="{{old('address')}}"placeholder="Enter address">
                 
@@ -65,6 +73,7 @@
             </div>
             `);
 
+            // Google Location Suggestions
             let addressElements = document.getElementById(`address[1]`);
             console.log("hello" + addressElements);
 
@@ -98,11 +107,15 @@
                 initAutocomplete();
             }
             window.initAutocomplete = initAutocomplete;
-
-            addressesIndex++;
         }
 
+        function RemAddressRow() {
+            $('#location_'+addressesIndex).remove();
 
+            addressesIndex--;
+        }
+
+        // Google Location Suggestions
         let autocompletes = [];
 
         let addressElements = document.getElementById(`address[0]`);
@@ -134,7 +147,7 @@
             latitudeField.value = lat;
             longitudeField.value = lng;
 
-            initAutocomplete();
+            initAutocomplete(); 
         }
 
         window.initAutocomplete = initAutocomplete;
