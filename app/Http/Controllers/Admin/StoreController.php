@@ -81,9 +81,13 @@ class StoreController extends Controller
         }
     }
 
-    public function edit(Request $request)
+    public function edit($id)
     {
-        return view('admin.stores.edit-store');
+
+        $data = Store::where('id', $id)->first();
+        $addresses = StoreAddress::where('store_id', $data->id)->get();
+
+        return view('admin.stores.edit-store', ['data' => $data, 'storeaddress' => $addresses]);
     }
 
     /**
@@ -114,7 +118,7 @@ class StoreController extends Controller
                 if (isset($row['address_id'])) {
                     $storeAddress = StoreAddress::find($row['address_id']);
 
-                    if ($row['street'] == null && $row['state'] == null && $row['zipcode'] == null) {
+                    if ($row['address'] == null) {
                         $storeAddress->delete();
                         continue;
                     }
@@ -122,13 +126,13 @@ class StoreController extends Controller
 
                 $address = isset($row['address_id']) ? StoreAddress::find($row['address_id']) : new StoreAddress();
                 $address->store_id = $store->id;
-                $address->street = $row['street'];
-                $address->state = $row['state'];
-                $address->zipcode = $row['zipcode'];
+                $address->address = $row['address'];
+                $address->lat = $row['latitude'];
+                $address->lng = $row['longitude'];
                 $address->save();
             }
 
-            return redirect()->to('admin/stores')->with('success', __('Store has been created successfully!'));
+            return redirect()->to('admin/stores')->with('success', __('Store has been updated successfully!'));
         } catch (\Exception $exception) {
             return redirect()->to('admin/stores')->with('error', $exception->getMessage());
         }

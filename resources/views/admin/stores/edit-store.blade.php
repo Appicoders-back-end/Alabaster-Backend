@@ -9,43 +9,70 @@
                     <div class="col-md-12 grid-margin stretch-card">
                         <div class="card-body">
                             <h4 class="text-dark font-weight-bold col-9">Edit Store</h4>
+                            
                             <form method="post" action="{{route('admin.stores.update')}}"  method="post" enctype="multipart/form-data">
                                 @csrf
+                                
+                                <input type="hidden" name="id" id="edit_id" value="{{$data->id}}">
+
                                 <div class="md-form mr-3 ml-2 mt-3">
                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Store Name</label>
                                     <input name="name" type="text" class="mb-2 border-dark form-control validate"
-                                           placeholder="Enter Store Name">
+                                           placeholder="Enter Store Name" value="{{ $data->name }}">
                                 </div>
                                 <div class="row row mr-2 ml-2">
                                     <h5 class="mt-3">Locations</h5>
                                 </div>
-                                <div class="row mr-2 ml-1">
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="address" class="form-label">{{__('Address')}}</label>
-                                            <input id="address[0]" name="addresses[0][address]" type="text" class="form-control"
-                                                   value="{{old('address')}}"placeholder="Enter address">
+                                <?php $count = 0 ?>
+                                @foreach ($storeaddress as $item)
+                                    <div class="row mr-2 ml-1">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="address" class="form-label">{{__('Address')}}</label>
 
-                                            <input type="hidden" id="latitude[0]" name="addresses[0][latitude]" value="{{old('latitude')}}">
-                                            <input type="hidden" id="longitude[0]" name="addresses[0][longitude]" value="{{old('longitude')}}">
+                                                <input type="hidden" name="addresses[{{$count}}][address_id]" value="{{$item['id']}} ">
+                                                <input id="address[{{$count}}]" name="addresses[{{$count}}][address]" type="text" class="form-control"
+                                                placeholder="Enter address" value="{{ $item['address'] }}">
+                                                
+                                                <input type="hidden" id="latitude[{{$count}}]" name="addresses[{{$count}}][latitude]" value="{{ $item['lat'] }}">
+                                                <input type="hidden" id="longitude[{{$count}}]" name="addresses[{{$count}}][longitude]" value="{{ $item['lng'] }}">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php $count++ ?>
+                                @endforeach
                                 <div class="row mr-2 ml-1" id="items">
                                 </div>
+                                
                                 <div class="col-md-12">
                                     <a class="btn btn-success mr-2" href="javascript:;" onClick="return AddAddressRow()"
                                     style="float: right;">+</a>
                                     <a class="btn btn-success mr-2 pr-3" href="javascript:;" onClick="return RemAddressRow()"
                                        style="float: right;">-</a>
                                 </div>
+                                
+
                                 <div class="md-form mr-3 ml-2 mt-3">
                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Upload Image</label>
                                     <input name="image" type="file" class="mb-2 border-dark form-control validate"
                                            accept="image/*">
                                 </div>
+                                
+                                <div class="col-md-12 mt-2">
+                                    <label></label>
+                                    {{-- <a href="{{$data->getImageUrl()}}" target="_blank"
+                                        class="text-primary text-center">
+                                        <small>View previous uploaded ( Picture )</small>
+                                    </a> --}}
+                                    <br>
+                                    <small>Previous Uploaded ( Image )</small>
+                                    <img src="{{$data->getImageUrl()}}" alt="" style="width:250px">
+                                    <input type="hidden" name="previmg" value="{{ $data->image }}">
+                                </div>
+
                                 <button type="submit" class="btn btn-dark me-2 mt-4 ml-2">Save</button>
                             </form>
+
                         </div>
                     </div>
                 </div>
