@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="md-form mr-3 ml-2 mt-3">
                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Upload Image</label>
-                                    <input name="image" type="file" class="mb-2 border-dark form-control validate"
+                                    <input name="image" type="file" class="dropify mb-2 border-dark form-control validate"
                                            accept="image/*">
                                 </div>
                                 <button type="submit" class="btn btn-dark me-2 mt-4 ml-2">Save</button>
@@ -55,6 +55,10 @@
 @endsection
 
 @section('script')
+
+    <script>
+        $('.dropify').dropify();
+    </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3NUxL1BZ3S4v69vZExUtXdbFRAQEiMcE&callback=initAutocomplete&libraries=places" defer></script>
     <script>

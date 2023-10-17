@@ -57,8 +57,8 @@
 
                                 <div class="md-form mr-3 ml-2 mt-3">
                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Upload Image</label>
-                                    <input name="image" type="file" class="mb-2 border-dark form-control validate"
-                                           accept="image/*">
+                                    <input name="image" type="file" class=" dropify mb-2 border-dark form-control validate"
+                                           accept="image/*" data-default-file="{{ $data->getImageUrl() }}">
                                 </div>
                                 
                                 <div class="col-md-12 mt-2">
@@ -68,8 +68,8 @@
                                         <small>View previous uploaded ( Picture )</small>
                                     </a> --}}
                                     <br>
-                                    <small>Previous Uploaded ( Image )</small>
-                                    <img src="{{$data->getImageUrl()}}" alt="" style="width:250px">
+                                    {{-- <small>Previous Uploaded ( Image )</small> --}}
+                                    <img hidden src="{{$data->getImageUrl()}}" alt="" style="width:250px">
                                     <input type="hidden" name="previmg" value="{{ $data->image }}">
                                 </div>
 
@@ -85,6 +85,10 @@
 @endsection
 
 @section('script')
+
+    <script>
+        $('.dropify').dropify();
+    </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3NUxL1BZ3S4v69vZExUtXdbFRAQEiMcE&callback=initAutocomplete&libraries=places" defer></script>
     <script>
